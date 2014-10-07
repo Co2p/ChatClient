@@ -18,6 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //creats an new instanse of this function, so that the constructor can run.
         Main newMain = new Main();
 
     }
