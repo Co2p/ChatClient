@@ -10,18 +10,31 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
+    //Testfunktion, ta bort sen
+    public static void main(String[] args){
+        ArrayList<Integer> format= new ArrayList<Integer>();
+        ArrayList<String> content= new ArrayList<String>();
 
-    public void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
+        format.add(8);
+        format.add(16);
+        content.add("1");
+        content.add("AB");
+
+        headerBuilder(format, content);
+    }
+
+    public static void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
 
         for(int i = 0;i < format.size(); i++){
             //skapar en ny byte med bytelängden som finns i formatArrayen
-            byte[] stringByte = new byte[format.get(i)];
+            byte[] stringByte;
             //Lägger in infot som finns i contentArrayen
             try {
                 stringByte = content.get(i).getBytes("UTF-8");
+                System.out.print(" ");
                 outputStream.write(stringByte);
             }catch(Exception e){
                 System.out.println("Här gick det lite fel");
@@ -30,10 +43,9 @@ public class byteConverter {
         byte totBytes[] = outputStream.toByteArray();
         //testskrivut bytesen
         System.out.println("Printing bytes:");
-        for(int i = 0; i < totBytes.length; i++){
-            int print = totBytes[i] & 0xff;
-            System.out.print(print);
+        for (byte b : totBytes) {
+            System.out.println(Integer.toBinaryString(b & 255 | 256).substring(1));
         }
-        System.out.println("Printing done!");
+        System.out.println("\nPrinting done!");
     }
 }
