@@ -14,7 +14,7 @@ public class byteConverter {
 
     public void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
-        // array "content"
+        // array "content" The string is expected to be in UTF-8.
         for(int i = 0;i < format.size(); i++){
             //TODO  skapar en enkel sträng här bara för test, denna ska egentligen vara
             //      en ström av bytes
