@@ -11,8 +11,10 @@ public class byteConverter {
 
     Byte zeroByte;
 
-    public void headerBuilder(Array format, Array content){
-        for ()
+    public void headerBuilder(Array<Integer> format, Array content){
+        for (int i=0; format[0]>i; i++){
+
+        }
     }
 
 }
