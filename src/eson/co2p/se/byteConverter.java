@@ -11,6 +11,8 @@ public class byteConverter {
 
     Byte zeroByte;
 
-    public void headerBuilder()
+    public void headerBuilder(){
+
+    }
 
 }
