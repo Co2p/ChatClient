@@ -2,14 +2,20 @@ Klasser:
 Main.class
 Chatt.class
 
-Class description includes a description, author(s) and created date.
-
 /**
-* The method does stuff
-*
-* in
-* out
-*/
-aMethod(variable, andAnother){
-    code();
+ * Class description includes a description, author(s) and created date.
+ *
+ */
+aClass(){
+
+    /**
+    * The method does stuff
+    *
+    * in
+    * out
+    */
+    aMethod(variable, andAnother){
+        code();
+    }
+
 }
