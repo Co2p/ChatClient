@@ -12,7 +12,7 @@ public class byteConverter {
     Byte zeroByte;
 
     public void headerBuilder(Array format, Array content){
-
+        for ()
     }
 
 }
