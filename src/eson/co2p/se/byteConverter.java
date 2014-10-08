@@ -17,9 +17,6 @@ public class byteConverter {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
 
         for(int i = 0;i < format.size(); i++){
-            //TODO  skapar en enkel sträng här bara för test, denna ska egentligen vara
-            //      en ström av bytes
-            String test;
             //skapar en ny byte med bytelängden som finns i formatArrayen
             byte[] stringByte = new byte[format.get(i)];
             //Lägger in infot som finns i contentArrayen
