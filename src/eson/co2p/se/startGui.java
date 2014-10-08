@@ -71,8 +71,8 @@ public class startGui extends JFrame{
         getContentPane().add(panelTwo, "North");
         getContentPane().add(panelThree, "South");
         panelOne.setBackground(new Color(222, 225, 188));
-        panelTwo.setBackground(new Color(34, 29, 225));
-        panelThree.setBackground(new Color(26, 225, 35));
+        panelTwo.setBackground(new Color(58, 72, 107));
+        panelThree.setBackground(new Color(72, 146, 75));
         anLable = new JLabel("Basic Client..(lolz)");
         panelOne.add(anLable);
         panelTwo.add(outputArea);
