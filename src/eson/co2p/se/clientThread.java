@@ -17,16 +17,16 @@ public class clientThread {
     //skapa konstruktor
     public clientThread(startGui gui) {
 
-        private void startSender () {
-            senderThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    sender = new senderServer();
-                }
-            });
-            threads.add(senderThread);
-            senderThread.start();
-        }
+    }
 
+    private void startSender(){
+        senderThread = new Thread(new Runnable(){
+            @Override
+            public void run(){
+                sender = new senderServer();
+            }
+        });
+        threads.add(senderThread);
+        senderThread.start();
     }
 }
