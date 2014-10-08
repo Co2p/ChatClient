@@ -7,11 +7,13 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import static eson.co2p.se.byteConverter.headerBuilder;
+
 public class byteConverterTest extends TestCase {
 
     ArrayList<Integer> format = new ArrayList<Integer>();
     ArrayList<String> content = new ArrayList<String>();
-    ByteArrayOutputStream output = new ByteArrayOutputStream(24);
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
 
     @Before
     public void setUp() throws Exception {
@@ -24,7 +26,6 @@ public class byteConverterTest extends TestCase {
 
     @Test
     public void testHeaderBuilder() throws Exception {
-        assertEquals(output, headerBuilder());
-
+        assertEquals(output, headerBuilder(format, content));
     }
 }
