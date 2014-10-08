@@ -10,18 +10,6 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
-    //Testfunktion, ta bort sen
-    public static void main(String[] args){
-        ArrayList<Integer> format= new ArrayList<Integer>();
-        ArrayList<String> content= new ArrayList<String>();
-
-        format.add(8);
-        format.add(16);
-        content.add("1");
-        content.add("AB");
-
-        headerBuilder(format, content);
-    }
 
     public static void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
