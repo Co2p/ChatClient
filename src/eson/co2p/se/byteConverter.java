@@ -1,6 +1,5 @@
 package eson.co2p.se;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -10,30 +9,32 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
-
-    public static void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
+    /**
+     * Takes two Arraylists, one, "format" containing the length of each element of the header
+     * and the other "content" contains the data to be added into the stream of bytes and
+     * converts both to UTF-8 and then creates a bytestream with the given size-parameters
+     * for each element.
+     *
+     * @param   format Arraylist containing the size of each element to be used
+     * @param   content Arraylist containing the data to use
+     * @return  the fully converted ByteArrauOutputStream
+     */
+    public static ByteArrayOutputStream headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
 
         for(int i = 0;i < format.size(); i++){
-            //skapar en ny byte med bytelängden som finns i formatArrayen
             byte[] stringByte;
-            //Lägger in infot som finns i contentArrayen
+            //TODO values smaller than the expected format is not taken care of this has to be done!
             try {
-                stringByte = content.get(i).getBytes("UTF-8");
+                stringByte  = content.get(i).getBytes("UTF-8");
                 System.out.print(" ");
                 outputStream.write(stringByte);
             }catch(Exception e){
-                System.out.println("Här gick det lite fel");
+                System.out.println("Exception occurred during byte-conversion: " + e);
             }
         }
-        byte totBytes[] = outputStream.toByteArray();
-        //testskrivut bytesen
-        System.out.println("Printing bytes:");
-        for (byte b : totBytes) {
-            System.out.println(Integer.toBinaryString(b & 255 | 256).substring(1));
-        }
-        System.out.println("\nPrinting done!");
+        return outputStream;
     }
 }
