@@ -10,7 +10,7 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
-    public static void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
+    public static ByteArrayOutputStream headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
@@ -27,7 +27,7 @@ public class byteConverter {
                 System.out.println("Här gick det lite fel");
             }
         }
-        byte totBytes[] = outputStream.toByteArray();
+        return outputStream;
         //Skicka tillbaks bytesen eller skicka helt enkelt tillbaks outputStreamen
     }
 }
