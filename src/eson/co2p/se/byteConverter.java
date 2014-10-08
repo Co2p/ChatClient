@@ -10,19 +10,6 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
-    //Testfunktion, ta bort sen
-    public static void main(String[] args){
-        ArrayList<Integer> format= new ArrayList<Integer>();
-        ArrayList<String> content= new ArrayList<String>();
-
-        format.add(8);
-        format.add(16);
-        content.add("1");
-        content.add("AB");
-
-        headerBuilder(format, content);
-    }
-
     public static void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
@@ -41,11 +28,6 @@ public class byteConverter {
             }
         }
         byte totBytes[] = outputStream.toByteArray();
-        //testskrivut bytesen
-        System.out.println("Printing bytes:");
-        for (byte b : totBytes) {
-            System.out.println(Integer.toBinaryString(b & 255 | 256).substring(1));
-        }
-        System.out.println("\nPrinting done!");
+        //Skicka tillbaks bytesen eller skicka helt enkelt tillbaks outputStreamen
     }
 }
