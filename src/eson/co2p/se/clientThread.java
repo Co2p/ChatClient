@@ -5,8 +5,10 @@ package eson.co2p.se;
  */
 public class clientThread {
 
+    private startGui gui;
+
     //skapa konstruktor
-    public clientThread(int port, startGui gui){
+    public clientThread(startGui gui){
 
     }
 }

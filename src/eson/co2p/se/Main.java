@@ -8,7 +8,6 @@ public class Main {
     ArrayList<Thread> threads = new ArrayList<Thread>();
     startGui gui;
     clientThread newServer;
-    int port = 6565;
 
     public Main(){
         gui = new startGui();
@@ -27,7 +26,7 @@ public class Main {
         nameServer = new Thread(new Runnable() {
             @Override
             public void run() {
-                newServer = new clientThread(port,gui);
+                newServer = new clientThread(gui);
             }
         });
         threads.add(nameServer);
