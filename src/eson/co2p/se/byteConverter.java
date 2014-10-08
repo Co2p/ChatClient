@@ -1,7 +1,5 @@
 package eson.co2p.se;
 
-import sun.jvm.hotspot.runtime.Bytes;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -13,20 +11,15 @@ import java.util.ArrayList;
 public class byteConverter {
 
     Byte zeroByte;
-    Bytes output;
 
     public void headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
-        
         // Go trough the format-Array which contains the length of each element in the
-        // array "content"
-        for (int i=0; format.size(0) >i; i++){
+        // array "content" The string is expected to be in UTF-8.
+        for(int i = 0;i < format.size(); i++){
             //TODO  skapar en enkel sträng här bara för test, denna ska egentligen vara
             //      en ström av bytes
+            String test;
 
-            for (int j=0; format.get(i)>j;j++){
-
-            }
         }
     }
-
 }
