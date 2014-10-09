@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Created by gordon on 07/10/14.
  *
  */
+
 public class nameServerPing {
 
     private ArrayList<Integer> format = new ArrayList<Integer>();
