@@ -4,7 +4,7 @@ package eson.co2p.se;
  * Created by gordon on 08/10/14.
  * Remembers states and identifiers
  */
-public class catalogue {
+public final class catalogue {
 
     private int idNumber;
     private String name, serverIP, serverPort;

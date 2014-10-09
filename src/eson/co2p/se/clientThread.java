@@ -19,11 +19,15 @@ public class clientThread {
         userGui = gui;
         testFeedGui();
     }
+
     //Skriv till GUI TODO: segmentera medelanden
     private void printToGui(String printString){
         userGui.outputWindow(printString + "\n");
     }
 
+    /**
+     * Starts the TCP connection thread that connects to the server
+     */
     private void startSender(){
         senderThread = new Thread(new Runnable(){
             @Override
@@ -34,6 +38,7 @@ public class clientThread {
         threads.add(senderThread);
         senderThread.start();
     }
+
     //Testfunktion till GUI feed
     public void testFeedGui(){
         int x = 20;

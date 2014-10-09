@@ -42,12 +42,14 @@ public class startGui extends JFrame implements ActionListener {
 
     // Skapa konstruktor
     public startGui(){
-        super("bonga bira");
+        super();
         createFrame();
     };
 
     public void outputWindow(String userText) {
-        outputArea.append(userText);
+        if (userText!="" || userText!=null) {
+            outputArea.append(userText);
+        }
     }
 
     private void createFrame() {
