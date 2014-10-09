@@ -2,10 +2,13 @@ package eson.co2p.se;
 
 import com.sun.net.httpserver.HttpServer;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +22,7 @@ public class nameServerPing {
     private ServerSocket serverSocket;
     private ArrayList<Integer> format;
     private ArrayList<String> content;
+    private ArrayList<Byte> byteBuffer;
 
     /**
      * Constructor
@@ -38,19 +42,30 @@ public class nameServerPing {
     public void serverPing(){
         try {
             serverSocket = new ServerSocket(localPort);
+            Socket socket = serverSocket.accept();
+
+                DataOutputStream out;
+                try {
+                    out = new DataOutputStream(serverSocket.accept().getOutputStream());
+                    out.write(byteConverter.headerBuilder(format, content).toByteArray());
+                } catch (IOException e) {
+                    System.out.println("Error while sending request to nameserver");
+                    e.printStackTrace();
+                }
+
+            BufferedReader listener = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            Byte tempByte = (byte) listener.read();
+            byteBuffer.add(tempByte);
+
+            System.out.println(byteBuffer.get(0));
+
         } catch (IOException e) {
             System.out.println("Error while creating a port for nameserver");
             e.printStackTrace();
         }
 
-        DataOutputStream out;
-        try {
-            out = new DataOutputStream(serverSocket.accept().getOutputStream());
-            out.write(byteConverter.headerBuilder(format, content).toByteArray());
-        } catch (IOException e) {
-            System.out.println("Error while sending request to nameserver");
-            e.printStackTrace();
-        }
+
 
     }
 }
