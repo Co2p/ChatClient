@@ -39,6 +39,7 @@ public class nameServerPing {
         try {
             serverSocket = new ServerSocket(localPort);
         } catch (IOException e) {
+            System.out.println("Error while creating a port for nameserver");
             e.printStackTrace();
         }
 
@@ -47,6 +48,7 @@ public class nameServerPing {
             out = new DataOutputStream(serverSocket.accept().getOutputStream());
             out.write(byteConverter.headerBuilder(format, content).toByteArray());
         } catch (IOException e) {
+            System.out.println("Error while sending request to nameserver");
             e.printStackTrace();
         }
 
