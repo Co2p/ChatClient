@@ -7,9 +7,7 @@ package eson.co2p.se;
 public class catalogue {
 
     private int idNumber;
-    private String name;
-    private String serverIP;
-    private String serverPort;
+    private String name, serverIP, serverPort;
 
     /**
      * Sets the ID number that the client received from the server
