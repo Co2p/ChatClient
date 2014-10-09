@@ -18,9 +18,11 @@ public class byteConverterTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        format.add(8);
-        format.add(16);
+        format.add(1);
+        format.add(3);
+        format.add(1);
         content.add("1");
+        content.add(null);
         content.add("AB");
     }
 
