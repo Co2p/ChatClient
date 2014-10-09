@@ -22,23 +22,30 @@ import java.io.*;
 public class startGui extends JFrame implements ActionListener {
 
     public String lastMessage = "";
+
+    //panels
     JPanel panelOne = new JPanel();
     JPanel panelTwo = new JPanel();
     JPanel panelThree = new JPanel();
-    JTextArea userInput = new JTextArea(10, 20);
+
+    //Text areas
+    JTextArea userInput = new JTextArea(5, 0);
     JTextArea outputArea = new JTextArea(10, 20);
+
+    //buttons - lol
     JButton sendMessage;
 
-
-    JPanel jPanel1 = new JPanel();
+    // scrollbars
     JScrollPane jScrollPane1 = new JScrollPane();
+    JScrollPane jScrollPane2 = new JScrollPane();
+
+    //placeholders
+    JPanel jPanel1 = new JPanel();
     JTextArea frame = new JTextArea ("Started chat client GUI");
     //JTextField userInput = new JTextField();
 
+    // Lables
     private JLabel anLable;
-
-
-
 
     // Skapa konstruktor
     public startGui(){
@@ -48,46 +55,54 @@ public class startGui extends JFrame implements ActionListener {
 
     public void outputWindow(String userText) {
         if (userText!="" || userText!=null) {
-            outputArea.append(userText);
+            //outputArea.append("\n" + userText);
+            outputArea.setText(outputArea.getText() + "\n" +  userText);
         }
     }
 
     private void createFrame() {
+        //button
         sendMessage = new JButton("Send");
         sendMessage.addActionListener(this);
+        sendMessage.setPreferredSize(new Dimension(80, 30));
 
+        //Panels
+        //panelThree.setLayout(new GridLayout(2, 0));
+        panelThree.setBackground(new Color(72, 146, 75));
+        panelOne.setBackground(new Color(222, 225, 188));
+        panelTwo.setBackground(new Color(58, 72, 107));
 
-        sendMessage.setPreferredSize(new Dimension(40, 50));
-        //sendMessage.setSize(20,20);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        //JComponent[] fields = new JComponent[2];
-        //panelOne.setLayout(new GridLayout(3,0));
-        panelThree.setLayout(new GridLayout(2, 0));
+        //input area
         userInput.setColumns(40);
         userInput.setText("enter message....");
         userInput.validate();
+
+        //output area
         outputArea.setEditable(false);
-        //outputArea.setSize(500, 800);
         outputArea.setText("Chat logg goes here....");
         outputArea.validate();
-        jScrollPane1.getViewport().add(outputArea);
 
-       // getContentPane().setSize(500, 500);
+        //add scroll to areas
+        jScrollPane1.getViewport().add(outputArea);
+        jScrollPane2.getViewport().add(userInput);
+
+        //lables
+        anLable = new JLabel("Basic Client..(lolz)");
+
+        //configur the contentpane.
         getContentPane().setVisible(true);
         //getContentPane().setLayout(new GridLayout(1, 0));
         getContentPane().setBackground(new Color(225, 29, 45));
-        getContentPane().setPreferredSize(new Dimension(400, 500));
+        getContentPane().setPreferredSize(new Dimension(465, 500));
         getContentPane().validate();
         getContentPane().add(panelOne, "Center");
         getContentPane().add(panelTwo, "North");
         getContentPane().add(panelThree, "South");
-        panelOne.setBackground(new Color(222, 225, 188));
-        panelTwo.setBackground(new Color(58, 72, 107));
-        panelThree.setBackground(new Color(72, 146, 75));
-        anLable = new JLabel("Basic Client..(lolz)");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         panelOne.add(anLable);
         panelTwo.add(jScrollPane1);
-        panelThree.add(userInput);
+        panelThree.add(jScrollPane2);
         panelThree.add(sendMessage);
         pack();
         setVisible(true);
@@ -98,7 +113,8 @@ public class startGui extends JFrame implements ActionListener {
         String Action = "";
         if(e.getSource() == sendMessage ){
             Action = userInput.getText();
-            outputArea.setText(Action +"\n" + outputArea.getText());// need to be edited..
+            outputWindow(Action);
+            //outputArea.setText(Action +"\n" + outputArea.getText());// need to be edited..
             userInput.setText("");
         }
         return Action;
