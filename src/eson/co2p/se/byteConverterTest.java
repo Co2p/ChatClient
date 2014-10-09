@@ -24,10 +24,20 @@ public class byteConverterTest extends TestCase {
         content.add("1");
         content.add(null);
         content.add("AB");
+        for(int i = 0; i < content.size(); i++){
+            if(content.get(i) != null) {
+                output.write(content.get(i).getBytes("UTF-8"));
+            }else{
+                for(int j = 0; j < format.get(i); j++ ) {
+                    output.write("\0".getBytes("UTF-8"));
+                }
+            }
+        }
     }
 
     @Test
     public void testHeaderBuilder() throws Exception {
+        //assertEquals funkar enbart om båda objekten som testas är EXAKT samma objekt.
         assertEquals(output, headerBuilder(format, content));
     }
 }
