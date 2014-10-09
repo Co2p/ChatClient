@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -19,7 +20,7 @@ public class byteConverter {
      * @param   content Arraylist containing the data to use
      * @return  the fully converted ByteArrauOutputStream
      */
-    public static ByteArrayOutputStream headerBuilder(ArrayList<Integer> format, ArrayList<String> content){
+    public static ByteArrayOutputStream headerBuilder(ArrayList<Integer> format, ArrayList<String> content, int OPCode){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
@@ -28,6 +29,8 @@ public class byteConverter {
             byte[] stringByte;
             try {
                 if(content.get(i) != null) {
+                    byte OP = (byte)OPCode;
+                    outputStream.write(OP);
                     stringByte = content.get(i).getBytes("UTF-8");
                     System.out.print(content.get(i) + " ");
                     outputStream.write(stringByte);
