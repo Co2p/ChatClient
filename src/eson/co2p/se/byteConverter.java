@@ -35,6 +35,7 @@ public class byteConverter {
             }else{
                 if(content.get(i) != null){
                     String stringConv = (String)content.get(i);
+                    //TODO add string to byte-conversion
                 }else{
                     sendBytes[i] = (byte)0;
                 }
