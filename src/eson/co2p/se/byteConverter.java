@@ -34,11 +34,11 @@ public class byteConverter {
                     //If the added content is smaller than the given bytelength, add /0's until everything is filled
                     for(int j = content.get(i).getBytes("UTF-8").length;
                         j < format.get(i); j++){
-                        outputStream.write("/0".getBytes("UTF-8"));
+                        outputStream.write("\0".getBytes("UTF-8"));
                     }
                 }else{
                     for(int j = 0; j < format.get(i); j++){
-                        outputStream.write("/0".getBytes("UTF-8"));
+                        outputStream.write("\0".getBytes("UTF-8"));
                     }
                 }
 
