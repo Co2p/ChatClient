@@ -51,6 +51,7 @@ public class startGui extends JFrame implements ActionListener {
     public startGui(){
         super();
         createFrame();
+        pingNameserver();
     };
 
     public void outputWindow(String userText) {
@@ -59,7 +60,15 @@ public class startGui extends JFrame implements ActionListener {
             outputArea.setText(outputArea.getText() + "\n" +  userText);
         }
     }
-
+    private void pingNameserver(){
+        nameServerPing serverPing = new nameServerPing();
+        try{
+        serverPing.getUdpServerlist();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Excepted when trying to recive data: " + e);
+        }
+    }
     private void createFrame() {
         //button
         sendMessage = new JButton("Send");
