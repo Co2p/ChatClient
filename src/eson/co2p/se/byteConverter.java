@@ -31,6 +31,11 @@ public class byteConverter {
                 stringByte  = content.get(i).getBytes("UTF-8");
                 System.out.print(" ");
                 outputStream.write(stringByte);
+                //If the added content is smaller than the given bytelength, add /0's until
+                for(int j = content.get(i).getBytes("UTF-8").length;
+                    j < format.get(i); j++){
+                    outputStream.write("/0".getBytes("UTF-8"));
+                }
             }catch(Exception e){
                 System.out.println("Exception occurred during byte-conversion: " + e);
             }
