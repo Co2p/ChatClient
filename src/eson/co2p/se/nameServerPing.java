@@ -2,11 +2,7 @@ package eson.co2p.se;
 
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -42,18 +38,18 @@ public class nameServerPing {
     public void serverPing(){
         try {
             serverSocket = new ServerSocket(localPort);
-            Socket socket = serverSocket.accept();
+            Socket localSocket = serverSocket.accept();
 
-                DataOutputStream out;
+                ByteArrayOutputStream out;
                 try {
-                    out = new DataOutputStream(serverSocket.accept().getOutputStream());
+                    out = new ByteArrayOutputStream(4);
                     out.write(byteConverter.headerBuilder(format, content).toByteArray());
                 } catch (IOException e) {
                     System.out.println("Error while sending request to nameserver");
                     e.printStackTrace();
                 }
 
-            BufferedReader listener = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader listener = new BufferedReader(new InputStreamReader(localSocket.getInputStream()));
 
             Byte tempByte = (byte) listener.read();
             byteBuffer.add(tempByte);
