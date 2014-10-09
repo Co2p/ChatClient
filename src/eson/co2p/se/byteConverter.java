@@ -28,7 +28,7 @@ public class byteConverter {
             byte[] stringByte;
             try {
                 if(content.get(i) != null) {
-                    stringByte = (content.get(i) + "\0").getBytes("UTF-8");
+                    stringByte = content.get(i).getBytes("UTF-8");
                     System.out.print(content.get(i) + " ");
                     outputStream.write(stringByte);
                     //If the added content is smaller than the given bytelength, add /0's until everything is filled
