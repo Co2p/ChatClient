@@ -9,14 +9,19 @@ import java.util.ArrayList;
  */
 public class clientThread {
 
-    private startGui gui;
+    private startGui userGui;
     private Thread senderThread;
     private senderServer sender;
     private ArrayList<Thread> threads = new ArrayList<Thread>();
 
     //skapa konstruktor
     public clientThread(startGui gui) {
-
+        userGui = gui;
+        testFeedGui();
+    }
+    //Skriv till GUI TODO: segmentera medelanden
+    private void printToGui(String printString){
+        userGui.outputWindow(printString + "\n");
     }
 
     private void startSender(){
@@ -28,5 +33,18 @@ public class clientThread {
         });
         threads.add(senderThread);
         senderThread.start();
+    }
+    //Testfunktion till GUI feed
+    public void testFeedGui(){
+        int x = 20;
+        while(x >= 0){
+            if(x < 1){
+                printToGui("lol: " + x + "times upp");
+            }
+            else{
+                printToGui("lol: " + x);
+            }
+            x--;
+        }
     }
 }
