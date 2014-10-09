@@ -44,6 +44,7 @@ public class byteConverter {
 
             }catch(Exception e){
                 System.out.println("Exception occurred during byte-conversion: " + e);
+                e.printStackTrace();
             }
         }
         return outputStream;
