@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import static eson.co2p.se.byteConverter.headerBuilder;
+import static eson.co2p.se.byteConverter.*;
 
 public class byteConverterTest extends TestCase {
 
