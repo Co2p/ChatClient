@@ -26,11 +26,22 @@ public class byteConverter {
 
         for(int i = 0;i < format.size(); i++){
             byte[] stringByte;
-            //TODO values smaller than the expected format is not taken care of this has to be done!
             try {
-                stringByte  = content.get(i).getBytes("UTF-8");
-                System.out.print(" ");
-                outputStream.write(stringByte);
+                if(content.get(i) != null) {
+                    stringByte = content.get(i).getBytes("UTF-8");
+                    System.out.print(content.get(i) + " ");
+                    outputStream.write(stringByte);
+                    //If the added content is smaller than the given bytelength, add /0's until everything is filled
+                    for(int j = content.get(i).getBytes("UTF-8").length;
+                        j < format.get(i); j++){
+                        outputStream.write("\0".getBytes("UTF-8"));
+                    }
+                }else{
+                    for(int j = 0; j < format.get(i); j++){
+                        outputStream.write("\0".getBytes("UTF-8"));
+                    }
+                }
+
             }catch(Exception e){
                 System.out.println("Exception occurred during byte-conversion: " + e);
             }
