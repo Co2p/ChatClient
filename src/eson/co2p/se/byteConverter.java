@@ -24,24 +24,22 @@ public class byteConverter {
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
-
-        for(int i = 0;i < format.size(); i++){
-            byte[] stringByte;
+        byte[] stringByte = new byte[format.size() + 1];
+        byte OP = (byte) OPCode;
+        stringByte[0] = OP;
+        for(int i = 1;i < format.size(); i++){
             try {
                 if(content.get(i) != null) {
-                    byte OP = (byte)OPCode;
-                    outputStream.write(OP);
-                    stringByte = content.get(i).getBytes("UTF-8");
-                    System.out.print(content.get(i) + " ");
-                    outputStream.write(stringByte);
+                    //stringByte[i] = content.get(i).getBytes("UTF-8");;
                     //If the added content is smaller than the given bytelength, add /0's until everything is filled
-                    for(int j = content.get(i).getBytes("UTF-8").length;
-                        j < format.get(i); j++){
-                        outputStream.write("\0".getBytes("UTF-8"));
-                    }
+                    //for(int j = content.get(i).getBytes("UTF-8").length;
+                    //    j < format.get(i); j++){
+                    //    outputStream.write("\0".getBytes("UTF-8"));
+                    //}
                 }else{
                     for(int j = 0; j < format.get(i); j++){
-                        outputStream.write("\0".getBytes("UTF-8"));
+                        stringByte[i] = (byte)0;
+                        //outputStream.write("\0".getBytes("UTF-8"));
                     }
                 }
 

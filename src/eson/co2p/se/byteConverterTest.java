@@ -38,6 +38,6 @@ public class byteConverterTest extends TestCase {
     @Test
     public void testHeaderBuilder() throws Exception {
         //assertEquals funkar enbart om båda objekten som testas är EXAKT samma objekt.
-        assertEquals(output, headerBuilder(format, content));
+        assertEquals(output, headerBuilder(format, content, 3));
     }
 }
