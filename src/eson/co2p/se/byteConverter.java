@@ -31,7 +31,7 @@ public class byteConverter {
 
         //Här kommer lite ny kod
         for(int i = 0; i < totForm; i++){
-            if(content.get(i).getClass().equals(int.class)){
+            if(content.get(i) instanceof Integer){
                 int intConv = (Integer)content.get(i);
                 sendBytes[i] = (byte)intConv;
             }else{
