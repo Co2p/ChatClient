@@ -20,11 +20,34 @@ public class byteConverter {
      * @param   content Arraylist containing the data to use
      * @return  the fully converted ByteArrauOutputStream
      */
-    public static ByteArrayOutputStream headerBuilder(ArrayList<Integer> format, ArrayList<String> content, int OPCode){
+    public static byte[] headerBuilder(ArrayList<Integer> format, ArrayList<Object> content){
         // Go trough the format-Array which contains the length of each element in the
         // array "content" The string is expected to be in UTF-8.
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
-        byte[] stringByte = new byte[format.size() + 1];
+        int totForm = 0;
+        for(int i = 0; i < format.size(); i++){
+            totForm += format.get(i);
+        }
+        byte[] sendBytes = new byte[totForm];
+
+        //Här kommer lite ny kod
+        for(int i = 0; i < totForm; i++){
+            if(content.get(i).getClass().equals(int.class)){
+                int intConv = (Integer)content.get(i);
+                sendBytes[i] = (byte)intConv;
+            }else{
+                if(content.get(i) != null){
+                    String stringConv = (String)content.get(i);
+                }else{
+                    sendBytes[i] = (byte)0;
+                }
+            }
+            if(format.get(i) > 1){i += (format.get(i) - 1);}
+            //Här ska även checkar om den skrivit ut alla nollor, detta har inte gjorts än.
+        }
+
+        return sendBytes;
+
+        /*//här är gamla koden
         byte OP = (byte) OPCode;
         stringByte[0] = OP;
         for(int i = 1;i < format.size(); i++){
@@ -48,6 +71,6 @@ public class byteConverter {
                 e.printStackTrace();
             }
         }
-        return outputStream;
+        return outputStream;*/
     }
 }
