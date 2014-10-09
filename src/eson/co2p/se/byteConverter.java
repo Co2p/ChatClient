@@ -26,11 +26,12 @@ public class byteConverter {
 
         for(int i = 0;i < format.size(); i++){
             byte[] stringByte;
-            //TODO values smaller than the expected format is not taken care of this has to be done!
             try {
-                stringByte  = content.get(i).getBytes("UTF-8");
-                System.out.print(" ");
-                outputStream.write(stringByte);
+                if(content.get(i) != null) {
+                    stringByte = content.get(i).getBytes("UTF-8");
+                    System.out.print(" ");
+                    outputStream.write(stringByte);
+                }
                 //If the added content is smaller than the given bytelength, add /0's until everything is filled
                 for(int j = content.get(i).getBytes("UTF-8").length;
                     j < format.get(i); j++){
