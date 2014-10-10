@@ -14,6 +14,7 @@ public class senderServer {
 
     private ServerSocket localServerSocket;
     private Socket tagetSocket;
+    private PDU pdu =
     private catalogue catalogue;
     private BufferedReader in;
     private PrintStream out;
@@ -30,7 +31,7 @@ public class senderServer {
         }
 
 
-        out.write(byteConverter.headerBuilder());
+        out.write();
     }
 
     private
