@@ -1,5 +1,7 @@
 package eson.co2p.se;
 
+import sun.jvm.hotspot.runtime.Bytes;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,7 +16,8 @@ public class senderServer {
 
     private ServerSocket localServerSocket;
     private Socket tagetSocket;
-    private PDU pdu =
+    private PDU pdu;
+    private byte[] data;
     private catalogue catalogue;
     private BufferedReader in;
     private PrintStream out;
@@ -30,9 +33,21 @@ public class senderServer {
             e.printStackTrace();
         }
 
+        data[1] = 12;
 
-        out.write();
+        pdu = new PDU(data, 32);
+        try {
+            out.write(pdu.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private
+
 }
