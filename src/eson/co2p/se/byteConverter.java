@@ -28,7 +28,7 @@ public class byteConverter {
             totForm += format.get(i);
         }
         byte[] sendBytes = new byte[totForm];
-        for(int i = 0; i < totForm; i++){
+        for(int i = 0; i < format.size(); i++){
             byte[] tempBytes;
             if(content.get(i) instanceof Integer){
                 int intConv = (Integer)content.get(i);
