@@ -1,5 +1,8 @@
 package eson.co2p.se;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * Created by gordon on 08/10/14.
  * Remembers states and identifiers
@@ -32,7 +35,13 @@ public class catalogue {
      * @param serverIP the IP as a String
      */
     public void setServerIP(String serverIP) {
-        this.serverIP = serverIP;
+        try {
+            InetAddress inetAddress = InetAddress.getByName(serverIP);
+            this.serverIP = inetAddress.toString();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
