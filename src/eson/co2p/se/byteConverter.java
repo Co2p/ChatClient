@@ -10,6 +10,7 @@ import java.io.*;
  * Handles the conversion to bytestreams, and adds padding
  */
 public class byteConverter {
+
     /**
      * Takes two Arraylists, one, "format" containing the length of each element of the header
      * and the other "content" contains the data to be added into the stream of bytes and

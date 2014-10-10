@@ -4,10 +4,12 @@ package eson.co2p.se;
  * Created by gordon on 08/10/14.
  * Remembers states and identifiers
  */
-public final class catalogue {
+public class catalogue {
 
-    private int idNumber;
-    private String name, serverIP, serverPort;
+    private static int idNumber;
+    private static String name, serverIP, serverPort;
+
+    private catalogue(){}
 
     /**
      * Sets the ID number that the client received from the server

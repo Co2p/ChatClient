@@ -1,10 +1,9 @@
 package eson.co2p.se;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by gordon on 08/10/14.
@@ -14,43 +13,25 @@ import java.net.Socket;
 public class senderServer {
 
     private ServerSocket localServerSocket;
-    private BufferedReader byteArrayInput;
+    private Socket tagetSocket;
+    private catalogue catalogue;
+    private BufferedReader in;
+    private PrintStream out;
     private char[] charBuff = new char[65535];
 
     public senderServer() {
 
         try {
-            localServerSocket = new ServerSocket(1339);
-
-
-            try {
-                Socket localSocket = null;
-                localSocket = localServerSocket.accept();
-
-
-                try {
-                    byteArrayInput = new BufferedReader(new InputStreamReader(localSocket.getInputStream()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String listen(){
-
-        try {
-            byteArrayInput.read(charBuff);
+            tagetSocket = new Socket(catalogue.getServerIP(), Integer.parseInt(catalogue.getServerPort()));
+            out = new PrintStream(tagetSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(tagetSocket.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println(charBuff);
 
-        return charBuff.toString();
+        out.write(byteConverter.headerBuilder());
     }
+
+    private
 }
