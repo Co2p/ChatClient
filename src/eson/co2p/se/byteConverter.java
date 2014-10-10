@@ -33,6 +33,7 @@ public class byteConverter {
             if(content.get(i) instanceof Integer){
                 int intConv = (Integer)content.get(i);
                 sendBytes[i] = (byte)intConv;
+                //If the element for the int is larger than one byte, add as many bytes as given in the format
                 for(int j = 1; j < format.get(i); j++){
                     sendBytes[i+j] = (byte)0;
                 }
@@ -48,6 +49,7 @@ public class byteConverter {
                         }
                     }
                 }else{
+                    //If nothing is given in the content element, just send zerobytes
                     for(int j = 0; j < format.get(i); j++) {
                         sendBytes[i + j] = (byte) 0;
                     }
