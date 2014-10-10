@@ -29,18 +29,30 @@ public class byteConverter {
         }
         byte[] sendBytes = new byte[totForm];
         for(int i = 0; i < totForm; i++){
+            byte[] tempBytes;
             if(content.get(i) instanceof Integer){
                 int intConv = (Integer)content.get(i);
                 sendBytes[i] = (byte)intConv;
+                for(int j = 1; j < format.get(i); j++){
+                    sendBytes[i+j] = (byte)0;
+                }
             }else{
                 if(content.get(i) != null){
                     String stringConv = (String)content.get(i);
-                    //TODO add string to byte-conversion
+                    tempBytes = stringConv.getBytes();
+                    for(int j = 0; j < format.get(i); j++){
+                        if(j < tempBytes.length) {
+                            sendBytes[i + j] = tempBytes[j];
+                        }else{
+                            sendBytes[i + j] = (byte)0;
+                        }
+                    }
                 }else{
-                    sendBytes[i] = (byte)0;
+                    for(int j = 0; j < format.get(i); j++) {
+                        sendBytes[i + j] = (byte) 0;
+                    }
                 }
             }
-            if(format.get(i) > 1){i += (format.get(i) - 1);}
         }
         return sendBytes;
     }
