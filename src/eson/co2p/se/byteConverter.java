@@ -27,7 +27,12 @@ public class byteConverter {
         for(int i = 0; i < format.size(); i++){
             totForm += format.get(i);
         }
-        byte[] sendBytes = new byte[totForm];
+        int totArr = totForm;
+        //Check if the message is modulu 4 if not, add until modulu 4
+        if(totForm % 4 != 0){
+            totArr = totForm + totForm % 4;
+        }
+        byte[] sendBytes = new byte[totArr];
         for(int i = 0; i < format.size(); i++){
             byte[] tempBytes;
             if(content.get(i) instanceof Integer){
