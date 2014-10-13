@@ -19,49 +19,27 @@ public class byteConverter {
      *
      * @param   format Arraylist containing the size of each element to be used
      * @param   content Arraylist containing the data to use
-     * @return  the fully converted ByteArrauOutputStream
+     * @param   totLength the total length of the stream to send
+     * @return  The created PDU
      */
-    public static byte[] headerBuilder(ArrayList<Integer> format, ArrayList<Object> content){
-        // Go trough the format-Array which contains the length of each element in the
-        // array "content" The string is expected to be in UTF-8.
-        int totForm = 0;
-        for(int i = 0; i < format.size(); i++){
-            totForm += format.get(i);
-        }
-        int totArr = totForm;
-        //Check if the message is modulu 4 if not, add until modulu 4
-        if(totForm % 4 != 0){
-            totArr = totForm + totForm % 4;
-        }
-        byte[] sendBytes = new byte[totArr];
-        for(int i = 0; i < format.size(); i++){
-            byte[] tempBytes;
-            if(content.get(i) instanceof Integer){
-                int intConv = (Integer)content.get(i);
-                sendBytes[i] = (byte)intConv;
-                //If the element for the int is larger than one byte, add as many bytes as given in the format
-                for(int j = 1; j < format.get(i); j++){
-                    sendBytes[i+j] = (byte)0;
-                }
-            }else{
-                if(content.get(i) != null){
-                    String stringConv = (String)content.get(i);
-                    tempBytes = stringConv.getBytes();
-                    for(int j = 0; j < format.get(i); j++){
-                        if(j < tempBytes.length) {
-                            sendBytes[i + j] = tempBytes[j];
-                        }else{
-                            sendBytes[i + j] = (byte)0;
-                        }
-                    }
-                }else{
-                    //If nothing is given in the content element, just send zerobytes
-                    for(int j = 0; j < format.get(i); j++) {
-                        sendBytes[i + j] = (byte) 0;
-                    }
+    public static PDU headerBuilder(ArrayList<Integer> format, ArrayList<Object> content, int totLength){
+        PDU pdu = new PDU(totLength);
+        //As the first element of the array always will be the opcode, add this first.
+        int tempInt = (Integer) content.get(0);
+        pdu.setByte(0 ,(byte)tempInt);
+
+        for(int i = 1; i < format.size(); i++){
+            //Check if the content equals integer as the PDU handles integers and strings differently
+            if(content.get(i) != null) {
+                if (content.get(i) instanceof Integer) {
+                    tempInt = (Integer) content.get(i);
+                    pdu.setByte(format.get(i), (byte)tempInt);
+                } else {
+                    String tempString = (String) content.get(i);
+                    pdu.setSubrange(format.get(i), tempString.getBytes());
                 }
             }
         }
-        return sendBytes;
+        return pdu;
     }
 }
