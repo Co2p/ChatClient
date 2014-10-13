@@ -1,9 +1,8 @@
 package eson.co2p.se;
 
-import java.math.BigInteger;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.net.InetAddress;
-import java.io.*;
 
 /**
  * Created by gordon on 08/10/14.
@@ -43,41 +42,61 @@ public class byteConverter {
         }
         return pdu;
     }
+    /*
     public static String NsClServerlist(byte[] message){
         PDU reMessage = new PDU(message, message.length);
         String returnString = "OP: ";
         int chatServers = (int) reMessage.getShort(2);
         int tot = 0;
-
-        try {
-            returnString += (int) reMessage.getByte(0) + " ";
-            returnString += (int) reMessage.getByte(1) + " ";
-            returnString += "antal chatservrar:" + chatServers + " ";
-            tot = 4;
+        returnString += (int) reMessage.getByte(0) + " ";
+        returnString += (int) reMessage.getByte(1) + " ";
+        returnString += "antal chatservrar:" + chatServers + " ";
+        tot = 4;
+        returnString += "\n";
+        for(int i = 0; i < chatServers; i++) {
+            //returnString += new String(reMessage.getSubrange(tot, 4), "UTF-8");
+            returnString += getIp(reMessage.getSubrange(tot, 4));
+            tot += 4;
+            returnString += " " + (int) reMessage.getShort(tot) + " ";
+            tot += 2;
+            returnString += (int) reMessage.getByte(tot) + " ";
+            tot += 1;
+            int serverNameLength = (int) reMessage.getByte(tot);
+            returnString += "Length of serverName = " + serverNameLength + " ";
+            tot += 1;
+            returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
+            //måste vara delbart på fyra!
+            tot += div4(serverNameLength);
             returnString += "\n";
-            for(int i = 0; i < chatServers; i++) {
-                //returnString += new String(reMessage.getSubrange(tot, 4), "UTF-8");
-                returnString += (InetAddress.getByAddress(reMessage.getSubrange(tot, 4)));
-                tot += 4;
-                returnString += " " + (int) reMessage.getShort(tot) + " ";
-                tot += 2;
-                returnString += (int) reMessage.getByte(tot) + " ";
-                tot += 1;
-                int serverNameLength = (int) reMessage.getByte(tot);
-                returnString += "Length of serverName = " + serverNameLength + " ";
-                tot += 1;
-                returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
-                //måste vara delbart på fyra!
-                tot += div4(serverNameLength);
-                returnString += "\n";
-            }
-        }catch(Exception e){
-            System.out.println(e);
         }
-
         return returnString;
     }
+    private static InetAddress getIp(byte[] bytes){
+        try {
+            return InetAddress.getByAddress(bytes);
+        }catch(UnknownHostException e){
+            System.out.println("Exception occured: " + e);
+        }
+    }
+
     private static int div4(int testInt){
+        int ret = 0;
+        if((4 -(testInt % 4)) != 0){
+            ret = (4 -(testInt % 4));
+        }
+        return testInt + ret;
+    }
+    */
+    public static InetAddress getIp(byte[] bytes){
+        try {
+            return InetAddress.getByAddress(bytes);
+        }catch(UnknownHostException e){
+            System.out.println("Exception occured: " + e);
+            return null;
+        }
+    }
+
+    public static int div4(int testInt){
         int ret = 0;
         if((4 -(testInt % 4)) != 0){
             ret = (4 -(testInt % 4));
