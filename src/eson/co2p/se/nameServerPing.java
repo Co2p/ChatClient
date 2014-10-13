@@ -65,7 +65,7 @@ public class nameServerPing {
         System.out.println("Got dsfgg");
         clientSocket.receive(receivePacket);
         System.out.println("Got here!ee!");
-        String modifiedSentence = new String(receivePacket.getData());
+        String modifiedSentence = byteConverter.NsClServerlist(receivePacket.getData());
         System.out.println("FROM SERVER:" + modifiedSentence);
         clientSocket.close();
         System.out.println("Got here");

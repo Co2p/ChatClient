@@ -26,14 +26,14 @@ public class byteConverter {
         PDU pdu = new PDU(totLength);
         //As the first element of the array always will be the opcode, add this first.
         int tempInt = (Integer) content.get(0);
-        pdu.setByte(0 ,(byte)tempInt);
+        pdu.setByte(0, (byte) tempInt);
 
         for(int i = 1; i < format.size(); i++){
             //Check if the content equals integer as the PDU handles integers and strings differently
             if(content.get(i) != null) {
                 if (content.get(i) instanceof Integer) {
                     tempInt = (Integer) content.get(i);
-                    pdu.setByte(format.get(i), (byte)tempInt);
+                    pdu.setByte(format.get(i), (byte) tempInt);
                 } else {
                     String tempString = (String) content.get(i);
                     pdu.setSubrange(format.get(i), tempString.getBytes());
@@ -41,5 +41,37 @@ public class byteConverter {
             }
         }
         return pdu;
+    }
+    public static String NsClServerlist(byte[] message){
+        PDU reMessage = new PDU(message, message.length);
+        String returnString = "OP: ";
+        int chatServers = (int) reMessage.getShort(2);
+        int tot = 0;
+
+        try {
+            returnString += (int) reMessage.getByte(0) + " ";
+            returnString += (int) reMessage.getByte(1) + " ";
+            returnString += "antal chatservrar:" + chatServers + " ";
+            tot = 4;
+            returnString += "\n";
+            for(int i = 0; i < chatServers; i++) {
+                returnString += new String(reMessage.getSubrange(tot, 4), "UTF-8");
+                tot += 4;
+                returnString += (int) reMessage.getShort(tot) + " ";
+                tot += 2;
+                returnString += (int) reMessage.getByte(tot) + " ";
+                tot += 1;
+                int serverNameLength = (int) reMessage.getByte(tot);
+                returnString += "Length of serverName = " + serverNameLength + " ";
+                tot += 1;
+                returnString += new String(reMessage.getSubrange(tot, tot + serverNameLength), "UTF-8");
+                tot += serverNameLength;
+                returnString += "\n";
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
+        return returnString;
     }
 }
