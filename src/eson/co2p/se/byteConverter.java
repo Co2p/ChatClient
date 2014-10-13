@@ -2,6 +2,7 @@ package eson.co2p.se;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.net.InetAddress;
 import java.io.*;
 
 /**
@@ -55,9 +56,10 @@ public class byteConverter {
             tot = 4;
             returnString += "\n";
             for(int i = 0; i < chatServers; i++) {
-                returnString += new String(reMessage.getSubrange(tot, 4), "UTF-8");
+                //returnString += new String(reMessage.getSubrange(tot, 4), "UTF-8");
+                returnString += (InetAddress.getByAddress(reMessage.getSubrange(tot, 4)));
                 tot += 4;
-                returnString += (int) reMessage.getShort(tot) + " ";
+                returnString += " " + (int) reMessage.getShort(tot) + " ";
                 tot += 2;
                 returnString += (int) reMessage.getByte(tot) + " ";
                 tot += 1;
