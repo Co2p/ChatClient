@@ -1,6 +1,7 @@
 package eson.co2p.se;
 
 import com.sun.net.httpserver.HttpServer;
+import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 
 import java.io.*;
 import java.net.*;
@@ -21,10 +22,14 @@ public class nameServerPing {
     private void fillArrayLists(){
         format.add(1);
         format.add(3);
-        content.add(3);
+        content.add(OpCodes.GETLIST);
         content.add(null);
-        int l = 3;
         outputStream  = byteConverter.headerBuilder(format,content, 4).getBytes();
+        System.out.println("Length of outputStream = " + outputStream.length);
+        //kolla på råbinärkoden
+        for (byte b : outputStream) {
+            System.out.println(Integer.toBinaryString(b & 255 | 256).substring(1));
+        }
     }
 
     public void getUdpServerlist() throws Exception{
