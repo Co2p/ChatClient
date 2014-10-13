@@ -66,7 +66,7 @@ public class byteConverter {
                 int serverNameLength = (int) reMessage.getByte(tot);
                 returnString += "Length of serverName = " + serverNameLength + " ";
                 tot += 1;
-                returnString += new String(reMessage.getSubrange(tot, tot + serverNameLength), "UTF-8");
+                returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
                 tot += serverNameLength;
                 returnString += "\n";
             }
