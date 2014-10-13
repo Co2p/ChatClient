@@ -68,7 +68,7 @@ public class byteConverter {
                 tot += 1;
                 returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
                 //måste vara delbart på fyra!
-                tot += (serverNameLength + div4(serverNameLength));
+                tot += div4(serverNameLength);
                 returnString += "\n";
             }
         }catch(Exception e){
@@ -82,6 +82,6 @@ public class byteConverter {
         if((4 -(testInt % 4)) != 0){
             ret = (4 -(testInt % 4));
         }
-        return testInt;
+        return testInt + ret;
     }
 }
