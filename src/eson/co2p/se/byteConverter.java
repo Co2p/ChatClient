@@ -33,7 +33,7 @@ public class byteConverter {
             if(content.get(i) != null) {
                 if (content.get(i) instanceof Integer) {
                     tempInt = (Integer) content.get(i);
-                    pdu.setInt(format.get(i), tempInt);
+                    pdu.setByte(format.get(i), (byte)tempInt);
                 } else {
                     String tempString = (String) content.get(i);
                     pdu.setSubrange(format.get(i), tempString.getBytes());
