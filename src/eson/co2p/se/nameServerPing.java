@@ -59,17 +59,22 @@ public class nameServerPing {
         //DatagramPacket sendPacket3 = new DatagramPacket();
 
         clientSocket.send(sendPacket);
-        System.out.println("Got here!!");
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        System.out.println("Got dsfgg");
         clientSocket.receive(receivePacket);
-        System.out.println("Got here!ee!");
         //Här hanteras all inläsning av serverns utskick av serverdata som är kopplade
         //Till namnservern
         serverList servers = new serverList(receivePacket.getData());
+        ArrayList serverlist = servers.getServerList();
+        //Print all info on servers, this is just for testing purposes
+        for(int i = 0; i < serverlist.size(); i++){
+            System.out.println("---" + servers.getServer((String)serverlist.get(i)).getName() + "---");
+            System.out.println("ip: " + servers.getServer((String)serverlist.get(i)).getIp());
+            System.out.println("port: " + servers.getServer((String)serverlist.get(i)).getPort());
+            System.out.println("connected clients: " + servers.getServer((String)serverlist.get(i)).getConnected());
+
+        }
         clientSocket.close();
-        System.out.println("Got here");
     }
 
 
