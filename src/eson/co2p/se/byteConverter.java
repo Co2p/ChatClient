@@ -26,7 +26,7 @@ public class byteConverter {
         PDU pdu = new PDU(totLength);
         //As the first element of the array always will be the opcode, add this first.
         int tempInt = (Integer) content.get(0);
-        pdu.setShort(0 ,(short)tempInt);
+        pdu.setByte(0 ,(byte)tempInt);
 
         for(int i = 1; i < format.size(); i++){
             //Check if the content equals integer as the PDU handles integers and strings differently
