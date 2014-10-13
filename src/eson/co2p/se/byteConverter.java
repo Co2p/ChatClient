@@ -67,7 +67,9 @@ public class byteConverter {
                 returnString += "Length of serverName = " + serverNameLength + " ";
                 tot += 1;
                 returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
-                tot += serverNameLength;
+                //måste vara delbart på fyra!
+                System.out.println("TESTAR MODULU: " + (4 -(serverNameLength % 4)));
+                tot += (serverNameLength + div4(serverNameLength));
                 returnString += "\n";
             }
         }catch(Exception e){
@@ -75,5 +77,12 @@ public class byteConverter {
         }
 
         return returnString;
+    }
+    private static int div4(int testInt){
+        int ret = 0;
+        if((4 -(testInt % 4)) != 0){
+            ret = (4 -(testInt % 4));
+        }
+        return testInt;
     }
 }
