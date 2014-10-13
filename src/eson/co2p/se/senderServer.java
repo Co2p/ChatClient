@@ -18,7 +18,6 @@ public class senderServer {
     private catalogue catalogue;
     private BufferedReader in;
     private PrintStream out;
-    private char[] charBuff = new char[65535];
 
     public senderServer() {
 
