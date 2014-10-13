@@ -30,12 +30,14 @@ public class byteConverter {
 
         for(int i = 1; i < format.size(); i++){
             //Check if the content equals integer as the PDU handles integers and strings differently
-            if(content.get(i) instanceof Integer){
-                tempInt = (Integer) content.get(i);
-                pdu.setInt(format.get(i), tempInt);
-            }else{
-                String tempString = (String)content.get(i);
-                pdu.setSubrange(format.get(i), tempString.getBytes());
+            if(content.get(i) != null) {
+                if (content.get(i) instanceof Integer) {
+                    tempInt = (Integer) content.get(i);
+                    pdu.setInt(format.get(i), tempInt);
+                } else {
+                    String tempString = (String) content.get(i);
+                    pdu.setSubrange(format.get(i), tempString.getBytes());
+                }
             }
         }
         return pdu;

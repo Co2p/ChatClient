@@ -24,7 +24,7 @@ public class nameServerPing {
         content.add(3);
         content.add(null);
         int l = 3;
-        outputStream  = byteConverter.headerBuilder(format,content);
+        outputStream  = byteConverter.headerBuilder(format,content, 4).getBytes();
     }
 
     public void getUdpServerlist() throws Exception{
