@@ -68,7 +68,6 @@ public class byteConverter {
                 tot += 1;
                 returnString += new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8");
                 //måste vara delbart på fyra!
-                System.out.println("TESTAR MODULU: " + (4 -(serverNameLength % 4)));
                 tot += (serverNameLength + div4(serverNameLength));
                 returnString += "\n";
             }
