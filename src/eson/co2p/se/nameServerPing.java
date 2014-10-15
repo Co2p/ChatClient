@@ -17,6 +17,7 @@ public class nameServerPing {
 
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
+    private String nameServerAddr = "itchy.cs.umu.se";
     byte[] outputStream;
 
     private void fillArrayLists(){
@@ -40,7 +41,7 @@ public class nameServerPing {
         //String nameserverAnswere = LOL ;
         DatagramSocket clientSocket = new DatagramSocket();
 
-        InetAddress IPAddress = InetAddress.getByName("itchy.cs.umu.se");
+        InetAddress IPAddress = InetAddress.getByName(nameServerAddr);
         //InetAddress lol = InetAddress.
 
         byte[] sendData = new byte[65507];
