@@ -83,4 +83,16 @@ public class catalogue {
         return nameServer.getPort();
     }
 
+    public server getServer(){
+        return server;
+    }
+
+    public InetAddress getServerInet(){
+        return server.getIp();
+    }
+
+    public int getServerPort(){
+        return server.getPort();
+    }
+
 }
