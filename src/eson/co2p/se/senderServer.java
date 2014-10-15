@@ -15,7 +15,6 @@ public class senderServer {
     private Socket tagetSocket;
     private PDU pdu;
     private byte[] data;
-    private catalogue catalogue;
     private BufferedReader in;
     private PrintStream out;
 
