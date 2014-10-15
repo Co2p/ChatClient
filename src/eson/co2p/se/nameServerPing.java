@@ -17,7 +17,6 @@ public class nameServerPing {
 
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
-    private catalogue catalogue = new catalogue();
     byte[] outputStream;
 
     private void fillArrayLists(){
