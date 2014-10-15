@@ -2,6 +2,7 @@ package eson.co2p.se;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
+import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -32,7 +33,7 @@ public class serverList {
         //For each server, create a serverobject and add to serverhash
         for(int i = 0; i < chatServers; i++) {
             server Server = new server();
-            Server.setIp(byteConverter.getIp(reMessage.getSubrange(tot, 4)));
+            Server.setIp(getIp(reMessage.getSubrange(tot, 4)));
             tot += 4;
             Server.setPort(reMessage.getShort(tot));
             tot += 2;
@@ -49,7 +50,7 @@ public class serverList {
             ipHash.put(Server.getName(), Server);
             serverNames.add(Server.getName());
             //Check that the total length of the namebytes is modulus 4
-            tot += byteConverter.div4(serverNameLength);
+            tot += div4(serverNameLength);
         }
     }
 
@@ -68,5 +69,22 @@ public class serverList {
      */
     public ArrayList<String> getServerList(){
         return serverNames;
+    }
+
+    private InetAddress getIp(byte[] bytes){
+        try {
+            return InetAddress.getByAddress(bytes);
+        }catch(UnknownHostException e){
+            System.out.println("Unknown Host Exception occurred: " + e);
+        }
+        return null;
+    }
+
+    public static int div4(int testInt){
+        int ret = 0;
+        if((4 -(testInt % 4)) != 0){
+            ret = (4 -(testInt % 4));
+        }
+        return testInt + ret;
     }
 }

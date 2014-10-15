@@ -30,11 +30,5 @@ public abstract class message {
         return op;
     }
 
-    public static int div4(int testInt){
-        int ret = 0;
-        if((4 -(testInt % 4)) != 0){
-            ret = (4 -(testInt % 4));
-        }
-        return testInt + ret;
-    }
+
 }
