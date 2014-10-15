@@ -22,7 +22,7 @@ public class senderServer {
     public senderServer() {
 
         try {
-            tagetSocket = new Socket(catalogue.getS, Integer.parseInt(catalogue.getServerPort()));
+            tagetSocket = new Socket(catalogue.getNameServerInet(), catalogue.getNameServerPort());
             out = new PrintStream(tagetSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(tagetSocket.getInputStream()));
         } catch (IOException e) {
