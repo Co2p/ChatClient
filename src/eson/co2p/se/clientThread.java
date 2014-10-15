@@ -20,6 +20,10 @@ public class clientThread {
         testFeedGui();
     }
 
+    public clientThread() {
+        testFeedGui();
+    }
+
     //Skriv till GUI TODO: segmentera medelanden
     private void printToGui(String printString){
         userGui.outputWindow(printString + "\n");
