@@ -6,7 +6,7 @@ package eson.co2p.se;
 public class getServerMessage extends message {
     public getServerMessage(int op){
         this.addOp(op);
-        this.getRawdata().extendTo(3);
+        this.getRawdata().extendTo(4);
     }
 
 }
