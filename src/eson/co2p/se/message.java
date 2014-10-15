@@ -11,14 +11,11 @@ import java.util.TimeZone;
  *  all messageclasses.
  */
 public class message {
-    //op is used for testing purposes and is not supposed to be used by
-    //the program itself
-    private int op;
     private PDU rawdata;
 
     public byte[] getServerMessage(){
         addOp(OpCodes.GETLIST);
-        getRawdata().extendTo(4);
+        rawdata.extendTo(4);
         return getData();
     }
 
@@ -33,14 +30,14 @@ public class message {
 
     public byte[] quitServer(){
         addOp(OpCodes.QUIT);
-        getRawdata().extendTo(4);
+        rawdata.extendTo(4);
         return getData();
     }
 
     public byte[] changeNick(String nickname){
         catalogue.setName(nickname);
         addOp(OpCodes.CHNICK);
-        getRawdata().extendTo(4 + div4(nickname.getBytes().length));
+        rawdata.extendTo(4 + div4(nickname.getBytes().length));
         rawdata.setByte(1, (byte) nickname.getBytes().length);
         try {
             rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
@@ -76,7 +73,6 @@ public class message {
 
     void addOp(int op){
         rawdata = new PDU(1);
-        this.op = op;
         rawdata.setByte(0, (byte)op);
     }
 
@@ -86,10 +82,6 @@ public class message {
 
     public PDU getRawdata(){
         return rawdata;
-    }
-
-    public int getOp(){
-        return op;
     }
 
     public static int div4(int testInt){
