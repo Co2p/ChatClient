@@ -1,7 +1,6 @@
 package eson.co2p.se;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * Created by gordon on 08/10/14.
@@ -10,9 +9,11 @@ import java.net.UnknownHostException;
 public class catalogue {
 
     private static int idNumber;
-    private static String name, serverIP, serverPort;
+    private static String nick;
+    private static server server = new server();
+    private static server nameServer = new server();
 
-    private catalogue(){}
+    catalogue(){}
 
     /**
      * Sets the ID number that the client received from the server
@@ -27,29 +28,27 @@ public class catalogue {
      * @param name user name
      */
     public void setName(String name) {
-        this.name = name;
+        this.nick = name;
     }
 
     /**
-     * Saves the server IP address
-     * @param serverIP the IP as a String
+     * Set the name server properties
+     * @param ip server address
+     * @param port server port
      */
-    public void setServerIP(String serverIP) {
-        try {
-            InetAddress inetAddress = InetAddress.getByName(serverIP);
-            this.serverIP = inetAddress.toString();
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+    public void setNameServer(InetAddress ip, int port){
+        nameServer.setIp(ip);
+        nameServer.setPort(port);
     }
 
     /**
-     * Saves the server port number
-     * @param serverPort portnumber as a String
+     * Set the server properties
+     * @param ip server adress
+     * @param port server port
      */
-    public void setServerPort(String serverPort) {
-        this.serverPort = serverPort;
+    private void setServer(InetAddress ip, int port){
+        server.setIp(ip);
+        server.setPort(port);
     }
 
     /**
@@ -64,23 +63,36 @@ public class catalogue {
      * Returns the user name
      * @return user name
      */
-    public String getName() {
-        return name;
+    public String getNick() {
+        return nick;
     }
 
     /**
-     * Returns the server IP address
-     * @return server IP
+     * Returns the nameserver as a server object
+     * @return the server object
      */
-    public String getServerIP() {
-        return serverIP;
+    public server getNameServer(){
+        return nameServer;
     }
 
-    /**
-     * Returns the server port
-     * @return server port
-     */
-    public String getServerPort() {
-        return serverPort;
+    public InetAddress getNameServerInet(){
+        return nameServer.getIp();
     }
+
+    public int getNameServerPort(){
+        return nameServer.getPort();
+    }
+
+    public server getServer(){
+        return server;
+    }
+
+    public InetAddress getServerInet(){
+        return server.getIp();
+    }
+
+    public int getServerPort(){
+        return server.getPort();
+    }
+
 }

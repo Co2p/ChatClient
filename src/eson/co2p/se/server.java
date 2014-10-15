@@ -8,10 +8,10 @@ import java.net.InetAddress;
  * A object to store information about servers
  */
 public class server {
-    InetAddress ip;
-    String name;
-    int port;
-    int connected;
+    private InetAddress ip;
+    private String name;
+    private int port;
+    private int connected;
 
     public server(){
     }
