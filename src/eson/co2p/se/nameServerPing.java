@@ -36,10 +36,6 @@ public class nameServerPing {
     public void getUdpServerlist() throws Exception{
         fillArrayLists();
         System.out.println("Filled array list!");
-        int lol = 3;
-        byte LOL = (byte)lol;
-        byte[] loll = new byte[32];
-        loll[0] = LOL;
 
         //BufferedReader nameserverAnswere = new BufferedReader(new InputStreamReader("OP: 1"));
         //String nameserverAnswere = LOL ;
