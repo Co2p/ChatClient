@@ -7,6 +7,8 @@ import java.util.Hashtable;
 
 /**
  * Created by Isidor on 2014-10-13.
+ *
+ * Keeps track of the servers that were returned from the name server
  */
 public class serverList {
     //Array of the names of the servers given by the nameserver
@@ -46,10 +48,19 @@ public class serverList {
         }
     }
 
+    /**
+     * Returns a server object
+     * @param ServerName Serverns namn
+     * @return The server object
+     */
     public server getServer(String ServerName){
         return ipHash.get(ServerName);
     }
 
+    /**
+     * Returns all of the available server names
+     * @return server names
+     */
     public ArrayList<String> getServerList(){
         return serverNames;
     }
