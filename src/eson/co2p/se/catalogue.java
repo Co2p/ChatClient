@@ -20,15 +20,15 @@ public class catalogue {
      * @param idNumber the ID number
      */
     public static void setIdNumber(int idNumber) {
-        this.idNumber = idNumber;
+        catalogue.idNumber = idNumber;
     }
 
     /**
      * Sets the user name
-     * @param name user name
+     * @param nick user name
      */
-    public static void setName(String name) {
-        this.nick = name;
+    public static void setName(String nick) {
+        catalogue.nick = nick;
     }
 
     /**
