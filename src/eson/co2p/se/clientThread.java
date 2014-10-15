@@ -21,7 +21,6 @@ public class clientThread {
     }
 
     public clientThread() {
-        testFeedGui();
     }
 
     //Skriv till GUI TODO: segmentera medelanden
