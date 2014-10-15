@@ -91,6 +91,7 @@ public class message {
     public int getOp(){
         return op;
     }
+
     public static int div4(int testInt){
         int ret = 0;
         if((4 -(testInt % 4)) != 0){
@@ -98,6 +99,7 @@ public class message {
         }
         return testInt + ret;
     }
+
     public int getTime(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
         calendar.clear();
