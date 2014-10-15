@@ -31,6 +31,25 @@ public class message {
         return getData();
     }
 
+    public byte[] quitServer(){
+        addOp(OpCodes.QUIT);
+        getRawdata().extendTo(4);
+        return getData();
+    }
+
+    public byte[] changeNick(String nickname){
+        catalogue.setName(nickname);
+        addOp(OpCodes.CHNICK);
+        getRawdata().extendTo(4 + div4(nickname.getBytes().length));
+        rawdata.setByte(1, (byte) nickname.getBytes().length);
+        try {
+            rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
+        }catch(UnsupportedEncodingException e){
+            System.out.println("Unsupported Encoding Exception: " + e);
+        }
+        return getData();
+    }
+
     /*
      *
      *  String message = the message to be sent
