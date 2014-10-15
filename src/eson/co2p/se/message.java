@@ -13,6 +13,13 @@ import java.util.TimeZone;
 public class message {
     private PDU rawdata;
 
+    public byte[] register(){
+        addOp(OpCodes.REG);
+        rawdata.extendTo(8 + div4(catalogue.getNick().length());
+        rawdata.setByte(1, Byte.parseByte(catalogue.getNick()));
+        //TODO complete the regester header
+    }
+
     public byte[] getServerMessage(){
         addOp(OpCodes.GETLIST);
         rawdata.extendTo(4);

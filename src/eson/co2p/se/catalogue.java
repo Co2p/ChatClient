@@ -10,8 +10,8 @@ public class catalogue {
 
     private static int idNumber;
     private static String nick;
-    private static server server = new server();
     private static server nameServer = new server();
+    private static server thisServer = new server();
 
     catalogue(){}
 
@@ -42,14 +42,16 @@ public class catalogue {
     }
 
     /**
-     * Set the server properties
+     * Set the this servers properties
      * @param ip server adress
      * @param port server port
      */
     private static void setServer(InetAddress ip, int port){
-        server.setIp(ip);
-        server.setPort(port);
+        thisServer.setIp(ip);
+        thisServer.setPort(port);
     }
+
+
 
     /**
      * Returns the client ID number
@@ -75,24 +77,44 @@ public class catalogue {
         return nameServer;
     }
 
+    /**
+     * Returns only the InetAddress for the name server
+     * @return InetAddress
+     */
     public static InetAddress getNameServerInet(){
         return nameServer.getIp();
     }
 
+    /**
+     * Returns only the port for the name server
+     * @return name server port
+     */
     public static int getNameServerPort(){
         return nameServer.getPort();
     }
 
+    /**
+     * Returns this server as a server object
+     * @return this server object
+     */
     public static server getServer(){
-        return server;
+        return thisServer;
     }
 
+    /**
+     * Returns this servers InetAddress
+     * @return this servers InetAddress
+     */
     public static InetAddress getServerInet(){
-        return server.getIp();
+        return thisServer.getIp();
     }
 
+    /**
+     * Returns this servers active port
+     * @return this servers port
+     */
     public static int getServerPort(){
-        return server.getPort();
+        return thisServer.getPort();
     }
 
 }
