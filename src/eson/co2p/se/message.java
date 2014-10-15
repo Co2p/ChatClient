@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -38,12 +39,20 @@ public class message {
      */
     public byte[] sendMessage(String message, int type, int checksum){
         addOp(OpCodes.MESSAGE);
-        rawdata.extendTo(12);
+        rawdata.extendTo(12 + div4(message.getBytes().length +
+                catalogue.getNick().getBytes().length));
         rawdata.setByte(1,(byte)type);
         rawdata.setByte(2, (byte)catalogue.getNick().getBytes().length);
         rawdata.setByte(3, (byte)checksum);
         rawdata.setShort(4, (short) message.getBytes().length);
         rawdata.setInt(8, getTime());
+        try {
+            rawdata.setSubrange(12, message.getBytes("UTF-8"));
+            rawdata.setSubrange(12 + message.getBytes().length, catalogue.getNick().getBytes("UTF-8"));
+        }catch(UnsupportedEncodingException e){
+            System.out.println("Unsupported Encoding Exception: " + e);
+        }
+        return rawdata.getBytes();
     }
 
     void addOp(int op){
