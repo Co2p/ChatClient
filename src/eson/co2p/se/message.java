@@ -12,7 +12,7 @@ public abstract class message {
     private int op;
     private PDU rawdata;
 
-    public message(int op){
+    public void addOp(int op){
         rawdata = new PDU(1);
         this.op = op;
         rawdata.setByte(0, (byte)op);
@@ -20,6 +20,10 @@ public abstract class message {
 
     public byte[] getData(){
         return rawdata.getBytes();
+    }
+
+    public PDU getRawdata(){
+        return rawdata;
     }
 
     public int getOp(){
