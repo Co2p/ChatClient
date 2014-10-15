@@ -6,11 +6,11 @@ public class Main {
 
     Thread nameServer;
     ArrayList<Thread> threads = new ArrayList<Thread>();
-    //startGui gui;
+    startGui gui;
     clientThread newServer;
 
     public Main(){
-        //gui = new startGui();
+        gui = new startGui();
         startServer();
     }
 

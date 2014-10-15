@@ -21,11 +21,8 @@ public class nameServerPing {
     byte[] outputStream;
 
     private void fillArrayLists(){
-        /*format.add(1);
-        format.add(3);
-        content.add(OpCodes.GETLIST);
-        content.add(null);*/
         getServerMessage NameServerPing = new getServerMessage(OpCodes.GETLIST);
+        System.out.println(NameServerPing.getRawdata().length());
         outputStream  = NameServerPing.getData();
         System.out.println("Length of outputStream = " + outputStream.length);
         //kolla på råbinärkoden
