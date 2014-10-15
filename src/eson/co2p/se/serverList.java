@@ -11,6 +11,7 @@ import java.util.Hashtable;
  * Keeps track of the servers that were returned from the name server
  */
 public class serverList {
+
     //Array of the names of the servers given by the nameserver
     //Used when the client needs a serverip from the namehash
     ArrayList<String> serverNames= new ArrayList<String>();
@@ -18,6 +19,10 @@ public class serverList {
     Hashtable <String, server> ipHash = new Hashtable <String, server>();
     int operation, sequenze, chatServers, tot;
 
+    /**
+     * Creates a serverList with all of the servers that the name server returned
+     * @param message the returned header from the name server
+     */
     public serverList(byte[] message){
         PDU reMessage = new PDU(message, message.length);
         operation = (int)reMessage.getByte(0);
