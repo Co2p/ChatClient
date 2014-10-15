@@ -21,11 +21,12 @@ public class nameServerPing {
     byte[] outputStream;
 
     private void fillArrayLists(){
-        format.add(1);
+        /*format.add(1);
         format.add(3);
         content.add(OpCodes.GETLIST);
-        content.add(null);
-        outputStream  = byteConverter.headerBuilder(format,content, 4).getBytes();
+        content.add(null);*/
+        getServerMessage NameServerPing = new getServerMessage(OpCodes.GETLIST);
+        outputStream  = NameServerPing.getData();
         System.out.println("Length of outputStream = " + outputStream.length);
         //kolla på råbinärkoden
         for (byte b : outputStream) {
