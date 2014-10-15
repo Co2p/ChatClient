@@ -1,5 +1,8 @@
 package eson.co2p.se;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by isidor on 2014-10-15.
  *
@@ -19,12 +22,28 @@ public class message {
     }
 
     public byte[] connectToServerMessage(String username){
+        addOp(OpCodes.JOIN);
         int usernameLength = username.getBytes().length;
-        this.addOp(OpCodes.JOIN);
-        this.getRawdata().extendTo(4 + div4(usernameLength));
-        this.getRawdata().setByte(1, (byte)usernameLength);
-        this.getRawdata().setSubrange(4, username.getBytes());
+        rawdata.extendTo(4 + div4(usernameLength));
+        rawdata.setByte(1, (byte) usernameLength);
+        rawdata.setSubrange(4, username.getBytes());
         return getData();
+    }
+
+    /*
+     *
+     *  String message = the message to be sent
+     *  int type = type of the message, eg. 0 = ordinary text, 1=compressed message
+     *  2=crypt message 3=compressed and crypt message
+     */
+    public byte[] sendMessage(String message, int type, int checksum){
+        addOp(OpCodes.MESSAGE);
+        rawdata.extendTo(12);
+        rawdata.setByte(1,(byte)type);
+        rawdata.setByte(2, (byte)catalogue.getNick().getBytes().length);
+        rawdata.setByte(3, (byte)checksum);
+        rawdata.setShort(4, (short) message.getBytes().length);
+        rawdata.setInt(8, getTime());
     }
 
     void addOp(int op){
@@ -50,5 +69,11 @@ public class message {
             ret = (4 -(testInt % 4));
         }
         return testInt + ret;
+    }
+    public int getTime(){
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
+        calendar.clear();
+        calendar.set(2011, Calendar.OCTOBER, 1);
+        return (int)(calendar.getTimeInMillis() / 1000L);
     }
 }
