@@ -1,5 +1,7 @@
 package eson.co2p.se;
 
+import sun.tools.tree.InstanceOfExpression;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -49,19 +51,24 @@ public class askForNameServer implements ActionListener {
 
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (verifyAddress(Adress.getText())){
-
-            if(e.getSource() == acceptadress){
-                if(Adress.getText().trim() != ""){
-                    try {
-                        catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
-                    } catch (UnknownHostException e1) {
-                        e1.printStackTrace();
+            if (port.getText().matches("[0-9]+") && port.getText().length() > 3){
+                if(e.getSource() == acceptadress){
+                    if(Adress.getText().trim() != ""){
+                        try {
+                            catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
+                        } catch (UnknownHostException e1) {
+                            e1.printStackTrace();
+                        }
+                        Gui = new startGui();
+                        frame1.dispose();
                     }
-                    Gui = new startGui();
-                    frame1.dispose();
                 }
+            }
+            else {
+                label.setText("  Invalid port number");
             }
         }
     }
