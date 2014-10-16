@@ -29,7 +29,7 @@ public class nameServerPing {
         }
     }
 
-    public void getUdpServerlist() throws Exception{
+    public serverList getUdpServerlist() throws Exception{
         fillArrayLists();
         System.out.println("Filled array list!");
 
@@ -66,6 +66,7 @@ public class nameServerPing {
 
         }
         clientSocket.close();
+        return servers;
     }
 
 }

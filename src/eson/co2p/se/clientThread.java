@@ -26,7 +26,7 @@ public class clientThread {
 
     //Skriv till GUI TODO: segmentera medelanden
     private void printToGui(String printString){
-        userGui.outputWindow(printString + "\n");
+        //userGui.outputWindow(printString + "\n");
     }
 
     private void requestServers(){

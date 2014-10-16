@@ -1,199 +1,275 @@
 package eson.co2p.se;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-
-
 /**
- * Created by Tony on 07/10/2014.
- * The
+ * Created by Tony on 15/10/2014.
  */
-public class startGui extends JFrame implements ActionListener {
+import javax.swing.*;
+import java.awt.Point;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-    public String lastMessage = "";
+public class startGui extends JFrame implements ActionListener{
+    //placeholding values
+    String TEST[] = new String[] { "server1", "server2", "server3", "server4eeeeeeeeeeeesfsefsf"};
 
-    //panels
-    JPanel panelOne = new JPanel();
-    JPanel panelTwo = new JPanel();
-    JPanel panelThree = new JPanel();
+    serverList Server;
+    ArrayList serverlist;
 
-    //Text areas
-    JTextArea userInput = new JTextArea(5, 0);
-    JTextArea outputArea = new JTextArea(10, 20);
 
-    //buttons - lol
-    JButton sendMessage;
-
-    // scrollbars
-    JScrollPane jScrollPane1 = new JScrollPane();
-    JScrollPane jScrollPane2 = new JScrollPane();
-
-    //placeholders
-    JPanel jPanel1 = new JPanel();
-    JTextArea frame = new JTextArea ("Started chat client GUI");
-    //JTextField userInput = new JTextField();
-
-    // Lables
-    private JLabel anLable;
-
-    // Skapa konstruktor
     public startGui(){
-        super();
-        createFrame();
-        pingNameserver();
-    };
-
-    public void outputWindow(String userText) {
-        if (userText!="" || userText!=null) {
-            //outputArea.append("\n" + userText);
-            outputArea.setText(outputArea.getText() + "\n" +  userText);
-        }
+        getServerNames();
+        startGui();
     }
-    private void pingNameserver(){
+    static Point mouseDownCompCoords;
+    JTabbedPane tabbedPane;
+    JComponent Servers;
+    //a list of all the added server
+    ArrayList<ArrayList> serverPlanes = new ArrayList<ArrayList>();
+    ArrayList<JButton> Buttons = new ArrayList<JButton>();
+    //Arraylist of all tabs
+    ArrayList<JPanel> tabs = new ArrayList<JPanel>();
+
+    private void getServerNames(){
         nameServerPing serverPing = new nameServerPing();
         try{
-        serverPing.getUdpServerlist();
+            Server = serverPing.getUdpServerlist();
+            serverlist = Server.getServerList();
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Excepted when trying to recive data: " + e);
         }
     }
-    private void createFrame() {
-        //button
-        sendMessage = new JButton("Send");
-        sendMessage.addActionListener(this);
-        sendMessage.setPreferredSize(new Dimension(80, 30));
 
-        //Panels
-        //panelThree.setLayout(new GridLayout(2, 0));
-        panelThree.setBackground(new Color(72, 146, 75));
-        panelOne.setBackground(new Color(222, 225, 188));
-        panelTwo.setBackground(new Color(58, 72, 107));
+    public int getSelectedServerTab(){
+        return tabbedPane.getSelectedIndex();
+    }
+    public InetAddress getSelectedServerAdress(){
+        return Server.getServer((String)serverlist.get(getSelectedServerTab())).getIp();
+    }
+    public int getSelectedServerPort(){
+        return Server.getServer((String)serverlist.get(getSelectedServerTab())).getPort();
+    }
 
-        //input area
-        userInput.setColumns(40);
-        userInput.setText("enter message....");
-        userInput.validate();
+    public JPanel CreatGui(JPanel panelOne){
 
-        //output area
+        int NumberOfServer = serverlist.size();
+
+        tabbedPane = new JTabbedPane();
+        ImageIcon icon = createImageIcon("glorous28.png");
+        for(int i =0; i < NumberOfServer; i++){
+
+            ArrayList<JTextArea> serverObjects = new ArrayList<JTextArea>();
+
+            JPanel tempPanel2 = new JPanel();
+            tempPanel2.setLayout(new GridLayout(2, 0));
+            tempPanel2.setVisible(true);
+            tempPanel2.setPreferredSize(new Dimension(480, 360));
+
+            JComponent panel = makeTextPanel("Server: "+ Server.getServer((String)serverlist.get(i)).getName() + " Ip:" +Server.getServer((String)serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)serverlist.get(i)).getPort() );
+            panel.setPreferredSize(new Dimension(400, 50));
+            panel.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
+
+            JPanel tempPanel3 = new JPanel();
+            tempPanel3.add(panel);
+            //tempPanel2.setLayout(new GridLayout(3,0));
+            tempPanel2.add(tempPanel3);
+
+            //tempPanel3.add(panel);
+
+            JTextArea inputArea = defineInputarea();
+            JScrollPane jScrollPane2 = new JScrollPane();
+            serverObjects.add(inputArea);
+            jScrollPane2.getViewport().add(inputArea);
+
+            JPanel tempPanel4 = new JPanel();
+            JButton sendMessage = new JButton("Send");
+
+            sendMessage.addActionListener(this);
+
+            //sendMessage.setPreferredSize(new Dimension(80, 30));
+
+            Buttons.add(sendMessage);
+
+
+            //tempPanel4.add(jScrollPane2);
+            //tempPanel4.add(inputArea)FlowLayout
+
+            JPanel tempPanel5 = new JPanel();
+            tempPanel5.setLayout(new FlowLayout());
+
+
+            tempPanel5.add(jScrollPane2);
+            tempPanel5.add(sendMessage);
+            //tempPanel5.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
+
+
+            tempPanel2.add(tempPanel5);
+
+
+            JPanel tempPanel = new JPanel();
+            tempPanel.setLayout(new GridLayout(2, 0));
+            JTextArea outputArea = defineOutputarea();
+            serverObjects.add(outputArea);
+
+
+            JScrollPane jScrollPane1 = new JScrollPane();
+            jScrollPane1.getViewport().add(outputArea);
+
+            //outputArea.setPreferredSize(new Dimension(400, 500));
+            tempPanel.add(jScrollPane1);
+            tempPanel.add(tempPanel2);
+
+            //build layout
+
+            tabbedPane.addTab(Server.getServer((String)serverlist.get(i)).getName(), icon, tempPanel, "IP: " + Server.getServer((String)serverlist.get(i)).getIp());
+            tabs.add(tempPanel);
+            tabbedPane.setMnemonicAt(i,KeyEvent.VK_ADD);
+            serverPlanes.add(serverObjects);
+        }
+        panelOne.add(tabbedPane);
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        return panelOne;
+    }
+    private int Loop254(int valu){
+        while (valu > 254){
+            //int rest = valu - 254;
+            valu = valu - 254;
+        }
+        return valu;
+    }
+
+    public JTextArea defineOutputarea(){
+        JTextArea outputArea = new JTextArea(10, 20);
         outputArea.setEditable(false);
         outputArea.setText("Chat logg goes here....");
         outputArea.validate();
-
-        //add scroll to areas
-        jScrollPane1.getViewport().add(outputArea);
-        jScrollPane2.getViewport().add(userInput);
-
-        //lables
-        anLable = new JLabel("Basic Client..(lolz)");
-
-        //configur the contentpane.
-        getContentPane().setVisible(true);
-        //getContentPane().setLayout(new GridLayout(1, 0));
-        getContentPane().setBackground(new Color(225, 29, 45));
-        getContentPane().setPreferredSize(new Dimension(465, 500));
-        getContentPane().validate();
-        getContentPane().add(panelOne, "Center");
-        getContentPane().add(panelTwo, "North");
-        getContentPane().add(panelThree, "South");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-        panelOne.add(anLable);
-        panelTwo.add(jScrollPane1);
-        panelThree.add(jScrollPane2);
-        panelThree.add(sendMessage);
-        pack();
-        setVisible(true);
+        return outputArea;
     }
 
-    // specific action listener
-    private String buttonPresed(ActionEvent e){
-        String Action = "";
-        if(e.getSource() == sendMessage ){
-            Action = userInput.getText();
-            outputWindow(Action);
-            //outputArea.setText(Action +"\n" + outputArea.getText());// need to be edited..
-            userInput.setText("");
-        }
-        return Action;
+    public JTextArea defineInputarea(){
+        JTextArea outputArea = new JTextArea(10, 35);
+        outputArea.setEditable(true);
+        outputArea.setText("EnterText");
+        outputArea.validate();
+        return outputArea;
     }
-    // overnued action listener, need to be extended to be specifik (as done above)
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String actionRetValu = buttonPresed(e);
-        if (actionRetValu != ""){
-            lastMessage = actionRetValu;
-            //ass this function cant have an return ( have to be void) an asignment is made
-            //inplace of an return, getting the string actionRetValu vill acct as an return
-        }
-    }
-        /*
-        this.setLayout(null);
-        jPanel1.setLayout(null);
-        frame.setBackground(new Color(222, 225, 188));
-        frame.setForeground(new Color(117, 9, 73));
-        frame.setBorder(BorderFactory.createLoweredBevelBorder());
-        frame.setToolTipText("lol2");
-        frame.setEditable(false);
-        frame.setColumns(42);
-        frame.setRows(15);
-        frame.setLocation(100,100);
-        this.setTitle("An chat server");
-        frame.setVisible(true);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                this_windowClosed(e);
-            }
-        });
-        jScrollPane1.getViewport().add(frame);
-        jPanel1.add(jScrollPane1);
-        add(jScrollPane1);
-        jScrollPane1.setLocation(50, 300);
-        userInput.setVisible(true);
-        userInput.setColumns(20);
-        //userInput.setLocation(400,0);
-        //userInput.setAlignmentY(50);
-        jPanel1.add(userInput);
-        add(userInput);
-        userInput.setLocation(50,300);
-        jPanel1.setBackground(new Color(209, 248, 250));
-        this.getContentPane().add(jPanel1, BorderLayout.EAST);
-        //start the server
-        //startServer();
-        this.setSize(485, 600);
-        this.setResizable(false);
-        this.setVisible(true);
-        this.validate();
-    }
-    void this_windowClosed(WindowEvent e) {
-        System.exit(1);
-    }
-    */
-    /*
-    public void createFrame() {
-        JFrame frame = new JFrame("Chat Client");
+
+    public void startGui(){
+        JPanel panelOne = new JPanel();
+        panelOne.setVisible(true);
+
+        final JFrame frame = new JFrame("bonga bira");
+        frame.setUndecorated(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBackground(new Color(224, 95, 225));
-        frame.setForeground(new Color(42, 35, 255));
-        JLabel emptyLabel = new JLabel("");
-        emptyLabel.setPreferredSize(new Dimension(175, 100));
-        frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
+        frame.add(CreatGui(panelOne),0);
         frame.pack();
         frame.setVisible(true);
-        //start the server
-        //startServer();
-    }
-    */
+        frame.setBounds(80, 80, 490, 764);
+        //frame.setBackground(new Color(0,255,0,0));
+        frame.addMouseListener(new MouseListener(){
+            public void mouseReleased(MouseEvent e) {
+                mouseDownCompCoords = null;
+            }
+            public void mousePressed(MouseEvent e) {
+                mouseDownCompCoords = e.getPoint();
+            }
+            public void mouseExited(MouseEvent e) {
+            }
+            public void mouseEntered(MouseEvent e) {
+            }
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
 
+        frame.addMouseMotionListener(new MouseMotionListener(){
+            public void mouseMoved(MouseEvent e) {
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                Point currCoords = e.getLocationOnScreen();
+                frame.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+            }
+        });
+    }
+
+    public void UpdateWindows(JTextArea inputArea, JTextArea outputArea){
+        outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
+        inputArea.setText("");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (JButton s : Buttons){
+            if(s.equals(e.getSource())){
+                //int Index = Buttons.indexOf(s);
+                //ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+                //JTextArea Input = TempTarget.get(0);
+                //JTextArea Output = TempTarget.get(1);
+                //UpdateAreas( Input, Output);
+                addToOutputFromInput();
+            }
+        }
+    }
+    public void clearOutputWindow(){
+        int Index = getSelectedServerTab();
+        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+        JTextArea Output = TempTarget.get(1);
+        Output.setText("");
+    }
+    public void addOutputText(String Text){
+        int Index = getSelectedServerTab();
+        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+        JTextArea Output = TempTarget.get(1);
+        Output.setText(Output.getText() + "\n" + Text);
+    }
+    public void addToOutputFromInput(){
+        int Index = getSelectedServerTab();
+        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+        JTextArea Input = TempTarget.get(0);
+        String inp = Input.getText().trim();
+        if (!inp.equals("")){
+            JTextArea Output = TempTarget.get(1);
+            Output.setText(Output.getText() + "\n" + Input.getText());
+            removeInputText();
+        }
+    }
+    public void removeInputText(){
+        int Index = getSelectedServerTab();
+        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+        JTextArea Input = TempTarget.get(0);
+        Input.setText("");
+    }
+    public String FilterString(String text){
+        String OriginalText = text;
+        String Modefied = "";
+        int Lengt = text.getBytes().length;
+        //TODO FilterString is suppose to filter the output string
+        return Modefied;
+    }
+    protected JComponent makeTextPanel(String text) {
+        JPanel panel = new JPanel(false);
+        JLabel filler = new JLabel(text);
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1, 1));
+        panel.add(filler);
+        return panel;
+    }
+
+
+    protected static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = startGui.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            return null;
+        }
+    }
 }

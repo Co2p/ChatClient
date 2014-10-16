@@ -10,6 +10,7 @@ public class Main {
     clientThread newServer;
 
     public Main(){
+
         gui = new startGui();
         startServer();
     }
