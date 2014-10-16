@@ -105,7 +105,7 @@ public class startGui extends JFrame implements ActionListener{
 
             JPanel tempPanel6 = new JPanel();
             JPanel tempBlankPanel = new JPanel();
-            tempPanel6.setLayout(new GridLayout(0, 3));
+            tempPanel6.setLayout(new GridLayout(0, 2));
             tempPanel6.add(tempBlankPanel);
             tempPanel6.add(connectButton);
 
@@ -178,7 +178,7 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public JTextArea defineOutputarea(){
-        JTextArea outputArea = new JTextArea(10, 20);
+        JTextArea outputArea = new JTextArea(10, 25);
         outputArea.setEditable(false);
         outputArea.setText("Chat logg goes here....");
         outputArea.validate();
@@ -186,7 +186,7 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public JTextArea defineInputarea(){
-        JTextArea outputArea = new JTextArea(10, 35);
+        JTextArea outputArea = new JTextArea(9, 25);
         outputArea.setEditable(true);
         outputArea.setText("EnterText");
         outputArea.validate();

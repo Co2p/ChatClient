@@ -75,13 +75,11 @@ public class askForNameServer implements ActionListener {
 
     private boolean verifyAddress(String address){
         char[] charAdd = address.toCharArray();
-        char temp;
         char[] invalid = new char[]{'(', ')', '{', '}', '$', ';', '@', ':', '#', '%', '<', '>', '§'};
 
-        for (int i=0; i<address.length(); i++){
-            temp = charAdd[i];
-            for (int j=0; j<invalid.length; j++){
-                if (charAdd[i] == invalid[j]){
+        for (int i=0; i<address.length(); i++) {
+            for (char anInvalid : invalid) {
+                if (charAdd[i] == anInvalid) {
                     label.setText("  Invalid character");
                     return false;
                 }
