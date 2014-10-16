@@ -17,15 +17,17 @@ import java.awt.event.MouseMotionListener;
 
 public class startGui extends JFrame implements ActionListener{
     //placeholding values
-    String TEST[] = new String[] { "server1", "server2", "server3", "server4eeeeeeeeeeeesfsefsf"};
+    //String TEST[] = new String[] { "server1", "server2", "server3", "server4eeeeeeeeeeeesfsefsf"};
 
+    JPanel panelOne;
     serverList Server;
     ArrayList serverlist;
+    final JFrame frame = new JFrame("bonga bira");
 
 
     public startGui(){
         getServerNames();
-        startGui();
+        StartGui();
     }
     static Point mouseDownCompCoords;
     JTabbedPane tabbedPane;
@@ -48,7 +50,9 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public int getSelectedServerTab(){
-        return tabbedPane.getSelectedIndex();
+        int Index = tabbedPane.getSelectedIndex();
+        ChangeColor( panelOne, Index);
+        return Index;
     }
     public InetAddress getSelectedServerAdress(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getIp();
@@ -56,8 +60,13 @@ public class startGui extends JFrame implements ActionListener{
     public int getSelectedServerPort(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getPort();
     }
+    public void ChangeColor(JPanel panelOne, int tabindex){
+        panelOne.setBackground(new Color(Loop254(50 * tabindex), Loop254(20 * tabindex), Loop254(40 * tabindex)));
+        panelOne.updateUI();
+        panelOne.validate();
+    }
 
-    public JPanel CreatGui(JPanel panelOne){
+    public JPanel CreatGui(){
 
         int NumberOfServer = serverlist.size();
 
@@ -161,15 +170,17 @@ public class startGui extends JFrame implements ActionListener{
         return outputArea;
     }
 
-    public void startGui(){
-        JPanel panelOne = new JPanel();
-        panelOne.setVisible(true);
+    public void StartGui(){
 
-        final JFrame frame = new JFrame("bonga bira");
+        panelOne = new JPanel();
+        panelOne.setVisible(true);
+        panelOne.setBackground(new Color(50, 20, 4));
+
         frame.setUndecorated(true);
+        frame.setBackground(new Color(50, 200, 40));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(CreatGui(panelOne),0);
+        frame.add(CreatGui(),0);
         frame.pack();
         frame.setVisible(true);
         frame.setBounds(80, 80, 490, 764);
@@ -200,6 +211,7 @@ public class startGui extends JFrame implements ActionListener{
         });
     }
 
+
     public void UpdateWindows(JTextArea inputArea, JTextArea outputArea){
         outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
         inputArea.setText("");
@@ -207,8 +219,8 @@ public class startGui extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (JButton s : Buttons){
-            if(s.equals(e.getSource())){
+        for (JButton s : Buttons) {
+            if (s.equals(e.getSource())) {
                 //int Index = Buttons.indexOf(s);
                 //ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
                 //JTextArea Input = TempTarget.get(0);
@@ -217,6 +229,7 @@ public class startGui extends JFrame implements ActionListener{
                 addToOutputFromInput();
             }
         }
+
     }
     public void clearOutputWindow(){
         int Index = getSelectedServerTab();
