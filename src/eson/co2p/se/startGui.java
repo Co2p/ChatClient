@@ -35,6 +35,7 @@ public class startGui extends JFrame implements ActionListener{
     //a list of all the added server
     ArrayList<ArrayList> serverPlanes = new ArrayList<ArrayList>();
     ArrayList<JButton> Buttons = new ArrayList<JButton>();
+    ArrayList<JButton> Connect_buttons = new ArrayList<JButton>();
     //Arraylist of all tabs
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
@@ -79,13 +80,14 @@ public class startGui extends JFrame implements ActionListener{
             JPanel tempPanel2 = new JPanel();
             tempPanel2.setLayout(new GridLayout(2, 0));
             tempPanel2.setVisible(true);
-            tempPanel2.setPreferredSize(new Dimension(480, 360));
+            tempPanel2.setPreferredSize(new Dimension(480, 300));
 
             JComponent panel = makeTextPanel("Server: "+ Server.getServer((String)serverlist.get(i)).getName() + " Ip:" +Server.getServer((String)serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)serverlist.get(i)).getPort() );
-            panel.setPreferredSize(new Dimension(400, 50));
+            panel.setPreferredSize(new Dimension(300, 50));
             panel.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
 
             JPanel tempPanel3 = new JPanel();
+            tempPanel3.setLayout(new GridLayout(3, 0));
             tempPanel3.add(panel);
             //tempPanel2.setLayout(new GridLayout(3,0));
             tempPanel2.add(tempPanel3);
@@ -99,12 +101,23 @@ public class startGui extends JFrame implements ActionListener{
 
             JPanel tempPanel4 = new JPanel();
             JButton sendMessage = new JButton("Send");
+            JButton connectButton = new JButton("Connect");
+
+            JPanel tempPanel6 = new JPanel();
+            JPanel tempBlankPanel = new JPanel();
+            tempPanel6.setLayout(new GridLayout(0, 3));
+            tempPanel6.add(tempBlankPanel);
+            tempPanel6.add(connectButton);
+
+            tempPanel3.add(tempPanel6);
+
 
             sendMessage.addActionListener(this);
 
             //sendMessage.setPreferredSize(new Dimension(80, 30));
 
             Buttons.add(sendMessage);
+            Connect_buttons.add(connectButton);
 
 
             //tempPanel4.add(jScrollPane2);
@@ -136,8 +149,14 @@ public class startGui extends JFrame implements ActionListener{
             tempPanel.add(tempPanel2);
 
             //build layout
+            String lol = Server.getServer((String)serverlist.get(i)).getName();
+            if(lol.length()> 5){
+                lol = lol.substring(0,5) + "..";
+            }
 
-            tabbedPane.addTab(Server.getServer((String)serverlist.get(i)).getName(), icon, tempPanel, "IP: " + Server.getServer((String)serverlist.get(i)).getIp());
+
+
+            tabbedPane.addTab(lol, icon, tempPanel, "Name: " + Server.getServer((String)serverlist.get(i)).getName());
             tabs.add(tempPanel);
             tabbedPane.setMnemonicAt(i,KeyEvent.VK_ADD);
             serverPlanes.add(serverObjects);
@@ -180,14 +199,14 @@ public class startGui extends JFrame implements ActionListener{
         panelOne.setVisible(true);
         panelOne.setBackground(new Color(50, 20, 4));
 
-        frame.setUndecorated(true);
+        //frame.setUndecorated(false);
         frame.setBackground(new Color(50, 200, 40));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(CreatGui(),0);
         frame.pack();
         frame.setVisible(true);
-        frame.setBounds(80, 80, 490, 764);
+        frame.setBounds(80, 80, 490, 666);
         //frame.setBackground(new Color(0,255,0,0));
         frame.addMouseListener(new MouseListener(){
             public void mouseReleased(MouseEvent e) {

@@ -58,12 +58,15 @@ public class nameServerPing {
         serverList servers = new serverList(receivePacket.getData());
         ArrayList serverlist = servers.getServerList();
         //Print all info on servers, this is just for testing purposes
+        ArrayList ArrayOfServers = new ArrayList();
+        InetAddress TempAdress;
         for(int i = 0; i < serverlist.size(); i++){
+            TempAdress = servers.getServer((String)serverlist.get(i)).getIp();
             System.out.println("---" + servers.getServer((String)serverlist.get(i)).getName() + "---");
             System.out.println("ip: " + servers.getServer((String)serverlist.get(i)).getIp());
             System.out.println("port: " + servers.getServer((String)serverlist.get(i)).getPort());
             System.out.println("connected clients: " + servers.getServer((String)serverlist.get(i)).getConnected());
-
+            ArrayOfServers.add(TempAdress);
         }
         clientSocket.close();
         return servers;
