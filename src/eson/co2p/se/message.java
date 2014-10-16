@@ -13,16 +13,6 @@ import java.util.TimeZone;
 public class message {
     private PDU rawdata;
 
-    public byte[] register(){
-        addOp(OpCodes.REG);
-        rawdata.extendTo(8 + div4(catalogue.getNick().length()));
-        rawdata.setByte(1, Byte.parseByte(catalogue.getNick()));
-        //TODO complete the regester header
-        //adding an DUMMY return, to be able to test
-        byte[] DUMMY = new byte[5];
-       return DUMMY;
-    }
-
     public byte[] getServerMessage(){
         addOp(OpCodes.GETLIST);
         rawdata.extendTo(4);

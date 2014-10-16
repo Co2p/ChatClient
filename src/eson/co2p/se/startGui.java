@@ -147,9 +147,13 @@ public class startGui extends JFrame implements ActionListener{
         return panelOne;
     }
     private int Loop254(int valu){
+        valu = valu + 80;
         while (valu > 254){
             //int rest = valu - 254;
             valu = valu - 254;
+            if (valu < 80){
+                valu += 80;
+            }
         }
         return valu;
     }
