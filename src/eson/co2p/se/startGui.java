@@ -22,7 +22,7 @@ public class startGui extends JFrame implements ActionListener{
     JPanel panelOne;
     serverList Server;
     ArrayList serverlist;
-    final JFrame frame = new JFrame("bonga bira");
+    final JFrame frame = new JFrame("Glorious Chat");
 
 
     public startGui(){
@@ -200,7 +200,7 @@ public class startGui extends JFrame implements ActionListener{
         panelOne.setBackground(new Color(50, 20, 4));
 
         //frame.setUndecorated(false);
-        frame.setBackground(new Color(50, 200, 40));
+        frame.setBackground(new Color(24, 23, 24));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(CreatGui(),0);

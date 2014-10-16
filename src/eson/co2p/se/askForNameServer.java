@@ -54,7 +54,7 @@ public class askForNameServer implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (verifyAddress(Adress.getText())){
-            if (port.getText().matches("[0-9]+") && port.getText().length() > 3){
+            if (port.getText().matches("[0-9]+") && port.getText().length() > 0){
                 if(e.getSource() == acceptadress){
                     if(Adress.getText().trim() != ""){
                         try {
@@ -76,7 +76,7 @@ public class askForNameServer implements ActionListener {
     private boolean verifyAddress(String address){
         char[] charAdd = address.toCharArray();
         char temp;
-        char[] invalid = new char[]{'(', ')', '{', '}', '$', ';', '@', ':', '#'};
+        char[] invalid = new char[]{'(', ')', '{', '}', '$', ';', '@', ':', '#', '%', '<', '>', '§'};
 
         for (int i=0; i<address.length(); i++){
             temp = charAdd[i];
