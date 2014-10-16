@@ -11,52 +11,77 @@ import java.util.TimeZone;
  *  all messageclasses.
  */
 public class message {
-    private PDU rawdata;
 
-    public byte[] getServerMessage(){
-        addOp(OpCodes.GETLIST);
-        rawdata.extendTo(4);
-        return getData();
+    /**
+     * creates a message that's suppposed to be sent to the nameserver
+     * asking for a list of servers
+     *
+     * @return the created pdu with headers
+     */
+    public static byte[] getServerMessage(){
+        PDU rawdata = new PDU(4);
+        rawdata.setByte(0,(byte)OpCodes.GETLIST);
+        return rawdata.getBytes();
     }
 
-    public byte[] connectToServerMessage(String username){
-        addOp(OpCodes.JOIN);
+    /**
+     * creates a message to be sent to a server asking for connection
+     *
+     * @param username the username of the client
+     * @return  the created pdu with headers.
+     */
+    public static byte[] connectToServerMessage(String username){
         int usernameLength = username.getBytes().length;
-        rawdata.extendTo(4 + div4(usernameLength));
+        PDU rawdata = new PDU(4 + div4(usernameLength));
+        rawdata.setByte(0,(byte)OpCodes.JOIN);
         rawdata.setByte(1, (byte) usernameLength);
         rawdata.setSubrange(4, username.getBytes());
-        return getData();
+        return rawdata.getBytes();
     }
 
-    public byte[] quitServer(){
-        addOp(OpCodes.QUIT);
-        rawdata.extendTo(4);
-        return getData();
+    /**
+     * creates a pdu for sending a quit-message to the server
+     *
+     * @return the created PDU with headers.
+     */
+    public static byte[] quitServer(){
+        PDU rawdata = new PDU(4);
+        rawdata.setByte(0,(byte)OpCodes.QUIT);
+        return rawdata.getBytes();
     }
-
-    public byte[] changeNick(String nickname){
+    /**
+     * changes the nick of the user
+     *
+     * @param nickname the name to be changed to
+     * @return the created PDU with headers and nick
+     */
+    public static byte[] changeNick(String nickname){
+        PDU rawdata = new PDU(4 + div4(nickname.getBytes().length));
         catalogue.setName(nickname);
-        addOp(OpCodes.CHNICK);
-        rawdata.extendTo(4 + div4(nickname.getBytes().length));
+        rawdata.setByte(0,(byte)OpCodes.CHNICK);
         rawdata.setByte(1, (byte) nickname.getBytes().length);
         try {
             rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);
         }
-        return getData();
+        return rawdata.getBytes();
     }
 
-    /*
-     *
+    /**
      *  String message = the message to be sent
      *  int type = type of the message, eg. 0 = ordinary text, 1=compressed message
      *  2=crypt message 3=compressed and crypt message
+     *
+     *  @param message the message to be sent
+     *  @param type ordinary/compressed/crypt
+     *  @param checksum
+     *  @return the converted bytearray containing the PDU header + message
      */
-    public byte[] sendMessage(String message, int type, int checksum){
-        addOp(OpCodes.MESSAGE);
-        rawdata.extendTo(12 + div4(message.getBytes().length +
+    public static byte[] sendMessage(String message, int type, int checksum){
+        PDU rawdata = new PDU(12 + div4(message.getBytes().length +
                 catalogue.getNick().getBytes().length));
+        rawdata.setByte(0, (byte) OpCodes.MESSAGE);
         rawdata.setByte(1,(byte)type);
         rawdata.setByte(2, (byte)catalogue.getNick().getBytes().length);
         rawdata.setByte(3, (byte)checksum);
@@ -70,20 +95,13 @@ public class message {
         }
         return rawdata.getBytes();
     }
-
-    void addOp(int op){
-        rawdata = new PDU(1);
-        rawdata.setByte(0, (byte)op);
-    }
-
-    public byte[] getData(){
-        return rawdata.getBytes();
-    }
-
-    public PDU getRawdata(){
-        return rawdata;
-    }
-
+    /**
+     * div4 tests if and int is divisible by four, if it isn't return the
+     * rounded up number to ciel that's divisible by four.
+     *
+     * @param testInt the int to be tested if it is modulus 4
+     * @return the int that's tested plus ciel modulus 4 of that int
+     */
     public static int div4(int testInt){
         int ret = 0;
         if((4 -(testInt % 4)) != 0){
@@ -92,7 +110,12 @@ public class message {
         return testInt + ret;
     }
 
-    public int getTime(){
+    /**
+     * getTime returns the time in seconds since the 1970's
+     *
+     * @return the time in seconds since the 1970's
+     */
+    public static int getTime(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2"));
         calendar.clear();
         calendar.set(2011, Calendar.OCTOBER, 1);

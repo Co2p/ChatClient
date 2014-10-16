@@ -20,8 +20,7 @@ public class nameServerPing {
     byte[] outputStream;
 
     private void fillArrayLists(){
-        message serverMessage= new message();
-        outputStream  = serverMessage.getServerMessage();
+        outputStream  = message.getServerMessage();
         System.out.println("Length of outputStream = " + outputStream.length);
         //kolla på råbinärkoden
         for (byte b : outputStream) {
