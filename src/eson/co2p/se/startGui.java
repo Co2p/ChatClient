@@ -2,6 +2,8 @@ package eson.co2p.se;
 
 /**
  * Created by Tony on 15/10/2014.
+ *
+ * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
  */
 import javax.swing.*;
 import java.awt.Point;
@@ -27,6 +29,7 @@ public class startGui extends JFrame implements ActionListener{
         getServerNames();
         StartGui();
     }
+
     static Point mouseDownCompCoords;
     JTabbedPane tabbedPane;
     JComponent Servers;
@@ -53,12 +56,15 @@ public class startGui extends JFrame implements ActionListener{
         ChangeColor( panelOne, Index);
         return Index;
     }
+
     public InetAddress getSelectedServerAdress(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getIp();
     }
+
     public int getSelectedServerPort(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getPort();
     }
+
     public void ChangeColor(JPanel panelOne, int tabindex){
         panelOne.setBackground(new Color(Loop254(50 * tabindex), Loop254(20 * tabindex), Loop254(40 * tabindex)));
         panelOne.updateUI();
@@ -163,6 +169,7 @@ public class startGui extends JFrame implements ActionListener{
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         return panelOne;
     }
+
     private int Loop254(int valu){
         valu = valu + 80;
         while (valu > 254){
@@ -252,18 +259,21 @@ public class startGui extends JFrame implements ActionListener{
         }
 
     }
+
     public void clearOutputWindow(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
         JTextArea Output = TempTarget.get(1);
         Output.setText("");
     }
+
     public void addOutputText(String Text){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
         JTextArea Output = TempTarget.get(1);
         Output.setText(Output.getText() + "\n" + Text);
     }
+
     public void addToOutputFromInput(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
@@ -275,12 +285,14 @@ public class startGui extends JFrame implements ActionListener{
             removeInputText();
         }
     }
+
     public void removeInputText(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
         JTextArea Input = TempTarget.get(0);
         Input.setText("");
     }
+
     public String FilterString(String text){
         String OriginalText = text;
         String Modefied = "";
@@ -288,6 +300,7 @@ public class startGui extends JFrame implements ActionListener{
         //TODO FilterString is suppose to filter the output string
         return Modefied;
     }
+
     protected JComponent makeTextPanel(String text) {
         JPanel panel = new JPanel(false);
         JLabel filler = new JLabel(text);
@@ -296,7 +309,6 @@ public class startGui extends JFrame implements ActionListener{
         panel.add(filler);
         return panel;
     }
-
 
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = startGui.class.getResource(path);
