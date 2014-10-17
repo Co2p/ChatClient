@@ -7,8 +7,7 @@ import java.util.TimeZone;
 /**
  * Created by isidor on 2014-10-15.
  *
- *  Handles the abstract creation of messages, includes all methods shared by
- *  all messageclasses.
+ *  Includes all messages sent from the client to the nameserver or chatserver
  */
 public class message {
 
