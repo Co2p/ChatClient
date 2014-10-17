@@ -12,6 +12,7 @@ public class catalogue {
     private static String nick;
     private static server nameServer = new server();
     private static server thisServer = new server();
+    private static int messageType;
 
     catalogue(){}
 
@@ -51,7 +52,13 @@ public class catalogue {
         thisServer.setPort(port);
     }
 
-
+    /**
+     * Sets the current message type
+     * @param messageType
+     */
+    public static void setMessageType(int messageType){
+        catalogue.messageType=messageType;
+    }
 
     /**
      * Returns the client ID number
@@ -91,6 +98,14 @@ public class catalogue {
      */
     public static int getNameServerPort(){
         return nameServer.getPort();
+    }
+
+    /**
+     * Returns the message type as a int (as defined by MsgTypes)
+     * @return message type
+     */
+    public static int getMessageType(){
+        return messageType;
     }
 
     /**

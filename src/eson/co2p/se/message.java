@@ -75,10 +75,11 @@ public class message {
      *
      *  @param message the message to be sent
      *  @param type ordinary/compressed/crypt
-     *  @param checksum
      *  @return the converted bytearray containing the PDU header + message
      */
-    public static byte[] sendMessage(String message, int type, int checksum){
+    public static byte[] sendMessage(String message, int type){
+        int checksum = 0;
+        //TODO set checksum
         PDU rawdata = new PDU(12 + div4(message.getBytes().length +
                 catalogue.getNick().getBytes().length));
         rawdata.setByte(0, (byte) OpCodes.MESSAGE);

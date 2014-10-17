@@ -16,8 +16,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class startGui extends JFrame implements ActionListener{
-    //placeholding values
-    //String TEST[] = new String[] { "server1", "server2", "server3", "server4eeeeeeeeeeeesfsefsf"};
 
     JPanel panelOne;
     serverList Server;

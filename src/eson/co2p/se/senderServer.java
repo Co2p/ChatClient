@@ -28,9 +28,7 @@ public class senderServer {
             e.printStackTrace();
         }
 
-        data[1] = 12;
 
-        pdu = new PDU(data, 32);
         try {
             out.write(pdu.getBytes());
         } catch (IOException e) {
@@ -39,6 +37,14 @@ public class senderServer {
 
         try {
             in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(String messageS){
+        try {
+            out.write(message.sendMessage(messageS, catalogue.getMessageType()));
         } catch (IOException e) {
             e.printStackTrace();
         }
