@@ -10,6 +10,7 @@ public class catalogue {
 
     private static int idNumber;
     private static String nick;
+    private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();
     private static int messageType;
@@ -17,6 +18,13 @@ public class catalogue {
 
     catalogue(){}
 
+    /**
+     * Sets the Gui
+     * @param Gui the Gui to set
+     */
+    public static void setGui (startGui Gui) {
+        catalogue.gui = Gui;
+    }
     /**
      * Sets the ID number that the client received from the server
      * @param idNumber the ID number
@@ -68,9 +76,22 @@ public class catalogue {
     //The divide line between setters and getters
 
     /**
+     * rerurns the existing GUI, if none exsists return null
+     * @return Gui or null
+     */
+    public static startGui getGui () {
+        if(catalogue.gui != null){
+            return catalogue.gui;
+        }
+        else{
+            return null;
+        }
+    }
+    /**
      * Returns the client ID number
      * @return ID number
      */
+
     public static int getIdNumber() {
         return idNumber;
     }

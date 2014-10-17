@@ -58,6 +58,7 @@ public class askForNameServer implements ActionListener {
                             e1.printStackTrace();
                         }
                         Gui = new startGui();
+                        catalogue.setGui(Gui);
                         frame1.dispose();
                     }
                 }
