@@ -19,11 +19,6 @@ public class askForNameServer implements ActionListener {
     JButton acceptadress = new JButton("Connect");
     startGui Gui;
 
-
-
-    public void askForNameServer(){
-    }
-
     public void CreatNameserverQuestion(){
         acceptadress.addActionListener(this);
         frame1.setLayout(new GridLayout(3, 0));
@@ -54,7 +49,7 @@ public class askForNameServer implements ActionListener {
         if (verifyAddress(Adress.getText())){
             if (port.getText().matches("[0-9]+") && port.getText().length() > 0){
                 if(e.getSource() == acceptadress){
-                    if(Adress.getText().trim() != ""){
+                    if(!Adress.getText().trim().equals("")){
                         try {
                             catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
                         } catch (UnknownHostException e1) {
