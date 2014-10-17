@@ -78,14 +78,12 @@ public class message {
      *  @return the converted bytearray containing the PDU header + message
      */
     public static byte[] sendMessage(String message, int type){
-        int checksum = 0;
-        //TODO set checksum
         PDU rawdata = new PDU(12 + div4(message.getBytes().length +
                 catalogue.getNick().getBytes().length));
         rawdata.setByte(0, (byte) OpCodes.MESSAGE);
         rawdata.setByte(1,(byte)type);
         rawdata.setByte(2, (byte)catalogue.getNick().getBytes().length);
-        rawdata.setByte(3, (byte)checksum);
+        rawdata.setByte(3, (byte)0);
         rawdata.setShort(4, (short) message.getBytes().length);
         rawdata.setInt(8, getTime());
         try {
@@ -94,6 +92,9 @@ public class message {
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);
         }
+        //After all the bytes has been inserted and the checksum = 0,
+        //calculate the real checksum
+        rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
         return rawdata.getBytes();
     }
     /**
