@@ -1,3 +1,4 @@
+package eson.co2p.se;
 
 public class MsgTypes {
 		

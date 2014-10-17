@@ -13,6 +13,7 @@ public class catalogue {
     private static server nameServer = new server();
     private static server thisServer = new server();
     private static int messageType;
+    private static String key;
 
     catalogue(){}
 
@@ -59,6 +60,12 @@ public class catalogue {
     public static void setMessageType(int messageType){
         catalogue.messageType=messageType;
     }
+
+    public static void setKey(String key){
+        catalogue.key = key;
+    }
+
+    //The divide line between setters and getters
 
     /**
      * Returns the client ID number
@@ -130,6 +137,14 @@ public class catalogue {
      */
     public static int getServerPort(){
         return thisServer.getPort();
+    }
+
+    public static byte[] getKey(){
+        return key.getBytes();
+    }
+
+    public static String getKeyString(){
+        return key;
     }
 
 }
