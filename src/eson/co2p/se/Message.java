@@ -9,7 +9,7 @@ import java.util.TimeZone;
  *
  *  Includes all messages sent from the client to the nameserver or chatserver
  */
-public class message {
+public class Message {
 
     /**
      * creates a message that's suppposed to be sent to the nameserver

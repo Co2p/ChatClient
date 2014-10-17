@@ -10,8 +10,8 @@ public class catalogue {
 
     private static int idNumber;
     private static String nick;
-    private static server nameServer = new server();
-    private static server thisServer = new server();
+    private static Server nameServer = new Server();
+    private static Server thisServer = new Server();
     private static int messageType;
     private static String key;
 
@@ -87,7 +87,7 @@ public class catalogue {
      * Returns the nameserver as a server object
      * @return the server object
      */
-    public static server getNameServer(){
+    public static Server getNameServer(){
         return nameServer;
     }
 
@@ -119,7 +119,7 @@ public class catalogue {
      * Returns this server as a server object
      * @return this server object
      */
-    public static server getServer(){
+    public static Server getServer(){
         return thisServer;
     }
 

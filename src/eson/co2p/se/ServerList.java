@@ -2,7 +2,6 @@ package eson.co2p.se;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -11,20 +10,20 @@ import java.util.Hashtable;
  *
  * Keeps track of the servers that were returned from the name server
  */
-public class serverList {
+public class ServerList {
 
     //Array of the names of the servers given by the nameserver
     //Used when the client needs a serverip from the namehash
     ArrayList<String> serverNames= new ArrayList<String>();
     //Namehash used to store the ipaddress relative to servername
-    Hashtable <String, server> ipHash = new Hashtable <String, server>();
+    Hashtable <String, Server> ipHash = new Hashtable <String, Server>();
     int operation, sequenze, chatServers, tot;
 
     /**
      * Creates a serverList with all of the servers that the name server returned
      * @param message the returned header from the name server
      */
-    public serverList(byte[] message){
+    public ServerList(byte[] message){
         PDU reMessage = new PDU(message, message.length);
         operation = (int)reMessage.getByte(0);
         sequenze = (int) reMessage.getByte(1);
@@ -32,7 +31,7 @@ public class serverList {
         tot = 4;
         //For each server, create a serverobject and add to serverhash
         for(int i = 0; i < chatServers; i++) {
-            server Server = new server();
+            Server Server = new eson.co2p.se.Server();
             Server.setIp(getIp(reMessage.getSubrange(tot, 4)));
             tot += 4;
             Server.setPort(reMessage.getShort(tot));
@@ -59,7 +58,7 @@ public class serverList {
      * @param ServerName Serverns namn
      * @return The server object
      */
-    public server getServer(String ServerName){
+    public Server getServer(String ServerName){
         return ipHash.get(ServerName);
     }
 

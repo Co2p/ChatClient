@@ -7,20 +7,20 @@ import java.util.ArrayList;
  *
  * Creates a TCP server and forwards messages to it.
  */
-public class clientThread {
+public class ClientThread {
 
     private startGui userGui;
     private Thread senderThread;
-    private senderServer sender;
+    private SenderServer sender;
     private ArrayList<Thread> threads = new ArrayList<Thread>();
 
     //skapa konstruktor
-    public clientThread(startGui gui) {
+    public ClientThread(startGui gui) {
         userGui = gui;
         testFeedGui();
     }
 
-    public clientThread() {
+    public ClientThread() {
 
     }
 
@@ -40,7 +40,7 @@ public class clientThread {
         senderThread = new Thread(new Runnable(){
             @Override
             public void run(){
-                sender = new senderServer();
+                sender = new SenderServer();
             }
         });
         threads.add(senderThread);

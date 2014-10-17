@@ -20,7 +20,7 @@ import java.awt.event.MouseMotionListener;
 public class startGui extends JFrame implements ActionListener{
 
     JPanel panelOne;
-    serverList Server;
+    ServerList Server;
     ArrayList serverlist;
     final JFrame frame = new JFrame("Glorious Chat");
 

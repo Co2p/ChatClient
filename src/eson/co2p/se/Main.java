@@ -7,7 +7,7 @@ public class Main {
     Thread nameServer;
     ArrayList<Thread> threads = new ArrayList<Thread>();
     startGui gui;
-    clientThread newServer;
+    ClientThread newServer;
 
     public Main(){
         askForNameServer nameServerQ = new askForNameServer();
@@ -28,7 +28,7 @@ public class Main {
         nameServer = new Thread(new Runnable() {
             @Override
             public void run() {
-                newServer = new clientThread();
+                newServer = new ClientThread();
             }
         });
         threads.add(nameServer);

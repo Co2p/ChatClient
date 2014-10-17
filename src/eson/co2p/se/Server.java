@@ -7,13 +7,13 @@ import java.net.InetAddress;
  *
  * A object to store information about servers
  */
-public class server {
+public class Server {
     private InetAddress ip;
     private String name;
     private int port;
     private int connected;
 
-    public server(){
+    public Server(){
     }
 
     /**

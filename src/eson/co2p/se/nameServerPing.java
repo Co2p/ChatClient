@@ -1,9 +1,5 @@
 package eson.co2p.se;
 
-import com.sun.net.httpserver.HttpServer;
-import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
-
-import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
@@ -20,7 +16,7 @@ public class nameServerPing {
     byte[] outputStream;
 
     private void fillArrayLists(){
-        outputStream  = message.getServerMessage();
+        outputStream  = Message.getServerMessage();
         System.out.println("Length of outputStream = " + outputStream.length);
         //kolla på råbinärkoden
         for (byte b : outputStream) {
@@ -28,7 +24,7 @@ public class nameServerPing {
         }
     }
 
-    public serverList getUdpServerlist() throws Exception{
+    public ServerList getUdpServerlist() throws Exception{
         fillArrayLists();
         System.out.println("Filled array list!");
 
@@ -56,7 +52,7 @@ public class nameServerPing {
         clientSocket.receive(receivePacket);
         //Här hanteras all inläsning av serverns utskick av serverdata som är kopplade
         //Till namnservern
-        serverList servers = new serverList(receivePacket.getData());
+        ServerList servers = new ServerList(receivePacket.getData());
         ArrayList serverlist = servers.getServerList();
         //Print all info on servers, this is just for testing purposes
         ArrayList ArrayOfServers = new ArrayList();

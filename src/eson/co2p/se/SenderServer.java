@@ -9,7 +9,7 @@ import java.net.Socket;
  *
  * TCP connection to the Chat Server
  */
-public class senderServer {
+public class SenderServer {
 
     private ServerSocket localServerSocket;
     private Socket tagetSocket;
@@ -18,7 +18,7 @@ public class senderServer {
     private BufferedReader in;
     private PrintStream out;
 
-    public senderServer() {
+    public SenderServer() {
 
         try {
             tagetSocket = new Socket(catalogue.getNameServerInet(), catalogue.getNameServerPort());
@@ -44,7 +44,7 @@ public class senderServer {
 
     public void sendMessage(String messageS){
         try {
-            out.write(message.sendMessage(messageS, catalogue.getMessageType()));
+            out.write(Message.sendMessage(messageS, catalogue.getMessageType()));
         } catch (IOException e) {
             e.printStackTrace();
         }
