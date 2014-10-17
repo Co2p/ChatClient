@@ -1,7 +1,5 @@
 package eson.co2p.se;
 
-import sun.tools.tree.InstanceOfExpression;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
