@@ -38,7 +38,7 @@ public class nameServerPing {
 
         byte[] sendData = new byte[65507];
         byte[] receiveData = new byte[65507];
-        catalogue.setNameServer(InetAddress.getByName("itchy.cs.umu.se"),1337);
+        catalogue.setNameServer(catalogue.getNameServerInet(),catalogue.getServerPort());
         //String sentence = nameserverAnswere.readLine();
         //sendData = nameserverAnswere.getBytes();
         //sendData = loll;
