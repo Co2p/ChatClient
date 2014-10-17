@@ -36,7 +36,10 @@ public class startGui extends JFrame implements ActionListener{
     //a list of all the added server
     ArrayList<ArrayList> serverPlanes = new ArrayList<ArrayList>();
     ArrayList<JButton> Buttons = new ArrayList<JButton>();
-    ArrayList<JButton> Connect_buttons = new ArrayList<JButton>();
+
+    ArrayList<ArrayList> Client_Content = new ArrayList<ArrayList>();
+
+
     //Arraylist of all tabs
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
@@ -93,46 +96,60 @@ public class startGui extends JFrame implements ActionListener{
             JPanel tempPanel3 = new JPanel();
             tempPanel3.setLayout(new GridLayout(3, 0));
             tempPanel3.add(panel);
-            //tempPanel2.setLayout(new GridLayout(3,0));
             tempPanel2.add(tempPanel3);
 
-            //tempPanel3.add(panel);
 
             JTextArea inputArea = defineInputarea();
             JScrollPane jScrollPane2 = new JScrollPane();
             serverObjects.add(inputArea);
             jScrollPane2.getViewport().add(inputArea);
 
-            JPanel tempPanel4 = new JPanel();
+
             JButton sendMessage = new JButton("Send");
             JButton connectButton = new JButton("Connect");
+            JButton disConnectButton = new JButton("Disconnect");
+            JCheckBox Compress = new JCheckBox("Compress");
+            JCheckBox Encrypted = new JCheckBox("Encrypted");
+
+            connectButton.setPreferredSize(new Dimension(150, 30));
+            disConnectButton.setPreferredSize(new Dimension(150, 30));
+            disConnectButton.setEnabled(false);
+
+            JTextArea Key = new JTextArea("enc key..");
+            Key.setPreferredSize(new Dimension(150, 20));
 
             JPanel tempPanel6 = new JPanel();
             JPanel tempBlankPanel = new JPanel();
-            tempPanel6.setLayout(new GridLayout(0, 2));
+            JPanel tempencryptplane = new JPanel();
+
+            tempencryptplane.setLayout(new FlowLayout());
+            tempPanel6.setLayout(new FlowLayout());
+
             tempPanel6.add(tempBlankPanel);
             tempPanel6.add(connectButton);
+            tempPanel6.add(disConnectButton);
 
             tempPanel3.add(tempPanel6);
-
+            tempencryptplane.add(Compress);
+            tempencryptplane.add(Encrypted);
+            tempencryptplane.add(Key);
+            tempPanel3.add(tempencryptplane);
 
             sendMessage.addActionListener(this);
-
-            //sendMessage.setPreferredSize(new Dimension(80, 30));
+            connectButton.addActionListener(this);
+            disConnectButton.addActionListener(this);
 
             Buttons.add(sendMessage);
-            Connect_buttons.add(connectButton);
 
-
-            //tempPanel4.add(jScrollPane2);
-            //tempPanel4.add(inputArea)FlowLayout
 
             JPanel tempPanel5 = new JPanel();
             tempPanel5.setLayout(new FlowLayout());
 
-
+            JPanel tempPanel4 = new JPanel();
+            tempPanel4.setPreferredSize(new Dimension(480, 300));
             tempPanel5.add(jScrollPane2);
             tempPanel5.add(sendMessage);
+            tempPanel5.add(tempPanel4);
             //tempPanel5.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
 
 
@@ -153,17 +170,49 @@ public class startGui extends JFrame implements ActionListener{
             tempPanel.add(tempPanel2);
 
             //build layout
-            String lol = Server.getServer((String)serverlist.get(i)).getName();
-            if(lol.length()> 5){
-                lol = lol.substring(0,5) + "..";
+            String serverName = Server.getServer((String)serverlist.get(i)).getName();
+            if(serverName.length()> 5){
+                serverName = serverName.substring(0,5) + "..";
             }
 
-
-
-            tabbedPane.addTab(lol, icon, tempPanel, "Name: " + Server.getServer((String)serverlist.get(i)).getName());
+            tabbedPane.addTab(serverName, icon, tempPanel, "Name: " + Server.getServer((String)serverlist.get(i)).getName());
             tabs.add(tempPanel);
             tabbedPane.setMnemonicAt(i,KeyEvent.VK_ADD);
             serverPlanes.add(serverObjects);
+
+            //##############################################################################
+            //Creat all arraylists needed (to be able to get the objects later on)
+            // inputArea,disConnectButton,sendMessage,Compress,Encrypted,Key
+            // connectButton
+            //##############################################################################
+
+            inputArea.setEnabled(false);
+            disConnectButton.setEnabled(false);
+            sendMessage.setEnabled(false);
+            Compress.setEnabled(false);
+            Encrypted.setEnabled(false);
+            Key.setEnabled(false);
+
+            JButton[] buttonList = new JButton[]{connectButton,disConnectButton,sendMessage};
+            JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
+            JTextArea[] textAreas = new JTextArea[]{Key,inputArea};
+            ArrayList<Object> ClientContent = new ArrayList<Object>();
+
+            //buttonList.add(connectButton);
+            //buttonList.add(disConnectButton);
+            //buttonList.add(sendMessage);
+            //boxesList.add(Compress);
+            //boxesList.add(Encrypted);
+            //textAreas.add(Key);
+            //textAreas.add(inputArea);
+            ClientContent.add(buttonList);
+            ClientContent.add(boxesList);
+            ClientContent.add(textAreas);
+
+
+            Client_Content.add(ClientContent);
+
+
         }
         panelOne.add(tabbedPane);
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -191,7 +240,7 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public JTextArea defineInputarea(){
-        JTextArea outputArea = new JTextArea(9, 25);
+        JTextArea outputArea = new JTextArea(8, 25);
         outputArea.setEditable(true);
         outputArea.setText("EnterText");
         outputArea.validate();
@@ -204,7 +253,7 @@ public class startGui extends JFrame implements ActionListener{
         panelOne.setVisible(true);
         panelOne.setBackground(new Color(50, 20, 4));
 
-        //frame.setUndecorated(false);
+        //frame.setUndecorated(true);
         frame.setBackground(new Color(24, 23, 24));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -213,7 +262,7 @@ public class startGui extends JFrame implements ActionListener{
         frame.setVisible(true);
         frame.setBounds(80, 80, 490, 666);
         //frame.setBackground(new Color(0,255,0,0));
-        frame.addMouseListener(new MouseListener(){
+        panelOne.addMouseListener(new MouseListener(){
             public void mouseReleased(MouseEvent e) {
                 mouseDownCompCoords = null;
             }
@@ -228,7 +277,7 @@ public class startGui extends JFrame implements ActionListener{
             }
         });
 
-        frame.addMouseMotionListener(new MouseMotionListener(){
+        panelOne.addMouseMotionListener(new MouseMotionListener(){
             public void mouseMoved(MouseEvent e) {
             }
 
@@ -247,6 +296,20 @@ public class startGui extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        ArrayList<Object> activeClientObjects = Client_Content.get(getSelectedServerTab());
+        JButton Connect = null;
+        JButton Disconect = null;
+        //get connect/disconnect buttons
+        for(Object Target : activeClientObjects) {
+            System.out.println("LOLLLL: " + Target);
+            if (Target.getClass() == JButton[].class) {
+                JButton[] Buttons = (JButton[]) Target;
+                Connect = Buttons[0];
+                Disconect = Buttons[1];
+                break;
+            }
+        }
+
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
                 //int Index = Buttons.indexOf(s);
@@ -255,6 +318,52 @@ public class startGui extends JFrame implements ActionListener{
                 //JTextArea Output = TempTarget.get(1);
                 //UpdateAreas( Input, Output);
                 addToOutputFromInput();
+            }
+        }
+        for(Object Target : activeClientObjects){
+            System.out.println("LOLLLL: "+ Target);
+            if (Connect != null && Disconect != null) {
+                if (Connect.equals(e.getSource()) || Disconect.equals(e.getSource())) {
+                    if (Target.getClass() == JButton[].class) {
+                        System.out.println("LOLLLL");
+                        JButton[] Buttons = (JButton[]) Target;
+                        for (int i = 0; i < Buttons.length; i++) {
+                            JButton target = Buttons[i];
+                            if (target.isEnabled()) {
+                                target.setEnabled(false);
+                            } else {
+                                target.setEnabled(true);
+                            }
+                        }
+
+                    }
+                    else if (Target.getClass() == JCheckBox[].class) {
+                        System.out.println("LOLpppL");
+                        JCheckBox[] checkBox = (JCheckBox[]) Target;
+                        for (int i = 0; i < checkBox.length; i++) {
+                            JCheckBox target = checkBox[i];
+                            if (target.isEnabled()) {
+                                target.setEnabled(false);
+                            } else {
+                                target.setEnabled(true);
+                            }
+                        }
+
+                    }
+                    else if (Target.getClass() == JTextArea[].class) {
+                        System.out.println("LOLerererL");
+                        JTextArea[] textArea = (JTextArea[]) Target;
+                        for (int i = 0; i < textArea.length; i++) {
+                            JTextArea target = textArea[i];
+                            if (target.isEnabled()) {
+                                target.setEnabled(false);
+                            } else {
+                                target.setEnabled(true);
+                            }
+                        }
+
+                    }
+                }
             }
         }
 
