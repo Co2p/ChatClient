@@ -38,17 +38,19 @@ public class nameServerPing {
 
         byte[] sendData = new byte[65507];
         byte[] receiveData = new byte[65507];
-        catalogue.setNameServer(catalogue.getNameServerInet(),catalogue.getServerPort());
         //String sentence = nameserverAnswere.readLine();
         //sendData = nameserverAnswere.getBytes();
         //sendData = loll;
         sendData = outputStream;
         //sendData = nameserverAnswere.getBytes();
 
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
-        //DatagramPacket sendPacket3 = new DatagramPacket();
-
-        clientSocket.send(sendPacket);
+        try {
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, catalogue.getNameServerInet(), catalogue.getNameServerPort());
+            clientSocket.send(sendPacket);
+        }catch (Exception e){
+            System.out.print("Failed to send packet");
+            e.printStackTrace();
+        }
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
