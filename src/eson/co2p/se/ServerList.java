@@ -10,7 +10,7 @@ import java.util.Hashtable;
  *
  * Keeps track of the servers that were returned from the name server
  */
-public class ServerList {
+public  class ServerList {
 
     //Array of the names of the servers given by the nameserver
     //Used when the client needs a serverip from the namehash
@@ -94,6 +94,11 @@ public class ServerList {
         return null;
     }
 
+    /**
+     * //TODO explain
+     * @param testInt
+     * @return
+     */
     public static int div4(int testInt){
         int ret = 0;
         if((4 -(testInt % 4)) != 0){

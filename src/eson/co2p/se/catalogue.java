@@ -82,6 +82,10 @@ public class catalogue {
         thisServer.setPort(port);
     }
 
+    /**
+     * Sets the key value
+     * @param key the value of the key
+     */
     public static void setKey(String key){
         catalogue.key = key;
     }
@@ -100,11 +104,11 @@ public class catalogue {
             return null;
         }
     }
+
     /**
      * Returns the client ID number
      * @return ID number
      */
-
     public static int getIdNumber() {
         return idNumber;
     }
@@ -165,10 +169,18 @@ public class catalogue {
         return thisServer.getPort();
     }
 
+    /**
+     * Returns the key as bytes
+     * @return the key as bytes
+     */
     public static byte[] getKey(){
         return key.getBytes();
     }
 
+    /**
+     * Returns the key as a String
+     * @return the key as a String
+     */
     public static String getKeyString(){
         return key;
     }

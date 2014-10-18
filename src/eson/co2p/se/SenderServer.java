@@ -6,7 +6,7 @@ import java.net.Socket;
 
 /**
  * Created by gordon on 08/10/14 modded by tony 18/10/14 .
- * Now made to be threadede
+ * Now made to be threaded
  * TCP connection to the Chat Server
  */
 public class SenderServer{
@@ -20,6 +20,12 @@ public class SenderServer{
     startGui GUI;
     int Tabid;
 
+    /**
+     * Constructs a TCP server on/to the given ip and port
+     * @param IP a InetAddress ip for the requested chatserver
+     * @param port a portnumber for the requested chatserver
+     * @param TabId the id-number of the associated tab
+     */
     public SenderServer(InetAddress IP,int port,int TabId){
         Ip = IP;
         Port = port;
@@ -33,7 +39,9 @@ public class SenderServer{
 
     }
 
-    //connect the socket to given ip/port
+    /**
+     * Connect the socket to given ip/port, as defined in the constructor
+     */
     private void ConnectSocket(){
         int tries = 0;
         int maxTries = 5;
@@ -60,7 +68,13 @@ public class SenderServer{
             System.out.println("Failed to send registration message");
         }
     }
-    //send message on the connected socket
+
+    /**
+     * Send message over the connected socket
+     * @param messageToSend the message
+     * @param Type defines what type the message is according to the MsgTypes.class
+     *             @see eson.co2p.se.MsgTypes
+     */
     public void sendMessage(String messageToSend,int Type){
         try{
             System.out.println("Sending message....");
@@ -69,7 +83,11 @@ public class SenderServer{
             System.out.println("Failed to send message");
         }
     }
-    //chek if this thread is still alive
+
+    /**
+     * checks if this thread is still alive
+     * @return true if it is alive
+     */
     public boolean endSocketCheck(){
         int myLife = ClientThread.AliveThreadsID[Tabid];
         if (myLife == 1){
@@ -80,7 +98,7 @@ public class SenderServer{
         }
     }
 
-
+    //TODO comment?
     private String GetMessageToSend(){
         String Message;
         while(true){
@@ -95,7 +113,10 @@ public class SenderServer{
         }
         return Message;
     }
-    //check for received messages on this socket
+
+    /**
+     * Checks for received messages on this socket
+     */
     private void checkReceivedMessage(){
         boolean goOn = true;
         boolean firstRun = true;
