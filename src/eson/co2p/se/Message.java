@@ -26,16 +26,15 @@ public class Message {
     /**
      * creates a message to be sent to a server asking for connection
      *
-     * @param username the username of the client
      * @return  the created pdu with headers.
      */
-    public static byte[] connectToServerMessage(String username){
-        int usernameLength = username.getBytes().length;
+    public static byte[] connectToServerMessage(){
+        int usernameLength = catalogue.getNick().getBytes().length;
         PDU rawdata = new PDU(4 + div4(usernameLength));
         rawdata.setByte(0,(byte)OpCodes.JOIN);
         rawdata.setByte(1, (byte) usernameLength);
         try {
-            rawdata.setSubrange(4, username.getBytes("UTF-8"));
+            rawdata.setSubrange(4, catalogue.getNick().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
             System.out.println("Error encoding nickname: " + e);
             e.printStackTrace();
