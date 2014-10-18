@@ -10,7 +10,6 @@ import java.net.Socket;
  * TCP connection to the Chat Server
  */
 public class SenderServer {
-    //TODO What is this class?! Is this real life?!?!?!?!
     private ServerSocket localServerSocket;
     private Socket tagetSocket;
     private PDU pdu;
@@ -24,18 +23,7 @@ public class SenderServer {
             tagetSocket = new Socket(catalogue.getNameServerInet(), catalogue.getNameServerPort());
             out = new PrintStream(tagetSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(tagetSocket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        try {
             out.write(pdu.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
             in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
