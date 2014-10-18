@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ServerConnection {
+public class UDPServerConnection {
 
     private ArrayList<Integer> format = new ArrayList<Integer>();
     private ArrayList<Object> content = new ArrayList<Object>();
