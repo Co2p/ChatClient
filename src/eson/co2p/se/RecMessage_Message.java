@@ -17,15 +17,16 @@ public class RecMessage_Message extends RecMessage{
         if(Checksum.calc(rawData, rawData.length) != 0xff){
             System.out.println("Checksum test failed");
         }
-
+        System.out.println("TOTLENGTH: " + rawData.length);
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
         checksum = PDUData.getByte(3);
         msgLength = PDUData.getShort(4);
         time = (int)PDUData.getInt(8);
         try {
+            System.out.println("msgLength : " + msgLength + ", nickLength: " + nickLength);
             message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
-            nickname = new String(PDUData.getSubrange(12+msgLength, nickLength), "UTF-8");
+            nickname = new String(PDUData.getSubrange(Message.div4(12+msgLength), nickLength), "UTF-8");
         }catch(UnsupportedEncodingException e){
             System.out.println("Error encoding incoming message: " + e);
             e.printStackTrace();
