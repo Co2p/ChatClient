@@ -13,7 +13,7 @@ public class catalogue {
     private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();
-    private static String key;
+    private static String key = "foobar";
 
     catalogue(){}
 
