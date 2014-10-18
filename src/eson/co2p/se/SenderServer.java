@@ -67,6 +67,7 @@ public class SenderServer{
             return false;
         }
     }
+
     //chek for recived messages on this socket
     private void checkReciveMessage(){
         while(endSocketChek()) {
