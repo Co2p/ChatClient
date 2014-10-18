@@ -106,6 +106,8 @@ public class SenderServer{
         PDU message = new PDU(0);
 
         while(endSocketCheck() && goOn) {
+            totBytesRead = 0;
+            totLength = 0;
             System.out.println("In while-loop");
             try {
                 int bytesRead = in.read(messageByte);
@@ -114,40 +116,43 @@ public class SenderServer{
                     //TODO antar bara här att det är ett meddelande som tas emot, ISIDOR KOM IHÅG FÖR FAN DIN JÄVLA BÖG
                     PDU temp = new PDU(messageByte, messageByte.length);
                     System.out.println("OP-code: " + (int)temp.getByte(0));
-                    if(firstRun && temp.getByte(0) == OpCodes.MESSAGE) { //kollar op
-                        firstRun = false;
+                    if((int)temp.getByte(0) == OpCodes.MESSAGE) { //kollar op
+                        //firstRun = false;
                         System.out.println("Found message!");
                         totLength = 12;
-                        totLength += temp.getByte(2);
-                        totLength += temp.getByte(4);
+                        totLength += (int)temp.getByte(2);
+                        totLength += temp.getShort(4);
+                        System.out.println("nickLength: " + (int)temp.getByte(2) + ", messageLength: " + (int)temp.getByte(4));
                         totLength = Message.div4(totLength);
                         message.extendTo(totLength);
-                    }else if(firstRun && temp.getByte(0) == OpCodes.NICKS){
-                        firstRun = false;
+                    }else if((int)temp.getByte(0) == OpCodes.NICKS){
+                        //firstRun = false;
                         System.out.println("Found nicks!");
                         totLength = 4;
                         totLength += Message.div4(temp.getShort(2));
                         message.extendTo(totLength);
                     }
-                    //messageString += new String(messageByte, 0, bytesRead);
+                    //TODO detta är just nu en jävla skräphög, fixa in det här i fina metoder osv sen
                     System.out.println("totLength = " + totLength + ", bytesRead = " + bytesRead +
                             ", totBytesRead = " + totBytesRead + ", length of byte-array = " + messageByte.length);
-                    message.setSubrange((totBytesRead - bytesRead), temp.getSubrange(0,bytesRead));
-                    if (totBytesRead >= totLength) {
-                        goOn = false;
-                        String nicknames = new String(message.getSubrange(4,totLength - 5), "UTF-8");
+                    message.setSubrange(0, temp.getSubrange(0,totLength));
+                    if (totBytesRead >= totLength && (int)temp.getByte(0)==OpCodes.NICKS) {
+                        String nicknames = new String(message.getSubrange(4,totLength-5), "UTF-8");
                         nicknames = nicknames.replaceAll("\0", "\n");
                         System.out.println("Connected users: " + nicknames);
                         GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            System.out.println("not able to sleep: " + e);
-                        }
+                    }else if(totBytesRead >= totLength && (int)temp.getByte(0)==OpCodes.MESSAGE){
+                        String nick = new String(message.getSubrange(12 + temp.getShort(4), (int)temp.getByte(2)), "UTF-8");
+                        String message1 = new String(message.getSubrange(12,temp.getShort(4)), "UTF-8");
+                        GUI.UpdateTabByID(Tabid, nick + ":" + message1);
                     }
                 }else{
-                    System.out.println("TCP acting wierd, input not large enough etc.");
-                    System.exit(0);
+                    //Hittas inget, så törna in mannen
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        System.out.println("not able to sleep: " + e);
+                    }
                 }
             }catch(IOException e){
                 //Read time out, this should happen once every one second.
