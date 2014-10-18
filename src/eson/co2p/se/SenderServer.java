@@ -10,7 +10,7 @@ import java.net.Socket;
  * TCP connection to the Chat Server
  */
 public class SenderServer {
-
+    //TODO What is this class?! Is this real life?!?!?!?!
     private ServerSocket localServerSocket;
     private Socket tagetSocket;
     private PDU pdu;
