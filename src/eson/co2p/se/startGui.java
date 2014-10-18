@@ -198,13 +198,6 @@ public class startGui extends JFrame implements ActionListener{
             JTextArea[] textAreas = new JTextArea[]{Key,inputArea};
             ArrayList<Object> ClientContent = new ArrayList<Object>();
 
-            //buttonList.add(connectButton);
-            //buttonList.add(disConnectButton);
-            //buttonList.add(sendMessage);
-            //boxesList.add(Compress);
-            //boxesList.add(Encrypted);
-            //textAreas.add(Key);
-            //textAreas.add(inputArea);
             ClientContent.add(buttonList);
             ClientContent.add(boxesList);
             ClientContent.add(textAreas);
@@ -301,7 +294,6 @@ public class startGui extends JFrame implements ActionListener{
         JButton Disconect = null;
         //get connect/disconnect buttons
         for(Object Target : activeClientObjects) {
-            System.out.println("LOLLLL: " + Target);
             if (Target.getClass() == JButton[].class) {
                 JButton[] Buttons = (JButton[]) Target;
                 Connect = Buttons[0];
@@ -309,23 +301,17 @@ public class startGui extends JFrame implements ActionListener{
                 break;
             }
         }
-
+        //chek the send button
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
-                //int Index = Buttons.indexOf(s);
-                //ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-                //JTextArea Input = TempTarget.get(0);
-                //JTextArea Output = TempTarget.get(1);
-                //UpdateAreas( Input, Output);
                 addToOutputFromInput();
             }
         }
-        for(Object Target : activeClientObjects){
-            System.out.println("LOLLLL: "+ Target);
-            if (Connect != null && Disconect != null) {
-                if (Connect.equals(e.getSource()) || Disconect.equals(e.getSource())) {
+        //getting the needed objects
+        if (Connect.equals(e.getSource()) || Disconect.equals(e.getSource())) {
+            for(Object Target : activeClientObjects){
+                if (Connect != null && Disconect != null) {
                     if (Target.getClass() == JButton[].class) {
-                        System.out.println("LOLLLL");
                         JButton[] Buttons = (JButton[]) Target;
                         for (int i = 0; i < Buttons.length; i++) {
                             JButton target = Buttons[i];
@@ -338,7 +324,6 @@ public class startGui extends JFrame implements ActionListener{
 
                     }
                     else if (Target.getClass() == JCheckBox[].class) {
-                        System.out.println("LOLpppL");
                         JCheckBox[] checkBox = (JCheckBox[]) Target;
                         for (int i = 0; i < checkBox.length; i++) {
                             JCheckBox target = checkBox[i];
@@ -348,10 +333,8 @@ public class startGui extends JFrame implements ActionListener{
                                 target.setEnabled(true);
                             }
                         }
-
                     }
                     else if (Target.getClass() == JTextArea[].class) {
-                        System.out.println("LOLerererL");
                         JTextArea[] textArea = (JTextArea[]) Target;
                         for (int i = 0; i < textArea.length; i++) {
                             JTextArea target = textArea[i];
@@ -366,7 +349,6 @@ public class startGui extends JFrame implements ActionListener{
                 }
             }
         }
-
     }
 
     public void clearOutputWindow(){
