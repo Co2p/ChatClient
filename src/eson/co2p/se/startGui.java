@@ -362,6 +362,7 @@ public class startGui extends JFrame implements ActionListener{
                 }
             }
         }
+
         //add an new server thread
         int ID = getSelectedServerTab();
         if (Connect.equals(e.getSource())) {

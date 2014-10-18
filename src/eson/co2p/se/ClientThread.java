@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Creates a TCP server and forwards messages to it.
  */
 public class ClientThread {
+
     static Thread connectCurentServer;
     static SenderServer newServer;
     static ArrayList<ArrayList> ServerThreadList = new ArrayList<ArrayList>();

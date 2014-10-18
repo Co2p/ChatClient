@@ -47,6 +47,7 @@ public class SenderServer{
                 System.out.println("Failed to bind socket, try " + Tryes + "/" + MaxTryes);
             }
         }
+
         try {
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
             //skicka anslutningsmedelande
