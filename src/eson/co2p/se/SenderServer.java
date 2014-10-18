@@ -136,7 +136,14 @@ public class SenderServer{
                     if (totBytesRead >= totLength) {
                         goOn = false;
                         String nicknames = new String(message.getSubrange(4,totLength - 5), "UTF-8");
+                        nicknames = nicknames.replaceAll("\0", "\n");
                         System.out.println("Connected users: " + nicknames);
+                        GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            System.out.println("not able to sleep: " + e);
+                        }
                     }
                 }else{
                     System.out.println("TCP acting wierd, input not large enough etc.");
