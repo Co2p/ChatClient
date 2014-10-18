@@ -34,7 +34,12 @@ public class Message {
         PDU rawdata = new PDU(4 + div4(usernameLength));
         rawdata.setByte(0,(byte)OpCodes.JOIN);
         rawdata.setByte(1, (byte) usernameLength);
-        rawdata.setSubrange(4, username.getBytes());
+        try {
+            rawdata.setSubrange(4, username.getBytes("UTF-8"));
+        }catch(UnsupportedEncodingException e){
+            System.out.println("Error encoding nickname: " + e);
+            e.printStackTrace();
+        }
         return rawdata.getBytes();
     }
 
