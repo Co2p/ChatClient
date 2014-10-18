@@ -14,6 +14,14 @@ public class ClientThread {
     static ArrayList<ArrayList> ServerThreadList = new ArrayList<ArrayList>();
     static int[] AliveThreadsID = new int[256];
 
+    /**
+     * Is called to start a new connection
+     * @param ThreadId a thread identifier
+     * @param Server defines which server to connect to
+     *               @see eson.co2p.se.ServerList
+     *               @see eson.co2p.se.Server
+     * @param serverlist //TODO skräp? används inte
+     */
     public static void startThread(final int ThreadId, final ServerList Server, final ArrayList serverlist) {
         ArrayList<Object> Templist = new ArrayList<Object>();
         connectCurentServer = new Thread(new Runnable() {
@@ -31,6 +39,11 @@ public class ClientThread {
         AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
         System.out.println("Started server thread whit ID:" + ThreadId);
     }
+
+    /**
+     * Stops a thread with the given id number
+     * @param ThreadId a thread identifier
+     */
     public static void endThread(final int ThreadId){
         int ID = ThreadId;
         for(ArrayList Me : ServerThreadList){

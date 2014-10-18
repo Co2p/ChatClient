@@ -12,7 +12,7 @@ import java.util.TimeZone;
 public class Message {
 
     /**
-     * creates a message that's suppposed to be sent to the nameserver
+     * creates a message that's supposed to be sent to the nameserver
      * asking for a list of servers
      *
      * @return the created pdu with headers
