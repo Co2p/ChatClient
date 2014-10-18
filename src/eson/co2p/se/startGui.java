@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
 
 public class startGui extends JFrame implements ActionListener{
 
@@ -25,6 +26,9 @@ public class startGui extends JFrame implements ActionListener{
     final JFrame frame = new JFrame("Glorious Chat");
 
 
+    /**
+     * Initiates the servers and starts the gui
+     */
     public startGui(){
         getServerNames();
         StartGui();
@@ -47,6 +51,9 @@ public class startGui extends JFrame implements ActionListener{
     //Arraylist of all tabs
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
+    /**
+     * Retrives the active servers and adds them to serverlist
+     */
     private void getServerNames(){
         try{
             Server = UDPServerConnection.getUdpServerlist();
@@ -56,10 +63,12 @@ public class startGui extends JFrame implements ActionListener{
             System.out.println("Excepted when trying to recive data: " + e);
         }
     }
+
     public void UpdateTabByID(int TabID,String TesxObject){
         JTextArea OutputArea = outputAreaList.get(TabID);
         OutputArea.setText(OutputArea.getText() +"\n"+ TesxObject);
     }
+
     public int getSelectedServerTab(){
         int Index = tabbedPane.getSelectedIndex();
         ChangeColor( panelOne, Index);
@@ -75,7 +84,7 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public void ChangeColor(JPanel panelOne, int tabindex){
-        panelOne.setBackground(new Color(Loop254(50 * tabindex), Loop254(20 * tabindex), Loop254(40 * tabindex)));
+        panelOne.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
         panelOne.updateUI();
         panelOne.validate();
     }
@@ -101,7 +110,7 @@ public class startGui extends JFrame implements ActionListener{
 
             JComponent panel = makeTextPanel("Server: "+ Server.getServer((String)serverlist.get(i)).getName() + " Ip:" +Server.getServer((String)serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)serverlist.get(i)).getPort() );
             panel.setPreferredSize(new Dimension(300, 50));
-            panel.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
+            panel.setBackground(new Color(Loop254(i, 0), Loop254(i, 1), Loop254(i, 2)));
 
             JPanel tempPanel3 = new JPanel();
             tempPanel3.setLayout(new GridLayout(3, 0));
@@ -204,7 +213,7 @@ public class startGui extends JFrame implements ActionListener{
             Encrypted.setEnabled(false);
             Key.setEnabled(false);
 
-            JButton[] buttonList = new JButton[]{connectButton,disConnectButton,sendMessage};
+            JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage};
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
             JTextArea[] textAreas = new JTextArea[]{Key,inputArea};
             ArrayList<Object> ClientContent = new ArrayList<Object>();
@@ -223,13 +232,24 @@ public class startGui extends JFrame implements ActionListener{
         return panelOne;
     }
 
-    private int Loop254(int valu){
-        valu = valu + 80;
-        while (valu > 254){
-            //int rest = valu - 254;
-            valu = valu - 254;
-            if (valu < 80){
-                valu += 80;
+    /**
+     * Generates a colour from the ip of the active tab
+     * @param valu the active tab index
+     * @param index the requested colour (or index) R=0, G=1, B=2
+     * @return the amount of colour for RGB
+     */
+    private int Loop254(int valu, int index){
+        if (index>3){
+            return 254;
+        }
+        String ip = Server.getServer((String)serverlist.get(valu)).getIp().toString();
+        ip = ip.replaceAll("[/.]+", "");
+        valu = Integer.parseInt(ip.substring(ip.length()-(index+3), ip.length()-(index)));
+
+        while (valu>254){
+            valu-=254;
+            if (valu<80){
+                valu+=80;
             }
         }
         return valu;
