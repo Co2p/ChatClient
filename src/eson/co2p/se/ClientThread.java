@@ -20,7 +20,7 @@ public class ClientThread {
      * @param Server defines which server to connect to
      *               @see eson.co2p.se.ServerList
      *               @see eson.co2p.se.Server
-     * @param serverlist //TODO skräp? används inte
+     * @param serverlist a list of active servers in the gui
      */
     public static void startThread(final int ThreadId, final ServerList Server, final ArrayList serverlist) {
         ArrayList<Object> Templist = new ArrayList<Object>();
