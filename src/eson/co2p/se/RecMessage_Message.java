@@ -31,4 +31,8 @@ public class RecMessage_Message extends RecMessage{
             e.printStackTrace();
         }
     }
+
+    public String getMessage(){
+        return message;
+    }
 }
