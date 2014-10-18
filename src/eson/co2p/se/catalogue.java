@@ -13,7 +13,6 @@ public class catalogue {
     private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();
-    private static int messageType;
     private static String key;
 
     catalogue(){}
@@ -59,14 +58,6 @@ public class catalogue {
     private static void setServer(InetAddress ip, int port){
         thisServer.setIp(ip);
         thisServer.setPort(port);
-    }
-
-    /**
-     * Sets the current message type
-     * @param messageType
-     */
-    public static void setMessageType(int messageType){
-        catalogue.messageType=messageType;
     }
 
     public static void setKey(String key){
@@ -126,14 +117,6 @@ public class catalogue {
      */
     public static int getNameServerPort(){
         return nameServer.getPort();
-    }
-
-    /**
-     * Returns the message type as a int (as defined by MsgTypes)
-     * @return message type
-     */
-    public static int getMessageType(){
-        return messageType;
     }
 
     /**
