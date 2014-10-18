@@ -134,7 +134,7 @@ public class startGui extends JFrame implements ActionListener{
             disConnectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setEnabled(false);
 
-            JTextArea Key = new JTextArea("enc key..");
+            JTextArea Key = new JTextArea("encryption key");
             Key.setPreferredSize(new Dimension(150, 20));
 
             JPanel tempPanel6 = new JPanel();
