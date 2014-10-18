@@ -8,56 +8,45 @@ import java.util.ArrayList;
  * Creates a TCP server and forwards messages to it.
  */
 public class ClientThread {
+    static Thread connectCurentServer;
+    static SenderServer newServer;
+    static ArrayList<ArrayList> ServerThreadList = new ArrayList<ArrayList>();
+    static int[] AliveThreadsID = new int[256];
 
-    private startGui userGui;
-    private Thread senderThread;
-    private SenderServer sender;
-    private ArrayList<Thread> threads = new ArrayList<Thread>();
-
-    //skapa konstruktor
-    public ClientThread(startGui gui) {
-        userGui = gui;
-        testFeedGui();
-    }
-
-    public ClientThread() {
-
-    }
-
-    //Skriv till GUI TODO: segmentera medelanden
-    private void printToGui(String printString){
-        //userGui.outputWindow(printString + "\n");
-    }
-
-    private void requestServers(){
-
-    }
-
-    /**
-     * Starts the TCP connection thread that connects to the server
-     */
-    private void startSender(){
-    //    senderThread = new Thread(new Runnable(){
-    //        @Override
-    //        public void run(){
-    //            sender = new SenderServer();
-    //        }
-    //    });
-    //    threads.add(senderThread);
-    //    senderThread.start();
-    }
-
-    //Testfunktion till GUI feed
-    public void testFeedGui(){
-        int x = 20;
-        while(x >= 0){
-            if(x < 1){
-                printToGui("lol: " + x + "times upp");
+    public static void startThread(final int ThreadId, final ServerList Server, final ArrayList serverlist) {
+        ArrayList<Object> Templist = new ArrayList<Object>();
+        connectCurentServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                newServer = new SenderServer(Server.getServer((String) serverlist.get(ThreadId)).getIp(), Server.getServer((String) serverlist.get(ThreadId)).getPort(), ThreadId);
             }
-            else{
-                printToGui("lol: " + x);
+        });
+        //SenderServer MyServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
+        Templist.add(ThreadId);
+        Templist.add(connectCurentServer);
+        Templist.add(newServer);
+        ServerThreadList.add(Templist);
+        connectCurentServer.start();
+        AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
+        System.out.println("Started server thread whit ID:" + ThreadId);
+    }
+    public static void endThread(final int ThreadId){
+        int ID = ThreadId;
+        for(ArrayList Me : ServerThreadList){
+            Object Targ = Me.get(0);
+            int ObjId = (Integer)Targ;
+            if (ObjId == ID){
+                System.out.println("ME:" + Me );
+                AliveThreadsID[ObjId] = 0;
+                Thread Threaded = (Thread)Me.get(1);//the thread
+                System.out.println("TH:" + Threaded );
+                System.out.println("TH:" + Threaded.getName() );
+                SenderServer cServer = (SenderServer)Me.get(2);
+                //cServer.endSocket();
+                System.out.println("closing server whit id:" + ObjId );
+                //remove old thread from list?
             }
-            x--;
         }
     }
+
 }

@@ -34,11 +34,18 @@ public class SenderServer{
 
     //connect the socket to given ip/port
     private void ConnectSocket(){
-        try {
-            localServerSocket = new Socket(Ip, Port);
-            System.out.println("connected socket!");
-        }catch (IOException e){
-            System.out.println("Failed to bind socket");
+        int Tryes = 0;
+        int MaxTryes = 5;
+        while(Tryes < MaxTryes) {
+            try {
+                localServerSocket = new Socket(Ip, Port);
+                localServerSocket.setSoTimeout(1000);
+                System.out.println("connected socket!");
+                Tryes = MaxTryes;
+            } catch (IOException e) {
+                Tryes += 1;
+                System.out.println("Failed to bind socket, try " + Tryes + "/" + MaxTryes);
+            }
         }
         try {
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
@@ -59,7 +66,7 @@ public class SenderServer{
     }
     //chek if this thread is still alive
     public boolean endSocketChek(){
-        int myLife = GUI.AliveThreadsID[Tabid];
+        int myLife = ClientThread.AliveThreadsID[Tabid];
         if (myLife == 1){
             return true;
         }
@@ -72,21 +79,31 @@ public class SenderServer{
     private void checkReciveMessage(){
         while(endSocketChek()) {
             try {
-                inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
-                recivedData = inFromServer.readLine();
-                System.out.println("Updating gui WHIT MESSAGE: " + recivedData);
-                GUI.UpdateTabByID(Tabid,recivedData);
+                boolean Goon = false;
                 try {
-                    Thread.sleep(2);
-                }catch (InterruptedException e){
-                    System.out.println("not able to sleep: " + e);
+                    inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
+                    recivedData = inFromServer.readLine();
+                    Goon = true;
+                }catch (java.net.SocketTimeoutException e){
+                    System.out.println("Timed out trying to read from socket(this is supose to happend once every sec)");
+                }
+                if (Goon == true) {
+                    System.out.println("Updating gui WHIT MESSAGE: " + recivedData);
+                    GUI.UpdateTabByID(Tabid, recivedData);
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        System.out.println("not able to sleep: " + e);
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("Failed to get message");
             }
         }
         try {
+            outToServer.write(Message.quitServer());
             localServerSocket.close();
+            System.out.println("Closing this instance of SenderServer");
         }catch (IOException e){
             System.out.println("Failed to close socket");
         }

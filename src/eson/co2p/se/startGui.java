@@ -22,8 +22,6 @@ public class startGui extends JFrame implements ActionListener{
     JPanel panelOne;
     ServerList Server;
     ArrayList serverlist;
-    Thread connectCurentServer;
-    SenderServer newServer;
     final JFrame frame = new JFrame("Glorious Chat");
 
 
@@ -41,8 +39,7 @@ public class startGui extends JFrame implements ActionListener{
 
     ArrayList<ArrayList> Client_Content = new ArrayList<ArrayList>();
     ArrayList<JTextArea> outputAreaList = new ArrayList<JTextArea>();
-    ArrayList<ArrayList> ServerThreadList = new ArrayList<ArrayList>();
-    int[] AliveThreadsID = new int[256];
+
     int[] TABID = new int[256];
     int CurrentTab = 0;
 
@@ -366,41 +363,12 @@ public class startGui extends JFrame implements ActionListener{
             }
         }
         //add an new server thread
+        int ID = getSelectedServerTab();
         if (Connect.equals(e.getSource())) {
-            ArrayList<Object> Templist = new ArrayList<Object>();
-            connectCurentServer = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    newServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
-                }
-            });
-            //SenderServer MyServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
-            Templist.add(getSelectedServerTab());
-            Templist.add(connectCurentServer);
-            Templist.add(newServer);
-            ServerThreadList.add(Templist);
-            connectCurentServer.start();
-            AliveThreadsID[getSelectedServerTab()] = 1; //1 = alive, 0 = dead
-            System.out.println("Started server thread whit ID:" + getSelectedServerTab());
-
+             ClientThread.startThread(ID,Server,serverlist);
         }
         if (Disconect.equals(e.getSource())){
-            int ID = getSelectedServerTab();
-            for(ArrayList Me : ServerThreadList){
-                Object Targ = Me.get(0);
-                int ObjId = (Integer)Targ;
-                if (ObjId == ID){
-                    System.out.println("ME:" + Me );
-                    AliveThreadsID[ObjId] = 0;
-                    Thread Threaded = (Thread)Me.get(1);//the thread
-                    System.out.println("TH:" + Threaded );
-                    System.out.println("TH:" + Threaded.getName() );
-                    SenderServer cServer = (SenderServer)Me.get(2);
-                    //cServer.endSocket();
-                    System.out.println("closing server whit id:" + ObjId );
-                    //remove old thread from list?
-                 }
-            }
+            ClientThread.endThread(ID);
         }
     }
 
