@@ -52,6 +52,7 @@ public class Message {
         rawdata.setByte(0,(byte)OpCodes.QUIT);
         return rawdata.getBytes();
     }
+
     /**
      * changes the nick of the user
      *
@@ -100,6 +101,7 @@ public class Message {
         rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
         return rawdata.getBytes();
     }
+
     /**
      * div4 tests if and int is divisible by four, if it isn't return the
      * rounded up number to ciel that's divisible by four.
