@@ -447,10 +447,10 @@ public class startGui extends JFrame implements ActionListener{
 
     public String FilterString(String text){
         String OriginalText = text;
-        String Modefied = "";
+        String Modified = "";
         int Lengt = text.getBytes().length;
         //TODO FilterString is suppose to filter the output string
-        return Modefied;
+        return Modified;
     }
 
     protected JComponent makeTextPanel(String text) {
