@@ -8,7 +8,6 @@ import java.util.ArrayList;
  *
  */
 
-
 public class ServerConnection {
 
     private ArrayList<Integer> format = new ArrayList<Integer>();
