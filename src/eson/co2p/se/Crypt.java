@@ -1,7 +1,8 @@
+package eson.co2p.se;
 /* Crypt.java
- * Given fil till laboration 2 - Distribuerad Chat på kursen Datakommunikation
- * och Datornät C, 5p vid Umeå Universitet ht 2001 och vt 2002.
- * Av Per Nordlinder (per@cs.umu.se) och Jon Hollström (jon@cs.umu.se)
+ * Given fil till laboration 2 - Distribuerad Chat pï¿½ kursen Datakommunikation
+ * och Datornï¿½t C, 5p vid Umeï¿½ Universitet ht 2001 och vt 2002.
+ * Av Per Nordlinder (per@cs.umu.se) och Jon Hollstrï¿½m (jon@cs.umu.se)
  */
 
 public class Crypt {
@@ -9,9 +10,9 @@ public class Crypt {
    /* Namn:       {en, de}crypt 
     * Purpose:    Krypterar eller dekrypterar data 
     * Argument:   src - Buffert med datan som ska behandlas 
-    *             srclen - Längden i bytes på src 
-    *             key - Krypteringsnyckel som skall användas
-    *             keylen - Längden i bytes på krypteringsnyckeln
+    *             srclen - Lï¿½ngden i bytes pï¿½ src 
+    *             key - Krypteringsnyckel som skall anvï¿½ndas
+    *             keylen - Lï¿½ngden i bytes pï¿½ krypteringsnyckeln
     * Returnerar: Ingenting 
     */ 
     

@@ -5,7 +5,7 @@ import java.net.InetAddress;
 /**
  * Created by isidor on 2014-10-13.
  *
- * A object to store information about servers
+ * An object to store information about servers
  */
 public class Server {
     private InetAddress ip;
