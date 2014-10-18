@@ -146,9 +146,14 @@ public class SenderServer{
                         String message1 = new String(message.getSubrange(12,temp.getShort(4)), "UTF-8");
                         GUI.UpdateTabByID(Tabid, nick + ":" + message1);
                     }
+                    if(bytesRead > totLength){
+                        System.out.println(temp.getSubrange(totLength, bytesRead));
+                    }
                 }else{
                     //Hittas inget, så törna in mannen
+                    //TODO Här ska inget törnas in, fucking fel?!?!?!?!?!
                     try {
+                        System.out.println("Current Thread: " + Thread.currentThread());
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         System.out.println("not able to sleep: " + e);
