@@ -32,7 +32,7 @@ public class UDPServerConnection {
             e.printStackTrace();
         }
 
-        //Checks incoming data
+        //Waits and checks incoming data
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
         //TODO check the OP-code of the recievePacket first
@@ -45,5 +45,4 @@ public class UDPServerConnection {
         clientSocket.close();
         return servers;
     }
-
 }
