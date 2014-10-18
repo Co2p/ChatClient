@@ -1,6 +1,8 @@
 package eson.co2p.se;
 
+import javax.swing.*;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 /**
  * Created by gordon on 08/10/14.
@@ -14,8 +16,29 @@ public class catalogue {
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();
     private static String key;
+    public static ArrayList<String> Chatsync = new ArrayList<String>();
+    public static String[] lol = new String[256];
+    public static boolean MessageInUse = false;
+    private static boolean firstAcess = true;
 
     catalogue(){}
+
+
+
+
+    /**
+     * sets an message at an position
+     * @param Message the new message
+     * @param Index the position to set(coresponding to the clientthread id)
+     */
+    public static void SetClientMessage (String Message, int Index) {
+        firstFillArrayList();
+        MessageInUse = true;
+        lol[Index] = Message;
+        //Chatsync.set(Index,Message);
+        System.out.println("Setting message");
+        MessageInUse = false;
+    }
 
     /**
      * Sets the Gui
@@ -149,6 +172,39 @@ public class catalogue {
 
     public static String getKeyString(){
         return key;
+    }
+
+    /**
+     * returns the message to send, sets the position to null
+     * @param Index the position to set(coresponding to the clientthread id)
+     */
+    public static String GetClientMessage (int Index) {
+        firstFillArrayList();
+        if(firstAcess == false) {
+            MessageInUse = true;
+            String ret = lol[Index];
+            lol[Index] = null;
+            //String ret = Chatsync.get(Index);
+            //Chatsync.set(Index, null);
+            MessageInUse = false;
+            return ret;
+        }
+        else{
+            return " ";
+        }
+    }
+
+    private static void firstFillArrayList(){
+        if(firstAcess == true) {
+            //for (int i = 0; i < 256; i++) {
+            //    Chatsync.add(i,null);
+            //}
+            for(int i = 0; i < lol.length; i++){
+                lol[i] = null;
+            }
+            System.out.println("Filled Arraylist");
+            firstAcess = false;
+        }
     }
 
 }

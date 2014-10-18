@@ -316,7 +316,14 @@ public class startGui extends JFrame implements ActionListener{
         //chek the send button
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
-
+                while (true){
+                    if(catalogue.MessageInUse == false){
+                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab());
+                        System.out.println("adding message");
+                        break;
+                    }
+                }
+                System.out.println("loop broken");
                 addToOutputFromInput();
             }
         }
@@ -386,7 +393,18 @@ public class startGui extends JFrame implements ActionListener{
         JTextArea Output = TempTarget.get(1);
         Output.setText(Output.getText() + "\n" + Text);
     }
-
+    public String getInputText(){
+        int Index = getSelectedServerTab();
+        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
+        JTextArea Input = TempTarget.get(0);
+        String inp = Input.getText().trim();
+        if (!inp.equals("")){
+            return inp;
+        }
+        else{
+            return null;
+        }
+    }
     public void addToOutputFromInput(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);

@@ -2,6 +2,7 @@ package eson.co2p.se;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -39,7 +40,8 @@ public class SenderServer{
         while(Tryes < MaxTryes) {
             try {
                 localServerSocket = new Socket(Ip, Port);
-                localServerSocket.setSoTimeout(1000);
+                localServerSocket.setSoTimeout(500);
+                inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
                 System.out.println("connected socket!");
                 Tryes = MaxTryes;
             } catch (IOException e) {
@@ -60,6 +62,7 @@ public class SenderServer{
     //send message on the connected socket
     public void sendMessage(String messageToSend,int Type){
         try{
+            System.out.println("Sending message....");
             outToServer.write(Message.sendMessage(messageToSend, Type));
         }catch (IOException e){
             System.out.println("Failed to send message");
@@ -76,15 +79,46 @@ public class SenderServer{
         }
     }
 
+
+    private String GetMessageToSend(){
+        String Message;
+        while(true){
+            if(catalogue.MessageInUse == false){
+                //System.out.println("getting message to send message");
+                Message = catalogue.GetClientMessage(Tabid);
+                System.out.println("wadaw:" + Message);
+                //System.out.println("Loop 2 broken, message:" + Message);
+                if (Message == null){
+                    return null;
+                }
+                else{
+                    System.out.println("Loop 2 broken, message:" + Message);
+                    return Message;
+                }
+            }
+        }
+    }
     //chek for recived messages on this socket
     private void checkReciveMessage(){
         while(endSocketChek()) {
+            boolean Goon = false;
+            //System.out.println("where here");
+            String Mess = GetMessageToSend();
+            if(Mess != null){
+                sendMessage(Mess,0);
+                System.out.println("Sent message:" + Mess);
+            }
             try {
-                boolean Goon = false;
                 try {
-                    inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
                     recivedData = inFromServer.readLine();
-                    Goon = true;
+                    String Message = recivedData;
+                    while(recivedData != null) {
+                        recivedData = inFromServer.readLine();
+                        Message = Message + recivedData;
+                    }
+                    if (Message != null){
+                        Goon = true;
+                    }
                 }catch (java.net.SocketTimeoutException e){
                     System.out.println("Timed out trying to read from socket(this is supose to happend once every sec)");
                 }
