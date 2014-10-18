@@ -37,14 +37,14 @@ public class ClientThread {
      * Starts the TCP connection thread that connects to the server
      */
     private void startSender(){
-        senderThread = new Thread(new Runnable(){
-            @Override
-            public void run(){
-                sender = new SenderServer();
-            }
-        });
-        threads.add(senderThread);
-        senderThread.start();
+    //    senderThread = new Thread(new Runnable(){
+    //        @Override
+    //        public void run(){
+    //            sender = new SenderServer();
+    //        }
+    //    });
+    //    threads.add(senderThread);
+    //    senderThread.start();
     }
 
     //Testfunktion till GUI feed

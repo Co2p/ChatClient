@@ -9,7 +9,7 @@ import java.net.InetAddress;
 public class catalogue {
 
     private static int idNumber;
-    private static String nick;
+    private static String nick = "pelle";
     private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();

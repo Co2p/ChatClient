@@ -12,14 +12,12 @@ public class Main {
     public Main(){
         askForNameServer nameServerQ = new askForNameServer();
         nameServerQ.CreatNameserverQuestion();
-        //gui = new startGui();
         startServer();
     }
 
 
     public static void main(String[] args) {
 
-        //creates a new instanse of this function, so that the constructor can run.
         Main newMain = new Main();
 
     }
