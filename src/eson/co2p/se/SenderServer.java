@@ -88,7 +88,7 @@ public class SenderServer{
                 Message = catalogue.GetClientMessage(Tabid);
                 System.out.println("The message (GetMessageToSend): " + Message);
                 if (Message != null){
-                    System.out.println("Message broken, sorry bro...");
+                    System.out.println("Message broken, sorry bro...no message is not broken");
                 }
                 break;
             }
@@ -106,6 +106,14 @@ public class SenderServer{
         PDU message = new PDU(0);
 
         while(endSocketCheck() && goOn) {
+
+            String Messagelol = GetMessageToSend();
+            if (Messagelol != null){
+                System.out.println("message to send:" + Messagelol);
+                sendMessage(Messagelol,0);
+            }
+
+            System.out.println("Message broken, sorry bro..." + Messagelol);
             totBytesRead = 0;
             totLength = 0;
             System.out.println("In while-loop");
@@ -182,6 +190,7 @@ public class SenderServer{
                         receivedData = inFromServer.readLine();
                         Message = Message + receivedData;
                     }
+                    inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
                     if (Message != null){
                         goOn = true;
                     }
