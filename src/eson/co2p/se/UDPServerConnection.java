@@ -9,10 +9,6 @@ import java.util.ArrayList;
  */
 
 public class UDPServerConnection {
-
-    private ArrayList<Integer> format = new ArrayList<Integer>();
-    private ArrayList<Object> content = new ArrayList<Object>();
-
     /**
      * Sends a getserverlist message to the nameserver from catalogue, and then
      * handles the return from the server.
@@ -20,10 +16,12 @@ public class UDPServerConnection {
      * @return  a list of all servers returned by the nameservers
      * @throws Exception
      */
-    public ServerList getUdpServerlist() throws Exception{
+    public static ServerList getUdpServerlist() throws Exception{
         DatagramSocket clientSocket = new DatagramSocket();
         byte[] sendData = Message.getServerMessage();
         byte[] receiveData = new byte[65507];
+        ArrayList<Integer> format = new ArrayList<Integer>();
+        ArrayList<Object> content = new ArrayList<Object>();
 
         //Tests to send a getservermessage to the given nameserver
         try {
@@ -34,7 +32,7 @@ public class UDPServerConnection {
             e.printStackTrace();
         }
 
-        //Checks incoming data
+        //Waits and checks incoming data
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
         //TODO check the OP-code of the recievePacket first
@@ -47,5 +45,4 @@ public class UDPServerConnection {
         clientSocket.close();
         return servers;
     }
-
 }
