@@ -63,6 +63,21 @@ public class ServerList {
     }
 
     /**
+     * Prints the servers in the array, this is just for testing purposes and
+     * should NOT be used in the final program
+     */
+    public void printServers(){
+        InetAddress TempAdress;
+        for(int i = 0; i < serverNames.size(); i++){
+            TempAdress = getServer((String)serverNames.get(i)).getIp();
+            System.out.println("---" + getServer((String)serverNames.get(i)).getName() + "---");
+            System.out.println("ip: " + getServer((String)serverNames.get(i)).getIp());
+            System.out.println("port: " + getServer((String)serverNames.get(i)).getPort());
+            System.out.println("connected clients: " + getServer((String)serverNames.get(i)).getConnected());
+        }
+    }
+
+    /**
      * Returns all of the available server names
      * @return server names
      */
