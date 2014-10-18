@@ -31,6 +31,7 @@ public class SenderServer{
         GUI = catalogue.getGui();
         System.out.println("Starting message chek!");
         checkReciveMessage();
+
     }
 
     //connect the socket to given ip/port

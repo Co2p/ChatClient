@@ -25,7 +25,6 @@ public class catalogue {
 
 
 
-
     /**
      * sets an message at an position
      * @param Message the new message

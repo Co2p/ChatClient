@@ -311,6 +311,7 @@ public class startGui extends JFrame implements ActionListener{
                 Connect = Buttons[0];
                 Disconect = Buttons[1];
                 break;
+
             }
         }
         //chek the send button
