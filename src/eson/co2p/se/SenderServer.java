@@ -18,7 +18,6 @@ public class SenderServer {
     private PrintStream out;
 
     public SenderServer() {
-
         try {
             tagetSocket = new Socket(catalogue.getNameServerInet(), catalogue.getNameServerPort());
             out = new PrintStream(tagetSocket.getOutputStream(), true);

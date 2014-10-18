@@ -44,9 +44,8 @@ public class startGui extends JFrame implements ActionListener{
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
     private void getServerNames(){
-        UDPServerConnection serverPing = new UDPServerConnection();
         try{
-            Server = serverPing.getUdpServerlist();
+            Server = UDPServerConnection.getUdpServerlist();
             serverlist = Server.getServerList();
         }catch (Exception e){
             e.printStackTrace();
