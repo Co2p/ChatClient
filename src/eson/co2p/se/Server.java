@@ -42,7 +42,7 @@ public class Server {
 
     /**
      * Set how many clients are connected to the server
-     * @param connected connected clients
+     * @param connected Connected clients
      */
     public void setConnected(int connected){
         this.connected = connected;

@@ -19,8 +19,9 @@ public class askForNameServer implements ActionListener {
     JButton acceptadress = new JButton("Connect");
     startGui Gui;
 
-
-
+    /**
+     * Starts the gui
+     */
     public void CreatNameserverQuestion(){
         acceptadress.addActionListener(this);
         frame1.setLayout(new GridLayout(3, 0));
@@ -46,6 +47,10 @@ public class askForNameServer implements ActionListener {
 
     }
 
+    /**
+     * Catches the button press and checks that the given address is valid before setting the server and starting the main gui
+     * @param e event id
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (verifyAddress(Adress.getText())){
@@ -69,6 +74,11 @@ public class askForNameServer implements ActionListener {
         }
     }
 
+    /**
+     * Looks for invalid characters
+     * @param address the address that will be checked
+     * @return true if the address is ok otherwise false
+     */
     private boolean verifyAddress(String address){
         char[] charAdd = address.toCharArray();
         char[] invalid = new char[]{'(', ')', '{', '}', '$', ';', '@', ':', '#', '%', '<', '>', '§'};
@@ -84,6 +94,11 @@ public class askForNameServer implements ActionListener {
         return true;
     }
 
+    /**
+     * Sets the icon
+     * @param path path to the icon
+     * @return the icon, null if it can't be found
+     */
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = startGui.class.getResource(path);
         if (imgURL != null) {
