@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class catalogue {
 
     private static int idNumber;
-    private static String nick = "Hårfager Mk. II";
+    private static String nick = "Hårfager Mk. IV";
     private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();

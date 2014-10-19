@@ -3,7 +3,9 @@ package eson.co2p.se;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by gordon on 08/10/14 modded by tony 18/10/14 .
@@ -105,7 +107,7 @@ public class SenderServer{
         while(true){
             if(!catalogue.MessageInUse){
                 Message = catalogue.GetClientMessage(Tabid);
-                System.out.println("The message (GetMessageToSend): " + Message);
+                //System.out.println("The message (GetMessageToSend): " + Message);
                 if (Message != null){
                     System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
                 }
@@ -133,8 +135,6 @@ public class SenderServer{
                 System.out.println("message to send:" + Messagelol);
                 sendMessage(Messagelol,0);
             }
-            System.out.println("Message broken, sorry bro..." + Messagelol);
-            System.out.println("In while-loop");
             try {
                 int bytesRead = in.read(messageByte);
                 if(bytesRead > 8) {
@@ -143,7 +143,6 @@ public class SenderServer{
                 }else{
                     //Hittas inget, så törna in mannen
                     try {
-                        System.out.println("Current Thread: " + Thread.currentThread());
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         System.out.println("not able to sleep: " + e);
@@ -154,7 +153,6 @@ public class SenderServer{
                 //System.out.println(e);
             }
         }
-        System.out.println("MESSAGE: " + messageString);
         /*
         try {
             outToServer.write(Message.quitServer());
@@ -176,10 +174,10 @@ public class SenderServer{
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes());
-                if(temp.getNick() != null) {
+                if(temp.getNick().length() > 0) {
                     GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ":" + temp.getMessage());
                 }else{
-                    GUI.UpdateTabByID(Tabid, temp.getMessage());
+                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getMessage());
                 }
                 returnMes = temp;
                 break;
@@ -235,7 +233,10 @@ public class SenderServer{
         return returnMes;
     }
     private String getTime(int time){
-        Date retTime = new Date(time*1000);
-        return retTime.toString();
+        System.out.println("TIME ITSELF: " + time);
+        Date retTime = new Date(time*1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+        return sdf.format(retTime);
     }
 }
