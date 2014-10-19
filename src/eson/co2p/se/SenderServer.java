@@ -185,8 +185,8 @@ public class SenderServer{
                 System.out.println("Found nicks!");
                 try {
                     String nicknames = new String(message.getSubrange
-                            (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", "\n");
-                    GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
+                            (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
+                    GUI.UpdateTabByID(Tabid, "Connected users: " + nicknames);
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }

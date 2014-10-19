@@ -6,22 +6,23 @@ import java.io.UnsupportedEncodingException;
  * Created by Isidor on 2014-10-18.
  */
 public class RecMessage_Message extends RecMessage{
-    int type, checksum, time;
+    int type, time;
     String nickname, message;
 
     public RecMessage_Message(byte[] rawData){
         super(rawData);
         int nickLength, msgLength;
-
+        int checksum = PDUData.getByte(3);
+        System.out.println("CHECKSUM: " + checksum);
         //Test the checksum first and print out error if not equal.
-        if(Checksum.calc(rawData, rawData.length) != 0xff){
-            System.out.println("Checksum test failed");
+        int calcChecksum = Checksum.calc(PDUData.getBytes(), PDUData.length());
+        if(calcChecksum != checksum){
+            System.out.println("Checksum test failed:" + calcChecksum + " != " + checksum);
         }
 
         System.out.println("TOTLENGTH: " + rawData.length);
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
-        checksum = PDUData.getByte(3);
         msgLength = PDUData.getShort(4);
         time = (int) PDUData.getInt(8);
         try {
