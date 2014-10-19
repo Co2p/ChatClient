@@ -3,6 +3,7 @@ package eson.co2p.se;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Date;
 
 /**
  * Created by gordon on 08/10/14 modded by tony 18/10/14 .
@@ -176,7 +177,7 @@ public class SenderServer{
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes());
                 if(temp.getNick() != null) {
-                    GUI.UpdateTabByID(Tabid, temp.getNick() + ":" + temp.getMessage());
+                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ":" + temp.getMessage());
                 }else{
                     GUI.UpdateTabByID(Tabid, temp.getMessage());
                 }
@@ -204,7 +205,7 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, nick + " Joined the room.");
+                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " Joined the room.");
                 break;
             case OpCodes.ULEAVE:
                 nickLength = (int)message.getByte(1);
@@ -215,7 +216,7 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, nick + " leaved the room.");
+                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " leaved the room.");
                 break;
             case OpCodes.UCNICK:
                 nickLength = (int)message.getByte(1);
@@ -228,9 +229,13 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, nick + " changed nick to: " + newNick);
+                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " changed nick to: " + newNick);
                 break;
         }
         return returnMes;
+    }
+    private String getTime(int time){
+        Date retTime = new Date(time*1000);
+        return retTime.toString();
     }
 }

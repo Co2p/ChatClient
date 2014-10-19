@@ -41,4 +41,8 @@ public class RecMessage_Message extends RecMessage{
     public String getNick(){
         return nickname;
     }
+
+    public int getTime(){
+        return time;
+    }
 }
