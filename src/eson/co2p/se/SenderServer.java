@@ -106,7 +106,7 @@ public class SenderServer{
                 Message = catalogue.GetClientMessage(Tabid);
                 System.out.println("The message (GetMessageToSend): " + Message);
                 if (Message != null){
-                    System.out.println("Message broken, sorry bro...no message is not broken");
+                    System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
                 }
                 break;
             }
@@ -132,20 +132,15 @@ public class SenderServer{
                 System.out.println("message to send:" + Messagelol);
                 sendMessage(Messagelol,0);
             }
-
             System.out.println("Message broken, sorry bro..." + Messagelol);
-            totBytesRead = 0;
-            totLength = 0;
             System.out.println("In while-loop");
             try {
                 int bytesRead = in.read(messageByte);
-                totBytesRead += bytesRead;
                 if(bytesRead > 8) {
                     PDU temp = new PDU(messageByte, messageByte.length);
                     RecMessageBreakDown(temp);
                 }else{
                     //Hittas inget, så törna in mannen
-                    //TODO Här ska inget törnas in, fucking fel?!?!?!?!?!
                     try {
                         System.out.println("Current Thread: " + Thread.currentThread());
                         Thread.sleep(1000);
@@ -190,7 +185,6 @@ public class SenderServer{
                 try {
                     String nicknames = new String(message.getSubrange
                             (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", "\n");
-                    System.out.println("Connected users: " + nicknames);
                     GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
