@@ -120,10 +120,9 @@ public class SenderServer{
     private void checkReceivedMessage(){
         boolean goOn = true;
         boolean firstRun = true;
-        int totBytesRead = 0;
+        int totBytesRead, totLength;
         String messageString = "";
         byte[] messageByte = new byte[1000];
-        int totLength = 0;
         PDU message = new PDU(0);
 
         while(endSocketCheck() && goOn) {
@@ -142,42 +141,8 @@ public class SenderServer{
                 int bytesRead = in.read(messageByte);
                 totBytesRead += bytesRead;
                 if(bytesRead > 8) {
-                    //TODO antar bara här att det är ett meddelande som tas emot, ISIDOR KOM IHÅG FÖR FAN DIN JÄVLA BÖG
                     PDU temp = new PDU(messageByte, messageByte.length);
-                    System.out.println("OP-code: " + (int)temp.getByte(0));
-                    if((int)temp.getByte(0) == OpCodes.MESSAGE) { //kollar op
-                        //firstRun = false;
-                        System.out.println("Found message!");
-                        totLength = 12;
-                        totLength += (int)temp.getByte(2);
-                        totLength += temp.getShort(4);
-                        System.out.println("nickLength: " + (int)temp.getByte(2) + ", messageLength: " + (int)temp.getByte(4));
-                        totLength = Message.div4(totLength);
-                        message.extendTo(totLength);
-                    }else if((int)temp.getByte(0) == OpCodes.NICKS){
-                        //firstRun = false;
-                        System.out.println("Found nicks!");
-                        totLength = 4;
-                        totLength += Message.div4(temp.getShort(2));
-                        message.extendTo(totLength);
-                    }
-                    //TODO detta är just nu en jävla skräphög, fixa in det här i fina metoder osv sen
-                    System.out.println("totLength = " + totLength + ", bytesRead = " + bytesRead +
-                            ", totBytesRead = " + totBytesRead + ", length of byte-array = " + messageByte.length);
-                    message.setSubrange(0, temp.getSubrange(0,totLength));
-                    if (totBytesRead >= totLength && (int)temp.getByte(0)==OpCodes.NICKS) {
-                        String nicknames = new String(message.getSubrange(4,totLength-5), "UTF-8");
-                        nicknames = nicknames.replaceAll("\0", "\n");
-                        System.out.println("Connected users: " + nicknames);
-                        GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
-                    }else if(totBytesRead >= totLength && (int)temp.getByte(0)==OpCodes.MESSAGE){
-                        String nick = new String(message.getSubrange(12 + temp.getShort(4), (int)temp.getByte(2)), "UTF-8");
-                        String message1 = new String(message.getSubrange(12,temp.getShort(4)), "UTF-8");
-                        GUI.UpdateTabByID(Tabid, nick + ":" + message1);
-                    }
-                    if(bytesRead > totLength){
-                        System.out.println(temp.getSubrange(totLength, bytesRead));
-                    }
+                    RecMessageBreakDown(temp);
                 }else{
                     //Hittas inget, så törna in mannen
                     //TODO Här ska inget törnas in, fucking fel?!?!?!?!?!
@@ -192,44 +157,6 @@ public class SenderServer{
                 //Read time out, this should happen once every one second.
                 //System.out.println(e);
             }
-
-
-            /*goOn = false;
-
-            System.out.println("checkReceivedMessage start");
-            String Mess = GetMessageToSend();
-            if(Mess != null){
-                sendMessage(Mess,0);
-                System.out.println("Sent message:" + Mess);
-            }
-            try {
-                try {
-                    receivedData = inFromServer.readLine();
-                    String Message = receivedData;
-                    System.out.println("Received message: " + Message);
-                    while(receivedData != null) {
-                        receivedData = inFromServer.readLine();
-                        Message = Message + receivedData;
-                    }
-                    inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
-                    if (Message != null){
-                        goOn = true;
-                    }
-                }catch (java.net.SocketTimeoutException e){
-                    System.out.println("Socket timeout (Don't worry)");
-                }
-                if (goOn == true) {
-                    System.out.println("Updating gui WITH MESSAGE: " + receivedData);
-                    GUI.UpdateTabByID(Tabid, receivedData);
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        System.out.println("not able to sleep: " + e);
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Failed to get message");
-            }*/
         }
         System.out.println("MESSAGE: " + messageString);
         /*
@@ -240,5 +167,48 @@ public class SenderServer{
         }catch (IOException e){
             System.out.println("Failed to close socket");
         }*/
+    }
+    private RecMessage RecMessageBreakDown(PDU message){
+        //Checks op-codes and adds creates the correct message
+        int opCode = (int)message.getByte(0);
+        System.out.println("OP-code: " + opCode);
+        RecMessage returnMes = null;
+
+        switch(opCode){
+            case OpCodes.MESSAGE:
+                System.out.println("Found message!");
+                RecMessage_Message temp = new RecMessage_Message(message.getBytes());
+                if(temp.getNick() != null) {
+                    GUI.UpdateTabByID(Tabid, temp.getNick() + ":" + temp.getMessage());
+                }else{
+                    GUI.UpdateTabByID(Tabid, temp.getMessage());
+                }
+                returnMes = temp;
+                break;
+            case OpCodes.NICKS:
+                System.out.println("Found nicks!");
+                try {
+                    String nicknames = new String(message.getSubrange
+                            (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", "\n");
+                    System.out.println("Connected users: " + nicknames);
+                    GUI.UpdateTabByID(Tabid, "Connected users:\n" + nicknames);
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                break;
+            case OpCodes.QUIT:
+
+                break;
+            case OpCodes.UJOIN:
+
+                break;
+            case OpCodes.ULEAVE:
+
+                break;
+            case OpCodes.UCNICK:
+
+                break;
+        }
+        return returnMes;
     }
 }
