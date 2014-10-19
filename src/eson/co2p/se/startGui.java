@@ -134,7 +134,7 @@ public class startGui extends JFrame implements ActionListener{
             disConnectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setEnabled(false);
 
-            JTextArea Key = new JTextArea("enc key..");
+            JTextArea Key = new JTextArea("encryption key");
             Key.setPreferredSize(new Dimension(150, 20));
 
             JPanel tempPanel6 = new JPanel();
@@ -447,10 +447,10 @@ public class startGui extends JFrame implements ActionListener{
 
     public String FilterString(String text){
         String OriginalText = text;
-        String Modefied = "";
+        String Modified = "";
         int Lengt = text.getBytes().length;
         //TODO FilterString is suppose to filter the output string
-        return Modefied;
+        return Modified;
     }
 
     protected JComponent makeTextPanel(String text) {
