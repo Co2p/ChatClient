@@ -168,6 +168,8 @@ public class SenderServer{
         int opCode = (int)message.getByte(0);
         System.out.println("OP-code: " + opCode);
         RecMessage returnMes = null;
+        int nickLength, time;
+        String nick = "";
 
         switch(opCode){
             case OpCodes.MESSAGE:
@@ -191,16 +193,42 @@ public class SenderServer{
                 }
                 break;
             case OpCodes.QUIT:
-
+                GUI.UpdateTabByID(Tabid, "Server Closed Connection");
                 break;
             case OpCodes.UJOIN:
-
+                nickLength = (int)message.getByte(1);
+                time = (int)message.getInt(4);
+                nick = "";
+                try {
+                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                GUI.UpdateTabByID(Tabid, nick + " Joined the room.");
                 break;
             case OpCodes.ULEAVE:
-
+                nickLength = (int)message.getByte(1);
+                time = (int)message.getInt(4);
+                nick = "";
+                try {
+                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                GUI.UpdateTabByID(Tabid, nick + " leaved the room.");
                 break;
             case OpCodes.UCNICK:
-
+                nickLength = (int)message.getByte(1);
+                int nickLength2 = (int)message.getByte(2);
+                time = (int)message.getInt(4);
+                String newNick = "";
+                try {
+                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
+                    newNick = new String(message.getSubrange(8 + nickLength, nickLength2), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                GUI.UpdateTabByID(Tabid, nick + " changed nick to: " + newNick);
                 break;
         }
         return returnMes;
