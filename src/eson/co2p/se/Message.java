@@ -83,7 +83,6 @@ public class Message {
      *  @return the converted bytearray containing the PDU header + message
      */
     public static byte[] sendMessage(String message, int type){
-        type = 2;
         PDU rawdata = null;
         try {
             byte[] msgByte = message.getBytes("UTF-8");
