@@ -13,20 +13,25 @@ public class RecMessage_Message extends RecMessage{
         super(rawData);
         int nickLength, msgLength;
         int checksum = PDUData.getByte(3);
-        /*System.out.println("CHECKSUM: " + checksum);
-        //Test the checksum first and print out error if not equal.
-        int calcChecksum = Checksum.calc(PDUData.getBytes(), PDUData.length());
-        if(calcChecksum != checksum){
-            System.out.println("Checksum test failed:" + calcChecksum + " != " + checksum);
-        }*/
-        System.out.println("TOTLENGTH: " + rawData.length);
+
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
         msgLength = PDUData.getShort(4);
         time = (int) PDUData.getInt(8);
         try {
-            System.out.println("msgLength : " + msgLength + ", nickLength: " + nickLength);
-            message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
+            switch(type){
+                case 0:
+                    message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
+                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength)), "UTF-8");
+                    break;
+                case 3:
+                    break;
+            }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Error encoding incoming message: " + e);
@@ -44,5 +49,16 @@ public class RecMessage_Message extends RecMessage{
 
     public int getTime(){
         return time;
+    }
+
+    private static byte[] deCrypt(byte[] cryptMsg){
+        PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
+        int algorithm = encryptedPDU.getByte(0);
+        int checksum = encryptedPDU.getByte(1);
+        int cryptLength = encryptedPDU.getShort(2);
+        int unCryptLength = encryptedPDU.getShort(4);
+        byte[] encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
+        Crypt.decrypt(encryptedMsg, encryptedMsg.length,catalogue.getKey(), catalogue.getKey().length);
+        return encryptedMsg;
     }
 }

@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class catalogue {
 
     private static int idNumber;
-    private static String nick = "DrMengele";
+    private static String nick = "WhoopieGoldberg";
     private static startGui gui = null;
     private static Server nameServer = new Server();
     private static Server thisServer = new Server();
-    private static String key;
+    private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
     public static String[] lol = new String[256];
     public static boolean MessageInUse = false;

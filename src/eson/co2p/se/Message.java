@@ -85,22 +85,43 @@ public class Message {
     public static byte[] sendMessage(String message, int type){
         PDU rawdata = null;
         try {
-            rawdata = new PDU(12 + div4(message.getBytes("UTF-8").length));
+            byte[] msgByte = message.getBytes("UTF-8");
+            //add encryption or compression based on the typ-input
+            switch(type){
+                case 1:
+
+                    break;
+                case 2:
+                    msgByte = enCrypt(msgByte);
+                    break;
+                case 3:
+                    msgByte = enCrypt(msgByte);
+                    break;
+            }
+            rawdata = new PDU(12 + div4(msgByte.length));
             rawdata.setByte(0, (byte) OpCodes.MESSAGE);
             rawdata.setByte(1,(byte)type);
-            //rawdata.setByte(2, (byte)0/*catalogue.getNick().getBytes().length*/);
-            //rawdata.setByte(3, (byte)0);
-            rawdata.setShort(4, (short)div4(message.getBytes("UTF-8").length));
-            //rawdata.setInt(8, (byte)0);
-            rawdata.setSubrange(12, message.getBytes("UTF-8"));
-            //rawdata.setSubrange(12 + message.getBytes().length, catalogue.getNick().getBytes("UTF-8"));
-            //After all the bytes has been inserted and the checksum = 0,
-            //calculate the real checksum
+            rawdata.setShort(4, (short)div4(msgByte.length));
+            rawdata.setSubrange(12, msgByte);
             rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);
         }
         return rawdata.getBytes();
+    }
+
+    private static byte[] enCrypt(byte[] data){
+        byte[] newData = data;
+        Crypt.encrypt(newData, newData.length, catalogue.getKey(), catalogue.getKey().length);
+        PDU cryptPDU = new PDU(12 + div4(newData.length));
+        //The first byte is type of cryptography, it is 0 for the default XOR-method
+        //so add nothing...
+        cryptPDU.setByte(1, Checksum.calc(data, data.length));
+        cryptPDU.setShort(2, (short)newData.length);
+        cryptPDU.setShort(4, (short)data.length);
+        cryptPDU.setSubrange(12, newData);
+        cryptPDU.setByte(1, Checksum.calc(cryptPDU.getBytes(), cryptPDU.length()));
+        return cryptPDU.getBytes();
     }
 
     /**
