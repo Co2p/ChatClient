@@ -1,12 +1,10 @@
 package eson.co2p.se;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
 /**
  * TCP connection to the Chat Server
  * Now made to be threaded
@@ -23,7 +21,6 @@ public class SenderServer{
     String receivedData;
     startGui GUI;
     int Tabid;
-
     /**
      * Constructs a TCP server on/to the given ip and port
      * @param IP a InetAddress ip for the requested chatserver
@@ -40,9 +37,7 @@ public class SenderServer{
         GUI = catalogue.getGui();
         System.out.println("Starting message check!");
         checkReceivedMessage();
-
     }
-
     /**
      * Connect the socket to given ip/port, as defined in the constructor
      */
@@ -54,7 +49,7 @@ public class SenderServer{
                 localServerSocket = new Socket(Ip, Port);
                 localServerSocket.setSoTimeout(500);
                 in = new DataInputStream(localServerSocket.getInputStream());
-                //inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
+//inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
                 System.out.println("connected socket!");
                 tries = maxTries;
             } catch (IOException e) {
@@ -62,22 +57,19 @@ public class SenderServer{
                 System.out.println("Failed to bind socket, try " + tries + "/" + maxTries);
             }
         }
-
         try {
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
-            //skicka anslutningsmedelande
+//skicka anslutningsmedelande
             outToServer.write(Message.connectToServerMessage());
-
         }catch (IOException e){
             System.out.println("Failed to send registration message");
         }
     }
-
     /**
      * Send message over the connected socket
      * @param messageToSend the message
      * @param Type defines what type the message is according to the MsgTypes.class
-     *             @see eson.co2p.se.MsgTypes
+     * @see eson.co2p.se.MsgTypes
      */
     public void sendMessage(String messageToSend,int Type){
         try{
@@ -87,7 +79,6 @@ public class SenderServer{
             System.out.println("Failed to send message");
         }
     }
-
     /**
      * checks if this thread is still alive
      * @return true if it is alive
@@ -101,14 +92,13 @@ public class SenderServer{
             return false;
         }
     }
-
     //TODO comment?
     private String GetMessageToSend(){
         String Message;
         while(true){
             if(!catalogue.MessageInUse){
                 Message = catalogue.GetClientMessage(Tabid);
-                //System.out.println("The message (GetMessageToSend): " + Message);
+//System.out.println("The message (GetMessageToSend): " + Message);
                 if (Message != null){
                     System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
                 }
@@ -117,7 +107,6 @@ public class SenderServer{
         }
         return Message;
     }
-
     /**
      * Checks for received messages on this socket
      */
@@ -128,9 +117,7 @@ public class SenderServer{
         String messageString = "";
         byte[] messageByte = new byte[1000];
         PDU message = new PDU(0);
-
         while(endSocketCheck() && goOn) {
-
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
                 System.out.println("message to send:" + Messagelol);
@@ -142,7 +129,7 @@ public class SenderServer{
                     PDU temp = new PDU(messageByte, messageByte.length);
                     RecMessageBreakDown(temp);
                 }else{
-                    //Hittas inget, så törna in mannen
+//Hittas inget, så törna in mannen
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -150,27 +137,26 @@ public class SenderServer{
                     }
                 }
             }catch(IOException e){
-                //Read time out, this should happen once every one second.
-                //System.out.println(e);
+//Read time out, this should happen once every one second.
+//System.out.println(e);
             }
         }
-        /*
-        try {
-            outToServer.write(Message.quitServer());
-            localServerSocket.close();
-            System.out.println("Closing this instance of SenderServer");
-        }catch (IOException e){
-            System.out.println("Failed to close socket");
-        }*/
+/*
+try {
+outToServer.write(Message.quitServer());
+localServerSocket.close();
+System.out.println("Closing this instance of SenderServer");
+}catch (IOException e){
+System.out.println("Failed to close socket");
+}*/
     }
     private RecMessage RecMessageBreakDown(PDU message){
-        //Checks op-codes and adds creates the correct message
+//Checks op-codes and adds creates the correct message
         int opCode = (int)message.getByte(0);
         System.out.println("OP-code: " + opCode);
         RecMessage returnMes = null;
         int nickLength, time;
         String nick = "";
-
         switch(opCode){
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
@@ -215,7 +201,7 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " leaved the room.");
+                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " left the room.");
                 break;
             case OpCodes.UCNICK:
                 nickLength = (int)message.getByte(1);
