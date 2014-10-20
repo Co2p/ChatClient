@@ -140,8 +140,14 @@ public class SenderServer{
         while(endSocketCheck() && goOn) {
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
-                System.out.println("message to send:" + Messagelol + "\nmessage using crypt:" + catalogue.GetCrypt(Tabid)+ "\nmessage using comp:" + catalogue.GetComp(Tabid) );
-                sendMessage(Messagelol,GetKey());
+                //System.out.println("message to send:" + Messagelol + "\nmessage using crypt:" + catalogue.GetCrypt(Tabid)+ "\nmessage using comp:" + catalogue.GetComp(Tabid) );
+                //Check if the message contains a command
+                if(Messagelol.charAt(0) != '§'){
+                    sendMessage(Messagelol, GetKey());
+                }else{
+                    System.out.println("Command found!");
+                    commands(Messagelol);
+                }
             }
             try {
                 int bytesRead = in.read(messageByte);
@@ -149,7 +155,6 @@ public class SenderServer{
                     PDU temp = new PDU(messageByte, messageByte.length);
                     RecMessageBreakDown(temp);
                 }else{
-//Hittas inget, så törna in mannen
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -157,19 +162,26 @@ public class SenderServer{
                     }
                 }
             }catch(IOException e){
-//Read time out, this should happen once every one second.
-//System.out.println(e);
             }
         }
-/*
-try {
-outToServer.write(Message.quitServer());
-localServerSocket.close();
-System.out.println("Closing this instance of SenderServer");
-}catch (IOException e){
-System.out.println("Failed to close socket");
-}*/
     }
+
+    private void commands(String command){
+        try {
+            String commands[] = command.split(" ");
+            if (commands[0].equals("§nick")) {
+                if(commands[1].length() > 0) {
+                    outToServer.write(Message.changeNick(commands[1]));
+                }else{
+                    System.out.println("Too short username");
+                }
+            }
+        }catch(IOException e){
+            System.out.println("IOException occured: " + e);
+            e.printStackTrace();
+        }
+    }
+
     private RecMessage RecMessageBreakDown(PDU message){
         //Checks op-codes and adds creates the correct message
         int opCode = (int)message.getByte(0);
@@ -229,7 +241,7 @@ System.out.println("Failed to close socket");
                 String newNick = "";
                 try {
                     nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                    newNick = new String(message.getSubrange(8 + nickLength, nickLength2), "UTF-8");
+                    newNick = new String(message.getSubrange(Message.div4(8 + nickLength), nickLength2), "UTF-8");
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
