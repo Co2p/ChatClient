@@ -75,6 +75,7 @@ public class startGui extends JFrame implements ActionListener{
         //StyleConstants.setBackground(keyWord, Color.YELLOW);
         StyleConstants.setBold(keyWord, true);
 
+
         try{
             //doc.insertString(0, "Start of text\n", null );
             doc.insertString(doc.getLength(), "\n"+TesxObject, keyWord );
