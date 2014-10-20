@@ -14,8 +14,8 @@ import java.util.Random;
  * Created by Tony on 16/10/2014.
  */
 public class askForNameServer implements ActionListener {
-    private String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange", "Cyan", "Hot", "Cold", "Sour", "Sweet"};
-    private String[] nicks = new String[] {"Panther", "Carrot", "Cactus", "Sea", "Tiger", "Cat", "Dog", "Warthog", "Leopard", "Flower", "Circuit"};
+    private String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange", "Cyan", "Hot", "Cold", "Sour", "Sweet", "Slippery", "Big", "Small"};
+    private String[] nicks = new String[] {"Panther", "Carrot", "Cactus", "Sea", "Tiger", "Cat", "Dog", "Warthog", "Leopard", "Flower", "Circuit", "Sun", "Star", "Galaxy"};
     JFrame frame1 = new JFrame("Connect to server");
     JPanel textFrame = new JPanel();
     JPanel nickPanel = new JPanel();

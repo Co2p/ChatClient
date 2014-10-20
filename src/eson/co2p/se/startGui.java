@@ -71,6 +71,7 @@ public class startGui extends JFrame implements ActionListener{
 
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
+
         StyleConstants.setForeground(keyWord, Color.RED);
         //StyleConstants.setBackground(keyWord, Color.YELLOW);
         StyleConstants.setBold(keyWord, true);
