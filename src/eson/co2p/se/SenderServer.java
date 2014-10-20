@@ -1,4 +1,5 @@
 package eson.co2p.se;
+import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -151,7 +152,7 @@ System.out.println("Failed to close socket");
 }*/
     }
     private RecMessage RecMessageBreakDown(PDU message){
-//Checks op-codes and adds creates the correct message
+        //Checks op-codes and adds creates the correct message
         int opCode = (int)message.getByte(0);
         System.out.println("OP-code: " + opCode);
         RecMessage returnMes = null;
