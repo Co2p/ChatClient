@@ -29,10 +29,11 @@ public class Message {
      * @return  the created pdu with headers.
      */
     public static byte[] connectToServerMessage(){
-        int usernameLength = catalogue.getNick().getBytes().length;
-        PDU rawdata = new PDU(4 + div4(usernameLength));
+        int usernameLength = div4(catalogue.getNick().getBytes().length);
+        PDU rawdata = new PDU(4 + usernameLength);
         rawdata.setByte(0,(byte)OpCodes.JOIN);
         rawdata.setByte(1, (byte) usernameLength);
+        rawdata.setShort(2, (byte)0);
         try {
             rawdata.setSubrange(4, catalogue.getNick().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
@@ -82,14 +83,13 @@ public class Message {
      *  @return the converted bytearray containing the PDU header + message
      */
     public static byte[] sendMessage(String message, int type){
-        PDU rawdata = new PDU(12 + div4(message.getBytes().length +
-                catalogue.getNick().getBytes().length));
+        PDU rawdata = new PDU(12 + div4(message.getBytes().length));
         rawdata.setByte(0, (byte) OpCodes.MESSAGE);
         rawdata.setByte(1,(byte)type);
-        rawdata.setByte(2, (byte)0/*catalogue.getNick().getBytes().length*/);
-        rawdata.setByte(3, (byte)0);
-        rawdata.setShort(4, (short)div4(message.getBytes().length + 12));
-        rawdata.setInt(8, (byte)0);
+        //rawdata.setByte(2, (byte)0/*catalogue.getNick().getBytes().length*/);
+        //rawdata.setByte(3, (byte)0);
+        rawdata.setShort(4, (short)div4(message.getBytes().length));
+        //rawdata.setInt(8, (byte)0);
         try {
             rawdata.setSubrange(12, message.getBytes("UTF-8"));
             //rawdata.setSubrange(12 + message.getBytes().length, catalogue.getNick().getBytes("UTF-8"));
