@@ -73,7 +73,7 @@ public class RecMessage_Message extends RecMessage{
         int checksum = compressedPDU.getByte(1);
         int compLength = compressedPDU.getShort(2);
         int unCompLength = compressedPDU.getShort(4);
-        byte[] compMsg = compressedPDU.getSubrange(12, compLength);
+        byte[] compMsg = compressedPDU.getSubrange(8, compLength);
         byte[] retArr = null;
         if(algorithm == 0){
             try {
