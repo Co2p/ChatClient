@@ -57,6 +57,10 @@ public class RecMessage_Message extends RecMessage{
         return nickname;
     }
 
+    public int getType(){
+        return type;
+    }
+
     public int getTime(){
         return time;
     }
