@@ -79,7 +79,7 @@ public class startGui extends JFrame implements ActionListener{
                 StyleConstants.setForeground(keyWord, Color.GREEN);
                 break;
             case 2:
-                StyleConstants.setForeground(keyWord, Color.CYAN);
+                StyleConstants.setForeground(keyWord, Color.BLUE);
                 break;
         }
         StyleConstants.setBold(keyWord, true);
