@@ -1,6 +1,8 @@
 package eson.co2p.se;
 
 import java.io.UnsupportedEncodingException;
+import java.util.zip.*;
+import java.io.*;
 
 /**
  * Created by Isidor on 2014-10-18.
@@ -25,6 +27,7 @@ public class RecMessage_Message extends RecMessage{
                     break;
                 case 1:
                     System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
+                    message = new String(deCompress(PDUData.getSubrange(12, msgLength)), "UTF-8");
                     break;
                 case 2:
                     System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
@@ -32,7 +35,7 @@ public class RecMessage_Message extends RecMessage{
                     break;
                 case 3:
                     System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
-                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength)), "UTF-8");
+                    message = new String(deCrypt(deCompress(PDUData.getSubrange(12, msgLength))), "UTF-8");
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
@@ -63,5 +66,36 @@ public class RecMessage_Message extends RecMessage{
         byte[] encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
         Crypt.decrypt(encryptedMsg, encryptedMsg.length,catalogue.getKey(), catalogue.getKey().length);
         return encryptedMsg;
+    }
+    private static byte[] deCompress(byte[] comprMsg){
+        PDU compressedPDU = new PDU(comprMsg, comprMsg.length);
+        int algorithm = compressedPDU.getByte(0);
+        int checksum = compressedPDU.getByte(1);
+        int compLength = compressedPDU.getShort(2);
+        int unCompLength = compressedPDU.getShort(4);
+        byte[] compMsg = compressedPDU.getSubrange(12, compLength);
+        byte[] retArr = null;
+        if(algorithm == 0){
+            try {
+                Inflater inf = new java.util.zip.Inflater();
+                ByteArrayInputStream bytein = new java.io.ByteArrayInputStream(compMsg);
+                GZIPInputStream gzin = new java.util.zip.GZIPInputStream(bytein);
+                ByteArrayOutputStream byteout = new java.io.ByteArrayOutputStream();
+                int res = 0;
+                byte buf[] = new byte[65000];
+                while (res >= 0) {
+                    res = gzin.read(buf, 0, buf.length);
+                    if (res > 0) {
+                        byteout.write(buf, 0, res);
+                    }
+                }
+                retArr = byteout.toByteArray();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("unknown compression method");
+        }
+        return retArr;
     }
 }
