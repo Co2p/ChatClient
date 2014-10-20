@@ -1,5 +1,4 @@
 package eson.co2p.se;
-import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -86,12 +85,7 @@ public class SenderServer{
      */
     public boolean endSocketCheck(){
         int myLife = ClientThread.AliveThreadsID[Tabid];
-        if (myLife == 1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return myLife == 1;
     }
     //TODO comment?
     private String GetMessageToSend(){
@@ -99,9 +93,6 @@ public class SenderServer{
         while(true){
             if(!catalogue.MessageInUse){
                 Message = catalogue.GetClientMessage(Tabid);
-                if (Message != null){
-                    //System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
-                }
                 break;
             }
         }
@@ -130,13 +121,9 @@ public class SenderServer{
         }
     }
     private void checkReceivedMessage(){
-        boolean goOn = true;
-        boolean firstRun = true;
-        int totBytesRead, totLength;
-        String messageString = "";
         byte[] messageByte = new byte[1000];
         PDU message = new PDU(0);
-        while(endSocketCheck() && goOn) {
+        while(endSocketCheck()) {
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
                 //Check if the message contains a command
@@ -160,6 +147,7 @@ public class SenderServer{
                     }
                 }
             }catch(IOException e){
+                //don't put anything here as it will cramp the terminal
             }
         }
         //After endsocketcheck, disconnect from the server
@@ -180,10 +168,11 @@ public class SenderServer{
     }
     private void commands(String command){
         try {
-            String commands[] = command.split(" ");
+            String commands[] = command.split(" ", 2);
             if (commands[0].equals("§nick")) {
-                if(commands[1].length() > 0) {
+                if(commands[1].length() > 0){
                     outToServer.write(Message.changeNick(commands[1]));
+                    System.out.println("newNick = '" + commands[1] + "'");
                 }else{
                     System.out.println("Too short username");
                 }
@@ -262,7 +251,7 @@ public class SenderServer{
                 String newNick = "";
                 try {
                     nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                    newNick = new String(message.getSubrange(Message.div4(8 + nickLength), nickLength2), "UTF-8");
+                    newNick = new String(message.getSubrange(8 + Message.div4(nickLength), nickLength2), "UTF-8");
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }

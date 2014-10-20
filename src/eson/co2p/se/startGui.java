@@ -125,13 +125,19 @@ public class startGui extends JFrame implements ActionListener{
             StyleConstants.setForeground(keyWord, Color.BLACK);
             doc.insertString(doc.getLength(), message, keyWord );
         }catch(Exception e) {
+            e.printStackTrace();
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
     private Color colorFromString(String nick){
-        String color = String.format("#%X", nick.hashCode());
+        String color;
+        if(nick.length() <4){
+            color = String.format("#%X", (nick + "homo").hashCode());
+        }else {
+            color = String.format("#%X", nick.hashCode());
+        }
         return new Color(
                 Integer.valueOf( color.substring( 1, 3 ), 16 ),
                 Integer.valueOf( color.substring( 3, 5 ), 16 ),
