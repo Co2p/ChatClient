@@ -98,7 +98,7 @@ public class startGui extends JFrame implements ActionListener{
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
-            //if the message is encrypted, add a yellow background
+            //if the message is encrypted, add a yellow backgroundsdf
             if(type != 0){
                 StyleConstants.setBackground(keyWord, Color.YELLOW);
             }
