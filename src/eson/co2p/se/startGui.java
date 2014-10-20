@@ -85,6 +85,33 @@ public class startGui extends JFrame implements ActionListener{
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
+    public void UpdateTabByID2(int TabID, String time, String userName, String message, int type){
+        JTextPane OutputArea = outputAreaList.get(TabID);
+
+        StyledDocument doc = OutputArea.getStyledDocument();
+        SimpleAttributeSet keyWord = new SimpleAttributeSet();
+        StyleConstants.setForeground(keyWord, Color.RED);
+        //StyleConstants.setBackground(keyWord, Color.YELLOW);
+        //StyleConstants.setBold(keyWord, true);
+        try{
+            //if the message is encrypted, add a yellow background
+            if(type != 0){
+                StyleConstants.setBackground(keyWord, Color.YELLOW);
+            }
+            StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
+            doc.insertString(doc.getLength(), "\n"+time + " ", keyWord );
+            if(userName.length() > 0) {
+                StyleConstants.setForeground(keyWord, Color.BLUE);
+                doc.insertString(doc.getLength(), userName + " ", keyWord);
+            }
+            StyleConstants.setForeground(keyWord, Color.BLACK);
+            doc.insertString(doc.getLength(), message, keyWord );
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
+    }
+
     public int getSelectedServerTab(){
         int Index = tabbedPane.getSelectedIndex();
         ChangeColor( panelOne, Index);

@@ -140,7 +140,6 @@ public class SenderServer{
         while(endSocketCheck() && goOn) {
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
-                //System.out.println("message to send:" + Messagelol + "\nmessage using crypt:" + catalogue.GetCrypt(Tabid)+ "\nmessage using comp:" + catalogue.GetComp(Tabid) );
                 //Check if the message contains a command
                 if(Messagelol.charAt(0) != '§'){
                     sendMessage(Messagelol, GetKey());
@@ -192,11 +191,12 @@ public class SenderServer{
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes());
-                if(temp.getNick().length() > 0) {
+                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType());
+                /*if(temp.getNick().length() > 0) {
                     GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ": " + temp.getMessage());
                 }else{
                     GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ": " + temp.getMessage());
-                }
+                }*/
                 returnMes = temp;
                 break;
             case OpCodes.NICKS:
