@@ -6,6 +6,7 @@ package eson.co2p.se;
  * Created by Tony on 15/10/2014.
  */
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.Point;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,7 +44,7 @@ public class startGui extends JFrame implements ActionListener{
 
     ArrayList<ArrayList> Client_Content = new ArrayList<ArrayList>();
     ArrayList<ArrayList> chekboxes = new ArrayList<ArrayList>();
-    ArrayList<JTextArea> outputAreaList = new ArrayList<JTextArea>();
+    ArrayList<JTextPane> outputAreaList = new ArrayList<JTextPane>();
 
     int[] TABID = new int[256];
     int CurrentTab = 0;
@@ -66,8 +67,21 @@ public class startGui extends JFrame implements ActionListener{
     }
 
     public void UpdateTabByID(int TabID,String TesxObject){
-        JTextArea OutputArea = outputAreaList.get(TabID);
-        OutputArea.setText(OutputArea.getText() +"\n"+ TesxObject);
+        JTextPane OutputArea = outputAreaList.get(TabID);
+
+        StyledDocument doc = OutputArea.getStyledDocument();
+        SimpleAttributeSet keyWord = new SimpleAttributeSet();
+        StyleConstants.setForeground(keyWord, Color.RED);
+        //StyleConstants.setBackground(keyWord, Color.YELLOW);
+        StyleConstants.setBold(keyWord, true);
+
+        try{
+            //doc.insertString(0, "Start of text\n", null );
+            doc.insertString(doc.getLength(), "\n"+TesxObject, keyWord );
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
     public int getSelectedServerTab(){
@@ -102,7 +116,7 @@ public class startGui extends JFrame implements ActionListener{
             CurrentTab += 1;
 
 
-            ArrayList<JTextArea> serverObjects = new ArrayList<JTextArea>();
+            ArrayList<JTextPane> serverObjects = new ArrayList<JTextPane>();
 
             JPanel tempPanel2 = new JPanel();
             tempPanel2.setLayout(new GridLayout(2, 0));
@@ -119,10 +133,11 @@ public class startGui extends JFrame implements ActionListener{
             tempPanel2.add(tempPanel3);
 
 
-            JTextArea inputArea = defineInputarea();
+            JTextPane inputArea = defineInputarea();
             JScrollPane jScrollPane2 = new JScrollPane();
             serverObjects.add(inputArea);
             jScrollPane2.getViewport().add(inputArea);
+            inputArea.setPreferredSize(new Dimension(330, 120));
 
 
             JButton sendMessage = new JButton("Send");
@@ -136,7 +151,7 @@ public class startGui extends JFrame implements ActionListener{
             disConnectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setEnabled(false);
 
-            JTextArea Key = new JTextArea("encryption key");
+            JTextPane Key = new JTextPane();
             Key.setPreferredSize(new Dimension(150, 20));
 
             JPanel tempPanel6 = new JPanel();
@@ -179,13 +194,15 @@ public class startGui extends JFrame implements ActionListener{
 
             JPanel tempPanel = new JPanel();
             tempPanel.setLayout(new GridLayout(2, 0));
-            JTextArea outputArea = defineOutputarea();
+            JTextPane outputArea = defineOutputarea();
             serverObjects.add(outputArea);
             outputAreaList.add(outputArea);
+            outputArea.setPreferredSize(new Dimension(18, 10));
 
 
             JScrollPane jScrollPane1 = new JScrollPane();
             jScrollPane1.getViewport().add(outputArea);
+            jScrollPane1.setPreferredSize(new Dimension(18, 10));
 
             //outputArea.setPreferredSize(new Dimension(400, 500));
             tempPanel.add(jScrollPane1);
@@ -217,7 +234,7 @@ public class startGui extends JFrame implements ActionListener{
 
             JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage};
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
-            JTextArea[] textAreas = new JTextArea[]{Key,inputArea};
+            JTextPane[] textAreas = new JTextPane[]{Key,inputArea};
             //JCheckBox[] Chekboxes = new JCheckBox[]{Compress,Encrypted};
 
             ArrayList<Object> ClientContent = new ArrayList<Object>();
@@ -260,16 +277,16 @@ public class startGui extends JFrame implements ActionListener{
         return valu;
     }
 
-    public JTextArea defineOutputarea(){
-        JTextArea outputArea = new JTextArea(10, 25);
+    public JTextPane defineOutputarea(){
+        JTextPane outputArea = new JTextPane();
         outputArea.setEditable(false);
         outputArea.setText("Chat logg goes here....");
         outputArea.validate();
         return outputArea;
     }
 
-    public JTextArea defineInputarea(){
-        JTextArea outputArea = new JTextArea(8, 25);
+    public JTextPane defineInputarea(){
+        JTextPane outputArea = new JTextPane();
         outputArea.setEditable(true);
 
         outputArea.setText("EnterText");
@@ -319,7 +336,7 @@ public class startGui extends JFrame implements ActionListener{
     }
 
 
-    public void UpdateWindows(JTextArea inputArea, JTextArea outputArea){
+    public void UpdateWindows(JTextPane inputArea, JTextPane outputArea){
         outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
         inputArea.setText("");
     }
@@ -395,10 +412,10 @@ public class startGui extends JFrame implements ActionListener{
                             }
                         }
                     }
-                    else if (Target.getClass() == JTextArea[].class) {
-                        JTextArea[] textArea = (JTextArea[]) Target;
+                    else if (Target.getClass() == JTextPane[].class) {
+                        JTextPane[] textArea = (JTextPane[]) Target;
                         for (int i = 0; i < textArea.length; i++) {
-                            JTextArea target = textArea[i];
+                            JTextPane target = textArea[i];
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -423,21 +440,21 @@ public class startGui extends JFrame implements ActionListener{
 
     public void clearOutputWindow(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-        JTextArea Output = TempTarget.get(1);
+        ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
+        JTextPane Output = TempTarget.get(1);
         Output.setText("");
     }
 
     public void addOutputText(String Text){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-        JTextArea Output = TempTarget.get(1);
+        ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
+        JTextPane Output = TempTarget.get(1);
         Output.setText(Output.getText() + "\n" + Text);
     }
     public String getInputText(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-        JTextArea Input = TempTarget.get(0);
+        ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
+        JTextPane Input = TempTarget.get(0);
         String inp = Input.getText().trim();
         if (!inp.equals("")){
             return inp;
@@ -448,11 +465,11 @@ public class startGui extends JFrame implements ActionListener{
     }
     public void addToOutputFromInput(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-        JTextArea Input = TempTarget.get(0);
+        ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
+        JTextPane Input = TempTarget.get(0);
         String inp = Input.getText().trim();
         if (!inp.equals("")){
-            JTextArea Output = TempTarget.get(1);
+            JTextPane Output = TempTarget.get(1);
             Output.setText(Output.getText() + "\n" + Input.getText());
             removeInputText();
         }
@@ -460,8 +477,8 @@ public class startGui extends JFrame implements ActionListener{
 
     public void removeInputText(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverPlanes.get(Index);
-        JTextArea Input = TempTarget.get(0);
+        ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
+        JTextPane Input = TempTarget.get(0);
         Input.setText("");
     }
 

@@ -48,7 +48,7 @@ public class SenderServer{
         while(tries < maxTries) {
             try {
                 localServerSocket = new Socket(Ip, Port);
-                localServerSocket.setSoTimeout(500);
+                localServerSocket.setSoTimeout(100);
                 in = new DataInputStream(localServerSocket.getInputStream());
 //inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
                 System.out.println("connected socket!");
