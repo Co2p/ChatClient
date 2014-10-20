@@ -162,9 +162,9 @@ System.out.println("Failed to close socket");
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes());
                 if(temp.getNick().length() > 0) {
-                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ":" + temp.getMessage());
+                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ": " + temp.getMessage());
                 }else{
-                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getMessage());
+                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ": " + temp.getMessage());
                 }
                 returnMes = temp;
                 break;
@@ -201,7 +201,7 @@ System.out.println("Failed to close socket");
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " left the room.");
+                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " Left the room.");
                 break;
             case OpCodes.UCNICK:
                 nickLength = (int)message.getByte(1);

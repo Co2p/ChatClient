@@ -266,6 +266,7 @@ public class startGui extends JFrame implements ActionListener{
     public JTextArea defineInputarea(){
         JTextArea outputArea = new JTextArea(8, 25);
         outputArea.setEditable(true);
+
         outputArea.setText("EnterText");
         outputArea.validate();
         return outputArea;
