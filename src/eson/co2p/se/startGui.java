@@ -66,20 +66,26 @@ public class startGui extends JFrame implements ActionListener{
         }
     }
 
-    public void UpdateTabByID(int TabID,String TesxObject){
+    public void UpdateTabByID(int TabID,String message, int type){
         JTextPane OutputArea = outputAreaList.get(TabID);
 
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
-
-        StyleConstants.setForeground(keyWord, Color.RED);
-        //StyleConstants.setBackground(keyWord, Color.YELLOW);
+        switch(type) {
+            case 0:
+                StyleConstants.setForeground(keyWord, Color.RED);
+                break;
+            case 1:
+                StyleConstants.setForeground(keyWord, Color.GREEN);
+                break;
+            case 2:
+                StyleConstants.setForeground(keyWord, Color.CYAN);
+                break;
+        }
         StyleConstants.setBold(keyWord, true);
-
-
         try{
             //doc.insertString(0, "Start of text\n", null );
-            doc.insertString(doc.getLength(), "\n"+TesxObject, keyWord );
+            doc.insertString(doc.getLength(), "\n"+message, keyWord );
         }catch(Exception e) {
             System.out.println(e);
         }
@@ -92,8 +98,6 @@ public class startGui extends JFrame implements ActionListener{
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
         StyleConstants.setForeground(keyWord, Color.RED);
-        //StyleConstants.setBackground(keyWord, Color.YELLOW);
-        //StyleConstants.setBold(keyWord, true);
         try{
             //if the message is encrypted, add a yellow background
             if(type != 0){
