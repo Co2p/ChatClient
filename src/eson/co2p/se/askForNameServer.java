@@ -18,6 +18,7 @@ public class askForNameServer implements ActionListener {
     JLabel label = new JLabel("  Please provide a name server and click Connect");
     JTextField Adress = new JTextField("itchy.cs.umu.se");
     JTextField port = new JTextField("1337");
+    JTextField nick = new JTextField("Nick");
     JButton acceptadress = new JButton("Connect");
     startGui Gui;
 
@@ -26,9 +27,9 @@ public class askForNameServer implements ActionListener {
      */
     public void CreatNameserverQuestion(){
         acceptadress.addActionListener(this);
-        frame1.setLayout(new GridLayout(3, 0));
+        frame1.setLayout(new GridLayout(4, 0));
         textFrame.setLayout(new FlowLayout());
-        frame1.setPreferredSize(new Dimension(340, 120));
+        frame1.setPreferredSize(new Dimension(340, 145));
         label.setPreferredSize(new Dimension(312, 20));
         Adress.setPreferredSize(new Dimension(250, 26));
         port.setPreferredSize(new Dimension(60, 26));
@@ -42,7 +43,8 @@ public class askForNameServer implements ActionListener {
         frame1.getContentPane().add(textFrame, 1);
         textFrame.add(Adress);
         textFrame.add(port);
-        frame1.add(acceptadress, 2);
+        frame1.add(nick, 2);
+        frame1.add(acceptadress, 3);
         frame1.pack();
         frame1.setVisible(true);
         frame1.validate();
@@ -61,6 +63,7 @@ public class askForNameServer implements ActionListener {
                     if(Adress.getText().trim() != ""){
                         try {
                             catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
+                            catalogue.setName(nick.getText());
                         } catch (UnknownHostException e1) {
                             e1.printStackTrace();
                         }
