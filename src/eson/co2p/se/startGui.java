@@ -290,7 +290,7 @@ public class startGui extends JFrame implements ActionListener{
     /**
      * Generates a colour from the ip of the active tab
      * @param valu the active tab index
-     * @param index the requested colour (or index) R=0, G=1, B=2
+     * @param index offset in the colour from the last value
      * @return the amount of colour for RGB
      */
     private int Loop254(int valu, int index){
@@ -298,7 +298,7 @@ public class startGui extends JFrame implements ActionListener{
             return 254;
         }
         String ip = Server.getServer((String)serverlist.get(valu)).getIp().toString();
-        ip = ip.replaceAll("[/.]+", "");
+        ip = ip.replaceAll("[^0-9]", "");
         valu = Integer.parseInt(ip.substring(ip.length()-(index+3), ip.length()-(index)));
 
         while (valu>254){
