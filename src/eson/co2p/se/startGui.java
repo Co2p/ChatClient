@@ -334,12 +334,13 @@ public class startGui extends JFrame implements ActionListener{
 
             }
         }
-        //chek the send button
+        //check the send button
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
                 while (true){
                     if(catalogue.MessageInUse == false){
                         catalogue.SetClientMessage (getInputText(), getSelectedServerTab());
+                        removeInputText();
                         System.out.println("adding message");
                         break;
                     }
