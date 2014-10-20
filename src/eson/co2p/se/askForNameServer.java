@@ -32,6 +32,7 @@ public class askForNameServer implements ActionListener {
      */
     public void CreatNameserverQuestion(){
         acceptadress.addActionListener(this);
+        changeNick.addActionListener(this);
         frame1.setLayout(new GridLayout(4, 0));
         textFrame.setLayout(new FlowLayout());
         nickPanel.setLayout(new FlowLayout());
