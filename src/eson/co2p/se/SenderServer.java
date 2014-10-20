@@ -111,6 +111,25 @@ public class SenderServer{
     /**
      * Checks for received messages on this socketasd
      */
+    private int GetKey(){
+        boolean crypt = catalogue.GetCrypt(Tabid);
+        boolean comp = catalogue.GetComp(Tabid);
+        if(!crypt && !comp){
+            return 0;
+        }
+        else if(!crypt && comp){
+            return 1;
+        }
+        else if(crypt && !comp){
+            return 2;
+        }
+        else if(crypt && comp){
+            return 3;
+        }
+        else{
+            return 0;
+        }
+    }
     private void checkReceivedMessage(){
         boolean goOn = true;
         boolean firstRun = true;
@@ -122,7 +141,7 @@ public class SenderServer{
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
                 System.out.println("message to send:" + Messagelol + "\nmessage using crypt:" + catalogue.GetCrypt(Tabid)+ "\nmessage using comp:" + catalogue.GetComp(Tabid) );
-                sendMessage(Messagelol,0);
+                sendMessage(Messagelol,GetKey());
             }
             try {
                 int bytesRead = in.read(messageByte);
