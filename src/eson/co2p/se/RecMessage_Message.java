@@ -24,12 +24,15 @@ public class RecMessage_Message extends RecMessage{
                     message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
                     break;
                 case 1:
+                    System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
                     break;
                 case 2:
                     System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
                     message = new String(deCrypt(PDUData.getSubrange(12, msgLength)), "UTF-8");
                     break;
                 case 3:
+                    System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
+                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength)), "UTF-8");
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
