@@ -99,9 +99,8 @@ public class SenderServer{
         while(true){
             if(!catalogue.MessageInUse){
                 Message = catalogue.GetClientMessage(Tabid);
-//System.out.println("The message (GetMessageToSend): " + Message);
                 if (Message != null){
-                    System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
+                    //System.out.println("Message broken, sorry bro...no message is not broken, yes it is!");
                 }
                 break;
             }
@@ -162,6 +161,12 @@ public class SenderServer{
                 }
             }catch(IOException e){
             }
+        }
+        //After endsocketcheck, disconnect from the server
+        try {
+            outToServer.write(Message.quitServer());
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 
