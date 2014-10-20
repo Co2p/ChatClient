@@ -64,7 +64,7 @@ public class Message {
         PDU rawdata = new PDU(4 + div4(nickname.getBytes().length));
         catalogue.setName(nickname);
         rawdata.setByte(0,(byte)OpCodes.CHNICK);
-        rawdata.setByte(1, (byte) nickname.getBytes().length);
+        rawdata.setByte(1, (byte)div4(nickname.getBytes().length));
         try {
             rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
