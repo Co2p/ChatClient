@@ -79,12 +79,11 @@ public class startGui extends JFrame implements ActionListener{
                 StyleConstants.setForeground(keyWord, Color.GREEN);
                 break;
             case 2:
-                StyleConstants.setForeground(keyWord, Color.CYAN);
+                StyleConstants.setForeground(keyWord, Color.BLUE);
                 break;
         }
         StyleConstants.setBold(keyWord, true);
         try{
-            //doc.insertString(0, "Start of text\n", null );
             doc.insertString(doc.getLength(), "\n"+message, keyWord );
         }catch(Exception e) {
             System.out.println(e);
@@ -106,7 +105,7 @@ public class startGui extends JFrame implements ActionListener{
             StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
             doc.insertString(doc.getLength(), "\n"+time + " ", keyWord );
             if(userName.length() > 0) {
-                StyleConstants.setForeground(keyWord, Color.BLUE);
+                StyleConstants.setForeground(keyWord, colorFromString(userName));
                 doc.insertString(doc.getLength(), userName + " ", keyWord);
             }
             StyleConstants.setForeground(keyWord, Color.BLACK);
@@ -115,6 +114,14 @@ public class startGui extends JFrame implements ActionListener{
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
+    }
+
+    private Color colorFromString(String nick){
+        String color = String.format("#%X", nick.hashCode());
+        return new Color(
+                Integer.valueOf( color.substring( 1, 3 ), 16 ),
+                Integer.valueOf( color.substring( 3, 5 ), 16 ),
+                Integer.valueOf( color.substring( 5, 7 ), 16 ) );
     }
 
     public int getSelectedServerTab(){
