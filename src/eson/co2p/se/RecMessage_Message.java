@@ -24,6 +24,10 @@ public class RecMessage_Message extends RecMessage{
             switch(type){
                 case 0:
                     message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
+                    //Got a problem with UTF-8 and linux printing out the zerobytes
+                    //This is added as a fix for that problem
+                    message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
+                    System.out.println("MESSAGE: " + message);
                     break;
                 case 1:
                     System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
