@@ -121,7 +121,7 @@ public class SenderServer{
         while(endSocketCheck() && goOn) {
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
-                System.out.println("message to send:" + Messagelol);
+                System.out.println("message to send:" + Messagelol + "\nmessage using crypt:" + catalogue.GetCrypt(Tabid)+ "\nmessage using comp:" + catalogue.GetComp(Tabid) );
                 sendMessage(Messagelol,0);
             }
             try {

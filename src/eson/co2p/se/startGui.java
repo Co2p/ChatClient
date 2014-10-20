@@ -42,6 +42,7 @@ public class startGui extends JFrame implements ActionListener{
     ArrayList<JButton> Buttons = new ArrayList<JButton>();
 
     ArrayList<ArrayList> Client_Content = new ArrayList<ArrayList>();
+    ArrayList<ArrayList> chekboxes = new ArrayList<ArrayList>();
     ArrayList<JTextArea> outputAreaList = new ArrayList<JTextArea>();
 
     int[] TABID = new int[256];
@@ -130,6 +131,7 @@ public class startGui extends JFrame implements ActionListener{
             JCheckBox Compress = new JCheckBox("Compress");
             JCheckBox Encrypted = new JCheckBox("Encrypted");
 
+
             connectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setEnabled(false);
@@ -216,11 +218,14 @@ public class startGui extends JFrame implements ActionListener{
             JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage};
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
             JTextArea[] textAreas = new JTextArea[]{Key,inputArea};
+            //JCheckBox[] Chekboxes = new JCheckBox[]{Compress,Encrypted};
+
             ArrayList<Object> ClientContent = new ArrayList<Object>();
 
             ClientContent.add(buttonList);
             ClientContent.add(boxesList);
             ClientContent.add(textAreas);
+            //ClientContent.add(Chekboxes);
 
 
             Client_Content.add(ClientContent);
@@ -324,23 +329,36 @@ public class startGui extends JFrame implements ActionListener{
         ArrayList<Object> activeClientObjects = Client_Content.get(getSelectedServerTab());
         JButton Connect = null;
         JButton Disconect = null;
+        JCheckBox crypt = null;
+        JCheckBox compr = null;
         //get connect/disconnect buttons
         int IndexVal;
+        boolean FoundBoxes = false;
+        boolean Foundbuttons = false;
         for(Object Target : activeClientObjects) {
             if (Target.getClass() == JButton[].class) {
                 JButton[] Buttons = (JButton[]) Target;
                 Connect = Buttons[0];
                 Disconect = Buttons[1];
+                Foundbuttons = true;
+            }
+            else if (Target.getClass() == JCheckBox[].class) {
+                JCheckBox[] boxes = (JCheckBox[]) Target;
+                compr = boxes[0];
+                crypt = boxes[1];
+                FoundBoxes = true;
+            }
+            if(FoundBoxes && Foundbuttons){
                 break;
-
             }
         }
+
         //check the send button
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
                 while (true){
                     if(catalogue.MessageInUse == false){
-                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab());
+                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected());
                         removeInputText();
                         System.out.println("adding message");
                         break;
@@ -350,7 +368,7 @@ public class startGui extends JFrame implements ActionListener{
                 //addToOutputFromInput();
             }
         }
-        //getting the needed objects
+        //handeling disable/enable (connect/disconnect)
         if (Connect.equals(e.getSource()) || Disconect.equals(e.getSource())) {
             for(Object Target : activeClientObjects){
                 if (Connect != null && Disconect != null) {

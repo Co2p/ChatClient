@@ -18,6 +18,8 @@ public class catalogue {
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
     public static String[] lol = new String[256];
+    public static boolean[] comp = new boolean[256];
+    public static boolean[] crypt = new boolean[256];
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
 
@@ -30,10 +32,12 @@ public class catalogue {
      * @param Message the new message
      * @param Index the position to set(coresponding to the clientthread id)
      */
-    public static void SetClientMessage (String Message, int Index) {
+    public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto) {
         firstFillArrayList();
         MessageInUse = true;
         lol[Index] = Message;
+        comp[Index] = compr;
+        crypt[Index] = crypto;
         //Chatsync.set(Index,Message);
         System.out.println("Setting message");
         MessageInUse = false;
@@ -188,6 +192,7 @@ public class catalogue {
     /**
      * returns the message to send, sets the position to null
      * @param Index the position to set(coresponding to the clientthread id)
+     *
      */
     public static String GetClientMessage (int Index) {
         firstFillArrayList();
@@ -205,6 +210,38 @@ public class catalogue {
         }
     }
 
+    /**
+     * returns if using crypting or not
+     * @param Index the position to get(coresponding to the clientthread id)
+     *
+     */
+    public static boolean GetCrypt (int Index) {
+        firstFillArrayList();
+        if(firstAcess == false) {
+            boolean ret = crypt[Index];
+            return ret;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * returns if using compression or not or not
+     * @param Index the position to get(coresponding to the clientthread id)
+     *
+     */
+    public static boolean GetComp (int Index) {
+        firstFillArrayList();
+        if(firstAcess == false) {
+            boolean ret = comp[Index];
+            return ret;
+        }
+        else{
+            return false;
+        }
+    }
+
     private static void firstFillArrayList(){
         if(firstAcess == true) {
             //for (int i = 0; i < 256; i++) {
@@ -212,6 +249,8 @@ public class catalogue {
             //}
             for(int i = 0; i < lol.length; i++){
                 lol[i] = null;
+                comp[i] = false;
+                crypt[i] = false;
             }
             System.out.println("Filled Arraylist");
             firstAcess = false;
