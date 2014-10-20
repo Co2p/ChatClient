@@ -88,11 +88,11 @@ public class Message {
         rawdata.setByte(1,(byte)type);
         rawdata.setByte(2, (byte)0/*catalogue.getNick().getBytes().length*/);
         rawdata.setByte(3, (byte)0);
-        rawdata.setShort(4, (short) message.getBytes().length);
-        //rawdata.setInt(8, getTime());
+        rawdata.setShort(4, (short)div4(message.getBytes().length + 12));
+        rawdata.setInt(8, (byte)0);
         try {
             rawdata.setSubrange(12, message.getBytes("UTF-8"));
-            rawdata.setSubrange(12 + message.getBytes().length, catalogue.getNick().getBytes("UTF-8"));
+            //rawdata.setSubrange(12 + message.getBytes().length, catalogue.getNick().getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);
         }
