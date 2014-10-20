@@ -402,10 +402,12 @@ public class startGui extends JFrame implements ActionListener{
         JButton Disconect = null;
         JCheckBox crypt = null;
         JCheckBox compr = null;
+        String Key = "";
         //get connect/disconnect buttons
         int IndexVal;
         boolean FoundBoxes = false;
         boolean Foundbuttons = false;
+        boolean FoundKey= false;
         for(Object Target : activeClientObjects) {
             if (Target.getClass() == JButton[].class) {
                 JButton[] Buttons = (JButton[]) Target;
@@ -419,17 +421,25 @@ public class startGui extends JFrame implements ActionListener{
                 crypt = boxes[1];
                 FoundBoxes = true;
             }
-            if(FoundBoxes && Foundbuttons){
+            else if (Target.getClass() == JTextPane[].class) {
+                JTextPane[] textArea = (JTextPane[]) Target;
+                Key = textArea[0].getText();
+                if(!catalogue.GetCryptKey(getSelectedServerTab()).equals(Key)){
+                    catalogue.SetcryptKey(getSelectedServerTab(), Key);
+                }
+
+                FoundKey= true;
+            }
+            if(FoundBoxes && Foundbuttons && FoundKey){
                 break;
             }
         }
-
         //check the send button
         for (JButton s : Buttons) {
             if (s.equals(e.getSource())) {
                 while (true){
                     if(catalogue.MessageInUse == false){
-                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected());
+                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected(),Key);
                         removeInputText();
                         System.out.println("adding message");
                         break;

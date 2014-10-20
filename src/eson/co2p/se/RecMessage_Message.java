@@ -11,7 +11,7 @@ public class RecMessage_Message extends RecMessage{
     int type, time;
     String nickname, message;
 
-    public RecMessage_Message(byte[] rawData){
+    public RecMessage_Message(byte[] rawData, int Tabid){
         super(rawData);
         int nickLength, msgLength;
         int checksum = PDUData.getByte(3);
@@ -35,11 +35,11 @@ public class RecMessage_Message extends RecMessage{
                     break;
                 case 2:
                     System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
-                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength)), "UTF-8");
+                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
                     break;
                 case 3:
                     System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
-                    message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength))), "UTF-8");
+                    message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
@@ -65,14 +65,14 @@ public class RecMessage_Message extends RecMessage{
         return time;
     }
 
-    private static byte[] deCrypt(byte[] cryptMsg){
+    private static byte[] deCrypt(byte[] cryptMsg, int Tabid){
         PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
         int algorithm = encryptedPDU.getByte(0);
         int checksum = encryptedPDU.getByte(1);
         int cryptLength = encryptedPDU.getShort(2);
         int unCryptLength = encryptedPDU.getShort(4);
         byte[] encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
-        Crypt.decrypt(encryptedMsg, encryptedMsg.length,catalogue.getKey(), catalogue.getKey().length);
+        Crypt.decrypt(encryptedMsg, encryptedMsg.length,catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
         return encryptedMsg;
     }
     private static byte[] deCompress(byte[] comprMsg){

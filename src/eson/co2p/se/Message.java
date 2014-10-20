@@ -83,7 +83,7 @@ public class Message {
      *  @param type ordinary/compressed/crypt
      *  @return the converted bytearray containing the PDU header + message
      */
-    public static byte[] sendMessage(String message, int type){
+    public static byte[] sendMessage(String message, int type, int Tabid){
         PDU rawdata = null;
         try {
             byte[] msgByte = message.getBytes("UTF-8");
@@ -93,10 +93,10 @@ public class Message {
                     msgByte = compress(msgByte);
                     break;
                 case 2:
-                    msgByte = enCrypt(msgByte);
+                    msgByte = enCrypt(msgByte,Tabid);
                     break;
                 case 3:
-                    msgByte = enCrypt(compress(msgByte));
+                    msgByte = enCrypt(compress(msgByte),Tabid);
                     break;
             }
             rawdata = new PDU(12 + div4(msgByte.length));
@@ -111,9 +111,9 @@ public class Message {
         return rawdata.getBytes();
     }
 
-    private static byte[] enCrypt(byte[] data){
+    private static byte[] enCrypt(byte[] data, int Tabid){
         byte[] newData = data;
-        Crypt.encrypt(newData, newData.length, catalogue.getKey(), catalogue.getKey().length);
+        Crypt.encrypt(newData, newData.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
         PDU cryptPDU = new PDU(12 + div4(newData.length));
         //The first byte is type of cryptography, it is 0 for the default XOR-method
         //so add nothing...

@@ -18,6 +18,7 @@ public class catalogue {
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
     public static String[] lol = new String[256];
+    public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
     public static boolean[] crypt = new boolean[256];
     public static boolean MessageInUse = false;
@@ -32,12 +33,13 @@ public class catalogue {
      * @param Message the new message
      * @param Index the position to set(coresponding to the clientthread id)
      */
-    public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto) {
+    public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto, String key) {
         firstFillArrayList();
         MessageInUse = true;
         lol[Index] = Message;
         comp[Index] = compr;
         crypt[Index] = crypto;
+        Keys[Index] = key;
         //Chatsync.set(Index,Message);
         System.out.println("Setting message");
         MessageInUse = false;
@@ -177,8 +179,16 @@ public class catalogue {
      * Returns the key as bytes
      * @return the key as bytes
      */
-    public static byte[] getKey(){
-        return key.getBytes();
+    public static byte[] getKey(int Index){
+
+        firstFillArrayList();
+        if(firstAcess == false) {
+            String ret = Keys[Index];
+            return ret.getBytes();
+        }
+        else{
+            return "foobar".getBytes();
+        }
     }
 
     /**
@@ -225,7 +235,30 @@ public class catalogue {
             return false;
         }
     }
-
+    /**
+     * returns if using compression or not or not
+     * @param Index the position to get(coresponding to the clientthread id)
+     *
+     */
+    public static void SetcryptKey(int Index, String key){
+        firstFillArrayList();
+        Keys[Index] = key;
+    }
+    /**
+     * returns if using compression or not or not
+     * @param Index the position to get(coresponding to the clientthread id)
+     *
+     */
+    public static String GetCryptKey(int Index){
+        firstFillArrayList();
+        if(firstAcess == false) {
+            String ret = Keys[Index];
+            return ret;
+        }
+        else{
+            return "foobar";
+        }
+    }
     /**
      * returns if using compression or not or not
      * @param Index the position to get(coresponding to the clientthread id)
@@ -251,6 +284,7 @@ public class catalogue {
                 lol[i] = null;
                 comp[i] = false;
                 crypt[i] = false;
+                Keys[i] = "foobar";
             }
             System.out.println("Filled Arraylist");
             firstAcess = false;

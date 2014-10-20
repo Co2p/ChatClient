@@ -75,7 +75,7 @@ public class SenderServer{
     public void sendMessage(String messageToSend,int Type){
         try{
             System.out.println("Sending message....");
-            outToServer.write(Message.sendMessage(messageToSend, Type));
+            outToServer.write(Message.sendMessage(messageToSend, Type, Tabid));
         }catch (IOException e){
             System.out.println("Failed to send message");
         }
@@ -170,6 +170,14 @@ public class SenderServer{
         }
     }
 
+    private String GetExplanation(int g){
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help"};
+        return Explanations[g];
+    }
+    private String[] GetComandList(){
+        String[] Commands = new String[]{"§nick","§Help"};
+        return Commands;
+    }
     private void commands(String command){
         try {
             String commands[] = command.split(" ");
@@ -179,6 +187,14 @@ public class SenderServer{
                 }else{
                     System.out.println("Too short username");
                 }
+            }
+            else if (commands[0].equals("§Help")) {
+                String message = "";
+                String[] Msessage = GetComandList();
+                for(int i = 0; i < Msessage.length; i++ ) {
+                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
+                }
+                GUI.UpdateTabByID(Tabid, message ,2);
             }
         }catch(IOException e){
             System.out.println("IOException occured: " + e);
@@ -195,7 +211,7 @@ public class SenderServer{
         switch(opCode){
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
-                RecMessage_Message temp = new RecMessage_Message(message.getBytes());
+                RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
                 GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType());
                 /*if(temp.getNick().length() > 0) {
                     GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ": " + temp.getMessage());
