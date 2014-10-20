@@ -345,7 +345,7 @@ public class startGui extends JFrame implements ActionListener{
                     }
                 }
                 System.out.println("loop broken");
-                addToOutputFromInput();
+                //addToOutputFromInput();
             }
         }
         //getting the needed objects
