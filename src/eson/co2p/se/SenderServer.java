@@ -108,7 +108,7 @@ public class SenderServer{
         return Message;
     }
     /**
-     * Checks for received messages on this socket
+     * Checks for received messages on this socketasd
      */
     private void checkReceivedMessage(){
         boolean goOn = true;
