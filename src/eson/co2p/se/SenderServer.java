@@ -8,9 +8,10 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * Created by gordon on 08/10/14 modded by tony 18/10/14 .
- * Now made to be threaded
  * TCP connection to the Chat Server
+ * Now made to be threaded
+ *
+ * Created by gordon on 08/10/14 modded by tony 18/10/14.
  */
 public class SenderServer{
     int Port;

@@ -3,9 +3,10 @@ package eson.co2p.se;
 import java.util.ArrayList;
 
 /**
+ * Creates a TCP server and forwards messages to it.
+ *
  * Created by Tony on 07/10/2014.
  *
- * Creates a TCP server and forwards messages to it.
  */
 public class ClientThread {
 

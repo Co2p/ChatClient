@@ -1,9 +1,9 @@
 package eson.co2p.se;
 
 /**
- * Created by Tony on 15/10/2014.
- *
  * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
+ *
+ * Created by Tony on 15/10/2014.
  */
 import javax.swing.*;
 import java.awt.Point;

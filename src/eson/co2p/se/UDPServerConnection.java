@@ -4,8 +4,9 @@ import java.net.*;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 07/10/14.
+ * Retrieves the active servers from the name server
  *
+ * Created by gordon on 07/10/14.
  */
 
 public class UDPServerConnection {

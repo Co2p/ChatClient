@@ -3,9 +3,9 @@ package eson.co2p.se;
 import java.net.InetAddress;
 
 /**
- * Created by isidor on 2014-10-13.
- *
  * An object to store information about servers
+ *
+ * Created by isidor on 2014-10-13.
  */
 public class Server {
     private InetAddress ip;
