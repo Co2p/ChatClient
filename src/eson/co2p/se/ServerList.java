@@ -29,19 +29,20 @@ public  class ServerList {
         sequenze = (int) reMessage.getByte(1);
         chatServers = reMessage.getShort(2);
         tot = 4;
+        System.out.println(message.toString());
         //For each server, create a serverobject and add to serverhash
         for(int i = 0; i < chatServers; i++) {
             Server Server = new eson.co2p.se.Server();
             Server.setIp(getIp(reMessage.getSubrange(tot, 4)));
-            tot += 4;
-            Server.setPort(reMessage.getShort(tot));
-            tot += 2;
-            Server.setConnected(reMessage.getByte(tot));
-            tot += 1;
-            int serverNameLength = (int) reMessage.getByte(tot);
-            tot += 1;
+            //tot += 4;
+            Server.setPort(reMessage.getShort(tot + 4));
+            //tot += 2;
+            Server.setConnected(reMessage.getByte(tot + 6));
+            //tot += 1;
+            int serverNameLength = (int) reMessage.getByte(tot + 7);
+            //tot += 1;
             try {
-                Server.setName(new String(reMessage.getSubrange(tot, serverNameLength), "UTF-8"));
+                Server.setName(new String(reMessage.getSubrange(tot + 8, serverNameLength), "UTF-8"));
             }catch(UnsupportedEncodingException e){
                 System.out.println("Unsupported coding exception: " + e);
             }
@@ -49,7 +50,7 @@ public  class ServerList {
             ipHash.put(Server.getName(), Server);
             serverNames.add(Server.getName());
             //Check that the total length of the namebytes is modulus 4
-            tot += div4(serverNameLength);
+            tot += 8 + div4(serverNameLength);
         }
     }
 
