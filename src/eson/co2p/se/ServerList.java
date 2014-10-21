@@ -14,47 +14,48 @@ public  class ServerList {
 
     //Array of the names of the servers given by the nameserver
     //Used when the client needs a serverip from the namehash
-    ArrayList<String> serverNames= new ArrayList<String>();
+    ArrayList<String> serverNames = new ArrayList<String>();
     //Namehash used to store the ipaddress relative to servername
-    Hashtable <String, Server> ipHash = new Hashtable <String, Server>();
+    Hashtable<String, Server> ipHash = new Hashtable<String, Server>();
     int operation, sequenze, chatServers, tot;
 
     /**
      * Creates a serverList with all of the servers that the name server returned
+     *
      * @param message the returned header from the name server
      */
-    public ServerList(byte[] message){
+    public ServerList(byte[] message) {
         PDU reMessage = new PDU(message, message.length);
-        operation = (int)reMessage.getByte(0);
+        operation = (int) reMessage.getByte(0);
         sequenze = (int) reMessage.getByte(1);
         chatServers = reMessage.getShort(2);
         tot = 4;
-        System.out.println("testing div4: 4:" + div4(4) + ", 5: " + div4(5));
         //For each server, create a serverobject and add to serverhash
-        for(int i = 0; i < chatServers; i++) {
+        for (int i = 0; i < chatServers; i++) {
             Server Server = new eson.co2p.se.Server();
             Server.setIp(getIp(reMessage.getSubrange(tot, 4)));
             Server.setPort(reMessage.getShort(tot + 4));
             Server.setConnected(reMessage.getByte(tot + 6));
-            int serverNameLength = (int)reMessage.getByte(tot + 7);
+            int serverNameLength = (int) reMessage.getByte(tot + 7);
             try {
                 Server.setName(new String(reMessage.getSubrange(tot + 8, serverNameLength), "UTF-8"));
-            }catch(UnsupportedEncodingException e){
+            } catch (UnsupportedEncodingException e) {
                 System.out.println("Unsupported coding exception: " + e);
+                e.printStackTrace();
             }
             ipHash.put(Server.getName(), Server);
             serverNames.add(Server.getName());
-            //Check that the total length of the namebytes is modulus 4
-            tot += 8 + div4(serverNameLength);
+            tot += 8 + Message.div4(serverNameLength);
         }
     }
 
     /**
      * Returns a server object
+     *
      * @param ServerName Serverns namn
      * @return The server object
      */
-    public Server getServer(String ServerName){
+    public Server getServer(String ServerName) {
         return ipHash.get(ServerName);
     }
 
@@ -62,44 +63,32 @@ public  class ServerList {
      * Prints the servers in the array, this is just for testing purposes and
      * should NOT be used in the final program
      */
-    public void printServers(){
+    public void printServers() {
         InetAddress TempAdress;
-        for(int i = 0; i < serverNames.size(); i++){
-            TempAdress = getServer((String)serverNames.get(i)).getIp();
-            System.out.println("---" + getServer((String)serverNames.get(i)).getName() + "---");
-            System.out.println("ip: " + getServer((String)serverNames.get(i)).getIp());
-            System.out.println("port: " + getServer((String)serverNames.get(i)).getPort());
-            System.out.println("connected clients: " + getServer((String)serverNames.get(i)).getConnected());
+        for (int i = 0; i < serverNames.size(); i++) {
+            TempAdress = getServer((String) serverNames.get(i)).getIp();
+            System.out.println("---" + getServer((String) serverNames.get(i)).getName() + "---");
+            System.out.println("ip: " + getServer((String) serverNames.get(i)).getIp());
+            System.out.println("port: " + getServer((String) serverNames.get(i)).getPort());
+            System.out.println("connected clients: " + getServer((String) serverNames.get(i)).getConnected());
         }
     }
 
     /**
      * Returns all of the available server names
+     *
      * @return server names
      */
-    public ArrayList<String> getServerList(){
+    public ArrayList<String> getServerList() {
         return serverNames;
     }
 
-    private InetAddress getIp(byte[] bytes){
+    private InetAddress getIp(byte[] bytes) {
         try {
             return InetAddress.getByAddress(bytes);
-        }catch(UnknownHostException e){
+        } catch (UnknownHostException e) {
             System.out.println("Unknown Host Exception occurred: " + e);
         }
         return null;
-    }
-
-    /**
-     * //TODO explain
-     * @param testInt
-     * @return
-     */
-    public static int div4(int testInt){
-        int ret = 0;
-        if((testInt % 4) != 0){
-            ret = (4 -(testInt % 4));
-        }
-        return testInt + ret;
     }
 }
