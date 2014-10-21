@@ -226,7 +226,7 @@ public class SenderServer{
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
-                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType());
+                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType(), 0);
                 /*if(temp.getNick().length() > 0) {
                     GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ": " + temp.getMessage());
                 }else{
@@ -239,13 +239,15 @@ public class SenderServer{
                 try {
                     String nicknames = new String(message.getSubrange
                             (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
-                    GUI.UpdateTabByID(Tabid, "Connected users: " + nicknames, 0);
+                    GUI.UpdateTabByID2(Tabid, null, null, "Connected users: " + nicknames, 0, 1);
+                   // GUI.UpdateTabByID(Tabid, "Connected users: " + nicknames, 0);
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
                 break;
             case OpCodes.QUIT:
-                GUI.UpdateTabByID(Tabid, "Server Closed Connection", 0);
+                //GUI.UpdateTabByID(Tabid, "Server Closed Connection", 0);
+                GUI.UpdateTabByID2(Tabid, null, null, "Server closed connection", 0, 1);
                 break;
             case OpCodes.UJOIN:
                 nickLength = (int)message.getByte(1);
@@ -256,7 +258,8 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid,getTime(time) + ":" + nick + " Joined the room.", 1);
+                //GUI.UpdateTabByID(Tabid,getTime(time) + ":" + nick + " Joined the room.", 1);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " joined the room.", 0, 2);
                 break;
             case OpCodes.ULEAVE:
                 nickLength = (int)message.getByte(1);
@@ -267,7 +270,8 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " Left the room.", 0);
+                //GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " Left the room.", 0);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " left the room.", 0, 1);
                 break;
             case OpCodes.UCNICK:
                 nickLength = (int)message.getByte(1);
@@ -280,7 +284,8 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " changed nick to: " + newNick, 2);
+                //GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " changed nick to: " + newNick, 2);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " changed nick to: " + newNick, 0, 3);
                 break;
         }
         return returnMes;

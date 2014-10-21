@@ -87,14 +87,14 @@ public class startGui extends JFrame implements ActionListener {
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
-    public void UpdateTabByID2(int TabID, String time, String userName, String message, int type){
+    public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
 
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
-            //if the message is encrypted, add a yellow backgroundsdf
+            //if the message is encrypted, compressed or both, add different backgrounds
             switch(type){
                 case 1:
                     //compress
@@ -109,20 +109,42 @@ public class startGui extends JFrame implements ActionListener {
                     StyleConstants.setBackground(keyWord, new Color(255, 169, 170));
                     break;
             }
-            StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
-            doc.insertString(doc.getLength(), "\n[kl. " + time + "] ", keyWord);
-            if (userName.length() > 0) {
-                StyleConstants.setBold(keyWord, true);
+            //Prints the clock
+            if(time != null) {
+                StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
+                doc.insertString(doc.getLength(), "\n[kl. " + time + "] ", keyWord);
+            }else{
+                doc.insertString(doc.getLength(), "\n", keyWord);
+            }
+            //If there exists a username, print it with a color based on the name
+            StyleConstants.setBold(keyWord, true);
+            if (userName != null && userName.length() > 0) {
                 StyleConstants.setForeground(keyWord, colorFromString(userName));
                 doc.insertString(doc.getLength(), userName + ": ", keyWord);
-                StyleConstants.setBold(keyWord, false);
-
             }
-            if(userName.contains("420")){
-                color420(doc, keyWord, message);
-            }else{
-                StyleConstants.setForeground(keyWord, Color.BLACK);
-                doc.insertString(doc.getLength(), message, keyWord);
+            switch(originType) {
+                case 0:
+                    //Easteregg
+                    if (userName.contains("420")) {
+                        color420(doc, keyWord, message);
+                    } else {
+                        StyleConstants.setBold(keyWord, false);
+                        StyleConstants.setForeground(keyWord, Color.BLACK);
+                        doc.insertString(doc.getLength(), message, keyWord);
+                    }
+                    break;
+                case 1:
+                    StyleConstants.setForeground(keyWord, Color.RED);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 2:
+                    StyleConstants.setForeground(keyWord, Color.GREEN);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 3:
+                    StyleConstants.setForeground(keyWord, Color.BLUE);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
             }
         }catch(Exception e) {
             e.printStackTrace();
