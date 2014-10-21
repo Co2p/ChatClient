@@ -159,17 +159,17 @@ public class SenderServer{
     }
 
     private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §help"};
         return Explanations[g];
     }
     private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help"};
+        String[] Commands = new String[]{"§nick","§help"};
         return Commands;
     }
     private void commands(String command){
         try {
             String commands[] = command.split(" ", 2);
-            if (commands[0].equals("§nick")) {
+            if (commands[0].equalsIgnoreCase("§nick")) {
                 if(commands[1].length() > 0){
                     outToServer.write(Message.changeNick(commands[1]));
                     System.out.println("newNick = '" + commands[1] + "'");
@@ -177,7 +177,7 @@ public class SenderServer{
                     System.out.println("Too short username");
                 }
             }
-            else if (commands[0].equals("§Help")) {
+            else if (commands[0].equalsIgnoreCase("§help")) {
                 String message = "";
                 String[] Msessage = GetComandList();
                 for(int i = 0; i < Msessage.length; i++ ) {

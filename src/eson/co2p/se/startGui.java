@@ -321,11 +321,11 @@ public class startGui extends JFrame implements ActionListener {
      * @return the amount of colour for RGB
      */
     private int Loop254(int valu, int index){
-        if (index>3){
-            return 254;
-        }
         String ip = Server.getServer((String)serverlist.get(valu)).getIp().toString();
         ip = ip.replaceAll("[^0-9]", "");
+        if (index>3 || ip.length()<9){
+            return 254;
+        }
         valu = Integer.parseInt(ip.substring(ip.length()-(index+3), ip.length()-(index)));
 
         while (valu>254){
