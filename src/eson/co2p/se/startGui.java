@@ -110,7 +110,7 @@ public class startGui extends JFrame implements ActionListener {
                     break;
             }
             StyleConstants.setForeground(keyWord, Color.DARK_GRAY);
-            doc.insertString(doc.getLength(), "\n" + time + " ", keyWord);
+            doc.insertString(doc.getLength(), "\n[kl." + time + "] ", keyWord);
             if (userName.length() > 0) {
                 StyleConstants.setBold(keyWord, true);
                 StyleConstants.setForeground(keyWord, colorFromString(userName));

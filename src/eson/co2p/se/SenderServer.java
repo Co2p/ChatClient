@@ -288,7 +288,7 @@ public class SenderServer{
     private String getTime(int time){
         System.out.println("TIME ITSELF: " + time);
         Date retTime = new Date(time*1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("CET"));
         return sdf.format(retTime);
     }
