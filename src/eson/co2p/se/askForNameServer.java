@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Time;
 import java.util.Random;
 
 /**
@@ -97,7 +96,7 @@ public class askForNameServer implements ActionListener {
         if (verifyAddress(Adress.getText())){
             if (port.getText().matches("[0-9]+") && port.getText().length() > 0){
 
-                    if(Adress.getText().trim() != ""){
+                    if(!Adress.getText().trim().equals("")){
                         try {
                             catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
                             catalogue.setName(nick.getText());
