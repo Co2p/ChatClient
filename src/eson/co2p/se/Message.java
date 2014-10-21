@@ -8,7 +8,8 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Created by isidor on 2014-10-15.
  *
- *  Includes all messages sent from the client to the nameserver or chatserver
+ *  Includes methods for creating all the messages that's going to the server
+ *  from the server, also includes minor static math methods used in separate places
  */
 public class Message {
 
@@ -87,7 +88,6 @@ public class Message {
         PDU rawdata = null;
         try {
             byte[] msgByte = message.getBytes("UTF-8");
-            //add encryption or compression based on the typ-input
             switch(type){
                 case 1:
                     msgByte = compress(msgByte);
@@ -100,6 +100,7 @@ public class Message {
                     break;
             }
             rawdata = new PDU(12 + div4(msgByte.length));
+            //  Adds the header
             rawdata.setByte(0, (byte) OpCodes.MESSAGE);
             rawdata.setByte(1,(byte)type);
             rawdata.setShort(4, (short)div4(msgByte.length));
@@ -111,20 +112,33 @@ public class Message {
         return rawdata.getBytes();
     }
 
+    /**
+     * Encrypts the data with the given Crypt.java file and adds a crypt-header for it
+     *
+     * @param data  the data to be encrypted
+     * @param Tabid used for getting the correct key connected to a specific server
+     * @return      the encrypted data
+     */
     private static byte[] enCrypt(byte[] data, int Tabid){
-        byte[] newData = data;
-        Crypt.encrypt(newData, newData.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
-        PDU cryptPDU = new PDU(12 + div4(newData.length));
-        //The first byte is type of cryptography, it is 0 for the default XOR-method
-        //so add nothing...
+        int unCryptLength = data.length;
+        Crypt.encrypt(data, data.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+        PDU cryptPDU = new PDU(12 + div4(data.length));
+        //  Adds the crypt-header
         cryptPDU.setByte(1, Checksum.calc(data, data.length));
-        cryptPDU.setShort(2, (short)newData.length);
-        cryptPDU.setShort(4, (short)data.length);
-        cryptPDU.setSubrange(12, newData);
+        cryptPDU.setShort(2, (short)data.length);
+        cryptPDU.setShort(4, (short)unCryptLength);
+        // Adds the newly encrypted data
+        cryptPDU.setSubrange(12, data);
         cryptPDU.setByte(1, Checksum.calc(cryptPDU.getBytes(), cryptPDU.length()));
         return cryptPDU.getBytes();
     }
 
+    /**
+     * Compresses the data with the GZIP format and adds a GZIP-header
+     *
+     * @param data  the data to be compressed
+     * @return      the compressed data
+     */
     private static byte[] compress(byte[] data){
         byte[] returnData = null;
         try {
@@ -137,9 +151,11 @@ public class Message {
         }catch(Exception e){
             e.printStackTrace();
         }
+        //  Adds the header
         PDU compPDU = new PDU(8 + div4(returnData.length));
         compPDU.setShort(2, (short) returnData.length);
         compPDU.setShort(4, (short) data.length);
+        //  Adds the compressed data
         compPDU.setSubrange(8, returnData);
         compPDU.setByte(1, Checksum.calc(returnData, returnData.length));
         return compPDU.getBytes();
@@ -154,7 +170,7 @@ public class Message {
      */
     public static int div4(int testInt){
         int ret = 0;
-        if((4 -(testInt % 4)) != 0){
+        if((testInt % 4) != 0){
             ret = (4 -(testInt % 4));
         }
         return testInt + ret;

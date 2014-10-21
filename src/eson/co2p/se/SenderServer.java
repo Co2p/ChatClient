@@ -16,11 +16,11 @@ public class SenderServer{
     InetAddress Ip;
     private Socket localServerSocket;
     private PrintStream outToServer;
-    //private BufferedReader inFromServer;
     private DataInputStream in;
     String receivedData;
     startGui GUI;
     int Tabid;
+
     /**
      * Constructs a TCP server on/to the given ip and port
      * @param IP a InetAddress ip for the requested chatserver
@@ -164,7 +164,7 @@ public class SenderServer{
         return Explanations[g];
     }
     private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help","§KillServer"};
+        String[] Commands = new String[]{"§nick","§Help","§KillServer", "§getlist"};
         return Commands;
     }
     private void commands(String command){
@@ -216,17 +216,23 @@ public class SenderServer{
         }
     }
 
+    /**
+     * Breaks down a received message, checks the op-code and prints it accordingly
+     *
+     * @param message   The message to break down
+     * @return  A created message (only used if message is message)
+     */
     private RecMessage RecMessageBreakDown(PDU message){
-        //Checks op-codes and adds creates the correct message
         int opCode = (int)message.getByte(0);
         RecMessage returnMes = null;
         int nickLength, time;
         String nick = "";
+
         switch(opCode){
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
-                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType());
+                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType(), 0);
                 returnMes = temp;
                 break;
             case OpCodes.NICKS:
@@ -234,13 +240,13 @@ public class SenderServer{
                 try {
                     String nicknames = new String(message.getSubrange
                             (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
-                    GUI.UpdateTabByID(Tabid, "Connected users: " + nicknames, 0);
+                    GUI.UpdateTabByID2(Tabid, null, null, "Connected users: " + nicknames, 0, 1);
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
                 break;
             case OpCodes.QUIT:
-                GUI.UpdateTabByID(Tabid, "Server Closed Connection", 0);
+                GUI.UpdateTabByID2(Tabid, null, null, "Server closed connection", 0, 1);
                 break;
             case OpCodes.UJOIN:
                 nickLength = (int)message.getByte(1);
@@ -251,7 +257,7 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid,getTime(time) + ":" + nick + " Joined the room.", 1);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " joined the room.", 0, 2);
                 break;
             case OpCodes.ULEAVE:
                 nickLength = (int)message.getByte(1);
@@ -262,7 +268,7 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " Left the room.", 0);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " left the room.", 0, 1);
                 break;
             case OpCodes.UCNICK:
                 nickLength = (int)message.getByte(1);
@@ -275,15 +281,22 @@ public class SenderServer{
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                GUI.UpdateTabByID(Tabid, getTime(time) + ":" + nick + " changed nick to: " + newNick, 2);
+                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " changed nick to: " + newNick, 0, 3);
                 break;
         }
         return returnMes;
     }
+
+    /**
+     * returns the time in simpleDataFormat for easier reading
+     *
+     * @param time  time in UNIX format
+     * @return      time in simpleDataFormat
+     */
     private String getTime(int time){
         System.out.println("TIME ITSELF: " + time);
         Date retTime = new Date(time*1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("CET"));
         return sdf.format(retTime);
     }

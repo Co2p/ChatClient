@@ -42,7 +42,7 @@ public  class ServerList {
     }
     public ServerList(byte[] message){
         PDU reMessage = new PDU(message, message.length);
-        operation = (int)reMessage.getByte(0);
+        operation = (int) reMessage.getByte(0);
         sequenze = (int) reMessage.getByte(1);
         chatServers = reMessage.getShort(2);
         tot = 4;
@@ -56,14 +56,14 @@ public  class ServerList {
             int serverNameLength = (int) reMessage.getByte(tot + 7);
             try {
                 Server.setName(new String(reMessage.getSubrange(tot + 8, serverNameLength), "UTF-8"));
-            }catch(UnsupportedEncodingException e){
+            } catch (UnsupportedEncodingException e) {
                 System.out.println("Unsupported coding exception: " + e);
+                e.printStackTrace();
             }
 
             ipHash.put(Server.getName(), Server);
             serverNames.add(Server.getName());
-            //Check that the total length of the namebytes is modulus 4
-            tot += 8 + div4(serverNameLength);
+            tot += 8 + Message.div4(serverNameLength);
         }
     }
 
@@ -80,14 +80,14 @@ public  class ServerList {
      * Prints the servers in the array, this is just for testing purposes and
      * should NOT be used in the final program
      */
-    public void printServers(){
+    public void printServers() {
         InetAddress TempAdress;
-        for(int i = 0; i < serverNames.size(); i++){
-            TempAdress = getServer((String)serverNames.get(i)).getIp();
-            System.out.println("---" + getServer((String)serverNames.get(i)).getName() + "---");
-            System.out.println("ip: " + getServer((String)serverNames.get(i)).getIp());
-            System.out.println("port: " + getServer((String)serverNames.get(i)).getPort());
-            System.out.println("connected clients: " + getServer((String)serverNames.get(i)).getConnected());
+        for (int i = 0; i < serverNames.size(); i++) {
+            TempAdress = getServer((String) serverNames.get(i)).getIp();
+            System.out.println("---" + getServer((String) serverNames.get(i)).getName() + "---");
+            System.out.println("ip: " + getServer((String) serverNames.get(i)).getIp());
+            System.out.println("port: " + getServer((String) serverNames.get(i)).getPort());
+            System.out.println("connected clients: " + getServer((String) serverNames.get(i)).getConnected());
         }
     }
 
@@ -95,29 +95,16 @@ public  class ServerList {
      * Returns all of the available server names
      * @return server names
      */
-    public ArrayList<String> getServerList(){
+    public ArrayList<String> getServerList() {
         return serverNames;
     }
 
-    private InetAddress getIp(byte[] bytes){
+    private InetAddress getIp(byte[] bytes) {
         try {
             return InetAddress.getByAddress(bytes);
-        }catch(UnknownHostException e){
+        } catch (UnknownHostException e) {
             System.out.println("Unknown Host Exception occurred: " + e);
         }
         return null;
-    }
-
-    /**
-     * //TODO explain
-     * @param testInt
-     * @return
-     */
-    public static int div4(int testInt){
-        int ret = 0;
-        if((4 -(testInt % 4)) != 0){
-            ret = (4 -(testInt % 4));
-        }
-        return testInt + ret;
     }
 }

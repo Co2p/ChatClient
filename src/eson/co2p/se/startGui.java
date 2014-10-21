@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class startGui extends JFrame implements ActionListener {
 
@@ -99,14 +100,14 @@ public class startGui extends JFrame implements ActionListener {
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
-    public void UpdateTabByID2(int TabID, String time, String userName, String message, int type){
+    public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
 
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
-            //if the message is encrypted, add a yellow backgroundsdf
+            //if the message is encrypted, compressed or both, add different backgrounds
             switch(type){
                 case 1:
                     //compress
@@ -121,22 +122,66 @@ public class startGui extends JFrame implements ActionListener {
                     StyleConstants.setBackground(keyWord, new Color(255, 169, 170));
                     break;
             }
-            StyleConstants.setForeground(keyWord, Color.DARK_GRAY);
-            doc.insertString(doc.getLength(), "\n" + time + " ", keyWord);
-            if(userName.length() > 0) {
-                StyleConstants.setBold(keyWord, true);
-                StyleConstants.setForeground(keyWord, colorFromString(userName));
-                doc.insertString(doc.getLength(), userName + " ", keyWord);
-                StyleConstants.setBold(keyWord, false);
-
+            //Prints the clock
+            if(time != null) {
+                StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
+                doc.insertString(doc.getLength(), "\n[kl. " + time + "] ", keyWord);
+            }else{
+                doc.insertString(doc.getLength(), "\n", keyWord);
             }
-            StyleConstants.setForeground(keyWord, Color.BLACK);
-            doc.insertString(doc.getLength(), message, keyWord );
+            //If there exists a username, print it with a color based on the name
+            StyleConstants.setBold(keyWord, true);
+            if (userName != null && userName.length() > 0) {
+                StyleConstants.setForeground(keyWord, colorFromString(userName));
+                doc.insertString(doc.getLength(), userName + ": ", keyWord);
+            }
+            switch(originType) {
+                case 0:
+                    //Easteregg
+                    if (userName.contains("420")) {
+                        color420(doc, keyWord, message);
+                    } else {
+                        StyleConstants.setBold(keyWord, false);
+                        StyleConstants.setForeground(keyWord, Color.BLACK);
+                        doc.insertString(doc.getLength(), message, keyWord);
+                    }
+                    break;
+                case 1:
+                    StyleConstants.setForeground(keyWord, Color.RED);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 2:
+                    StyleConstants.setForeground(keyWord, Color.GREEN);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 3:
+                    StyleConstants.setForeground(keyWord, Color.BLUE);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+            }
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
+    }
+
+    private void color420(StyledDocument doc, SimpleAttributeSet set, String message){
+        Random random = new Random();
+        for (int i = 0; i < message.length(); i++) {
+            char character = message.charAt(i);
+            //SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setForeground(set,
+                    new Color(random.nextInt(256), random.nextInt(256),
+                            random.nextInt(256)));
+            StyleConstants.setFontSize(set, random.nextInt(12) + 12);
+            StyleConstants.setBold(set, random.nextBoolean());
+            try {
+                doc.insertString(doc.getLength(), character + "", set);
+            }catch(BadLocationException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private Color colorFromString(String nick){
