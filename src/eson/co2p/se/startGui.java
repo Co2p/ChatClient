@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class startGui extends JFrame implements ActionListener {
 
@@ -110,20 +111,42 @@ public class startGui extends JFrame implements ActionListener {
             }
             StyleConstants.setForeground(keyWord, Color.DARK_GRAY);
             doc.insertString(doc.getLength(), "\n" + time + " ", keyWord);
-            if(userName.length() > 0) {
+            if (userName.length() > 0) {
                 StyleConstants.setBold(keyWord, true);
                 StyleConstants.setForeground(keyWord, colorFromString(userName));
                 doc.insertString(doc.getLength(), userName + " ", keyWord);
                 StyleConstants.setBold(keyWord, false);
 
             }
-            StyleConstants.setForeground(keyWord, Color.BLACK);
-            doc.insertString(doc.getLength(), message, keyWord );
+            if(userName.contains("420")){
+                color420(doc, keyWord, message);
+            }else{
+                StyleConstants.setForeground(keyWord, Color.BLACK);
+                doc.insertString(doc.getLength(), message, keyWord);
+            }
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
+    }
+
+    private void color420(StyledDocument doc, SimpleAttributeSet set, String message){
+        Random random = new Random();
+        for (int i = 0; i < message.length(); i++) {
+            char character = message.charAt(i);
+            //SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setForeground(set,
+                    new Color(random.nextInt(256), random.nextInt(256),
+                            random.nextInt(256)));
+            StyleConstants.setFontSize(set, random.nextInt(12) + 12);
+            StyleConstants.setBold(set, random.nextBoolean());
+            try {
+                doc.insertString(doc.getLength(), character + "", set);
+            }catch(BadLocationException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private Color colorFromString(String nick){

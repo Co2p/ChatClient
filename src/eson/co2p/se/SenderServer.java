@@ -164,7 +164,7 @@ public class SenderServer{
         return Explanations[g];
     }
     private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help","§KillServer"};
+        String[] Commands = new String[]{"§nick","§Help","§KillServer", "§getlist"};
         return Commands;
     }
     private void commands(String command){
