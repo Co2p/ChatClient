@@ -17,7 +17,7 @@ public class catalogue {
     private static Server thisServer = new Server();
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
-    public static String[] lol = new String[256];
+    public static String[] message = new String[256];
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
     public static boolean[] crypt = new boolean[256];
@@ -36,7 +36,7 @@ public class catalogue {
     public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto) {
         firstFillArrayList();
         MessageInUse = true;
-        lol[Index] = Message;
+        message[Index] = Message;
         comp[Index] = compr;
         crypt[Index] = crypto;
         //Chatsync.set(Index,Message);
@@ -207,8 +207,8 @@ public class catalogue {
         firstFillArrayList();
         if(firstAcess == false) {
             MessageInUse = true;
-            String ret = lol[Index];
-            lol[Index] = null;
+            String ret = message[Index];
+            message[Index] = null;
             //String ret = Chatsync.get(Index);
             //Chatsync.set(Index, null);
             MessageInUse = false;
@@ -279,8 +279,8 @@ public class catalogue {
             //for (int i = 0; i < 256; i++) {
             //    Chatsync.add(i,null);
             //}
-            for(int i = 0; i < lol.length; i++){
-                lol[i] = null;
+            for(int i = 0; i < message.length; i++){
+                message[i] = null;
                 comp[i] = false;
                 crypt[i] = false;
                 Keys[i] = "foobar";
