@@ -39,7 +39,12 @@ public class RecMessage_Message extends RecMessage{
                     break;
                 case 3:
                     System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
-                    message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
+                    try {
+                        message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
+                    }catch(Exception e){
+                        System.out.println("Decompression/decryption didn't work. Same key?");
+                        message = "INVALID KEY";
+                    }
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
@@ -75,6 +80,9 @@ public class RecMessage_Message extends RecMessage{
             int unCryptLength = encryptedPDU.getShort(4);
             encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
             Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+            if(encryptedMsg.length != unCryptLength){
+                encryptedMsg = "INVALID KEY".getBytes();
+            }
         }catch(Exception e){
             System.out.println("Someone decrypted a message wrong");
         }
@@ -86,6 +94,7 @@ public class RecMessage_Message extends RecMessage{
         int checksum = compressedPDU.getByte(1);
         int compLength = compressedPDU.getShort(2);
         int unCompLength = compressedPDU.getShort(4);
+        System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
         byte[] compMsg = compressedPDU.getSubrange(8, compLength);
         byte[] retArr = null;
         if(algorithm == 0){
