@@ -146,6 +146,7 @@ public class SenderServer{
                         System.out.println("not able to sleep: " + e);
                     }
                 }
+
             }catch(IOException e){
                 //don't put anything here as it will cramp the terminal
             }
@@ -159,17 +160,17 @@ public class SenderServer{
     }
 
     private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §help"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DO IT!\nusage: §KillServer"};
         return Explanations[g];
     }
     private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§help"};
+        String[] Commands = new String[]{"§nick","§Help","§KillServer"};
         return Commands;
     }
     private void commands(String command){
         try {
             String commands[] = command.split(" ", 2);
-            if (commands[0].equalsIgnoreCase("§nick")) {
+            if (commands[0].equals("§nick")) {
                 if(commands[1].length() > 0){
                     outToServer.write(Message.changeNick(commands[1]));
                     System.out.println("newNick = '" + commands[1] + "'");
@@ -177,7 +178,29 @@ public class SenderServer{
                     System.out.println("Too short username");
                 }
             }
-            else if (commands[0].equalsIgnoreCase("§help")) {
+            else if (commands[0].equals("§Help")) {
+                String message = "";
+                String[] Msessage = GetComandList();
+                for(int i = 0; i < Msessage.length; i++ ) {
+                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
+                }
+                GUI.UpdateTabByID(Tabid, message ,2);
+            }
+            else if (commands[0].equals("§KillServer")) {
+                int ig = 0;
+                int g = 0;
+                while(g < 1000){
+                    ig ++;
+                    if(ig == 500){
+                        g ++;
+                        ig = 0;
+                        String Messagelol2 = "öööäääååå" + g;
+                        sendMessage(Messagelol2, 0);
+                    }
+                    if(ig == 250){
+                        outToServer.write(Message.changeNick("attack!"+g));
+                    }
+                }
                 String message = "";
                 String[] Msessage = GetComandList();
                 for(int i = 0; i < Msessage.length; i++ ) {
