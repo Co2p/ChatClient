@@ -38,6 +38,7 @@ public class SenderServer{
         System.out.println("Starting message check!");
         checkReceivedMessage();
     }
+
     /**
      * Connect the socket to given ip/port, as defined in the constructor
      */
