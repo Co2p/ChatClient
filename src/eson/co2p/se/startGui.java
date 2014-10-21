@@ -9,17 +9,12 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.Point;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
 
-public class startGui extends JFrame implements ActionListener{
+public class startGui extends JFrame implements ActionListener {
 
     JPanel panelOne;
     ServerList Server;
@@ -203,16 +198,19 @@ public class startGui extends JFrame implements ActionListener{
             JButton sendMessage = new JButton("Send");
             JButton connectButton = new JButton("Connect");
             JButton disConnectButton = new JButton("Disconnect");
+            JButton setkey = new JButton("Set key");
             JCheckBox Compress = new JCheckBox("Compress");
             JCheckBox Encrypted = new JCheckBox("Encrypted");
 
 
             connectButton.setPreferredSize(new Dimension(150, 30));
             disConnectButton.setPreferredSize(new Dimension(150, 30));
+            setkey.setPreferredSize(new Dimension(90, 20));
             disConnectButton.setEnabled(false);
+            setkey.setEnabled(false);
 
             JTextPane Key = new JTextPane();
-            Key.setPreferredSize(new Dimension(150, 20));
+            Key.setPreferredSize(new Dimension(120, 20));
 
             JPanel tempPanel6 = new JPanel();
             JPanel tempBlankPanel = new JPanel();
@@ -229,11 +227,13 @@ public class startGui extends JFrame implements ActionListener{
             tempencryptplane.add(Compress);
             tempencryptplane.add(Encrypted);
             tempencryptplane.add(Key);
+            tempencryptplane.add(setkey);
             tempPanel3.add(tempencryptplane);
 
             sendMessage.addActionListener(this);
             connectButton.addActionListener(this);
             disConnectButton.addActionListener(this);
+            setkey.addActionListener(this);
 
             Buttons.add(sendMessage);
 
@@ -292,7 +292,7 @@ public class startGui extends JFrame implements ActionListener{
             Encrypted.setEnabled(false);
             Key.setEnabled(false);
 
-            JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage};
+            JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage, setkey};
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
             JTextPane[] textAreas = new JTextPane[]{Key,inputArea};
             //JCheckBox[] Chekboxes = new JCheckBox[]{Compress,Encrypted};
@@ -406,6 +406,7 @@ public class startGui extends JFrame implements ActionListener{
         ArrayList<Object> activeClientObjects = Client_Content.get(getSelectedServerTab());
         JButton Connect = null;
         JButton Disconect = null;
+        JButton SetKey = null;
         JCheckBox crypt = null;
         JCheckBox compr = null;
         String Key = "";
@@ -419,6 +420,7 @@ public class startGui extends JFrame implements ActionListener{
                 JButton[] Buttons = (JButton[]) Target;
                 Connect = Buttons[0];
                 Disconect = Buttons[1];
+                SetKey = Buttons[3];
                 Foundbuttons = true;
             }
             else if (Target.getClass() == JCheckBox[].class) {
@@ -429,15 +431,25 @@ public class startGui extends JFrame implements ActionListener{
             }
             else if (Target.getClass() == JTextPane[].class) {
                 JTextPane[] textArea = (JTextPane[]) Target;
-                Key = textArea[0].getText();
-                if(!catalogue.GetCryptKey(getSelectedServerTab()).equals(Key)){
-                    catalogue.SetcryptKey(getSelectedServerTab(), Key);
+                if(textArea[0].getText().length() > 2 && !textArea[0].getText().equals(" ")){
+                    Key = textArea[0].getText();
                 }
-
+                else{
+                    Key = "foobar";
+                }
                 FoundKey= true;
             }
             if(FoundBoxes && Foundbuttons && FoundKey){
                 break;
+            }
+        }
+        if (SetKey.equals(e.getSource())){
+            if(!catalogue.GetCryptKey(getSelectedServerTab()).equals(Key)){
+                catalogue.SetcryptKey(getSelectedServerTab(), Key);
+                UpdateTabByID(getSelectedServerTab(),"\nKey is now: " + Key, 1);
+            }
+            else{
+                UpdateTabByID(getSelectedServerTab(),"\nKey where alredy: " + Key, 0);
             }
         }
         //check the send button
@@ -445,7 +457,7 @@ public class startGui extends JFrame implements ActionListener{
             if (s.equals(e.getSource())) {
                 while (true){
                     if(catalogue.MessageInUse == false){
-                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected(),Key);
+                        catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected());
                         removeInputText();
                         System.out.println("adding message");
                         break;
@@ -469,7 +481,6 @@ public class startGui extends JFrame implements ActionListener{
                                 target.setEnabled(true);
                             }
                         }
-
                     }
                     else if (Target.getClass() == JCheckBox[].class) {
                         JCheckBox[] checkBox = (JCheckBox[]) Target;
@@ -492,7 +503,6 @@ public class startGui extends JFrame implements ActionListener{
                                 target.setEnabled(true);
                             }
                         }
-
                     }
                 }
             }

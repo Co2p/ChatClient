@@ -33,13 +33,12 @@ public class catalogue {
      * @param Message the new message
      * @param Index the position to set(coresponding to the clientthread id)
      */
-    public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto, String key) {
+    public static void SetClientMessage (String Message, int Index, boolean compr, boolean crypto) {
         firstFillArrayList();
         MessageInUse = true;
         lol[Index] = Message;
         comp[Index] = compr;
         crypt[Index] = crypto;
-        Keys[Index] = key;
         //Chatsync.set(Index,Message);
         System.out.println("Setting message");
         MessageInUse = false;
