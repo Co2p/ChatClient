@@ -99,8 +99,19 @@ public class startGui extends JFrame implements ActionListener{
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
             //if the message is encrypted, add a yellow backgroundsdf
-            if(type != 0){
-                StyleConstants.setBackground(keyWord, Color.YELLOW);
+            switch(type){
+                case 1:
+                    //compress
+                    StyleConstants.setBackground(keyWord, Color.GREEN);
+                    break;
+                case 2:
+                    //crypt
+                    StyleConstants.setBackground(keyWord, Color.YELLOW);
+                    break;
+                case 3:
+                    //compress + crypt
+                    StyleConstants.setBackground(keyWord, Color.ORANGE);
+                    break;
             }
             StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
             doc.insertString(doc.getLength(), "\n"+time + " ", keyWord );
