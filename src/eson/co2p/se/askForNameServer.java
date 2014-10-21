@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Time;
 import java.util.Random;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Random;
  */
 public class askForNameServer implements ActionListener {
     private String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange", "Cyan", "Pink", "Brown", "Black", "White", "Hot", "Cold", "Sour", "Sweet", "Slippery", "Big", "Small",
-        "Enormous", "Drippery", "Fucking", "Fine", "Pulsating", "Slobbering", "Hacking", "Horny", "Freaky", "Ganja", "420", "Epic", "Awesome", "Super", "Flash", "Growing", "Changing"};
+        "Enormous", "Drippery", "Fucking", "Fine", "Pulsating", "Slobbering", "Hacking", "Horny", "Freaky", "Ganja", "420", "Epic", "Awesome", "Super", "Flash", "Growing", "Changing", "Sonic"};
     private String[] nicks = new String[] {"Panther", "Carrot", "Cactus", "Sea", "Tiger", "Cat", "Dog", "Warthog", "Leopard", "Flower", "Circuit", "Sun", "Star", "Galaxy", "Kangaroo", "Pig", "Cow", "Frog", "Toad",
         "Dick", "Anal", "Possum", "Corpse", "Sanic", "Penis", "Ass", "Kånkelbär", "Dildo", "Cock", "Weed", "Ganja", "Aina", "Knatch", "Hat", "Punch", "Calculus", "Signal", "Pond", "Brother", "Sister", "Bandit"};
     JFrame frame1 = new JFrame("Connect to server");
@@ -97,7 +96,7 @@ public class askForNameServer implements ActionListener {
         if (verifyAddress(Adress.getText())){
             if (port.getText().matches("[0-9]+") && port.getText().length() > 0){
 
-                    if(Adress.getText().trim() != ""){
+                    if(!Adress.getText().trim().equals("")){
                         try {
                             catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
                             catalogue.setName(nick.getText());
