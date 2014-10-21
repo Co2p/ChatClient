@@ -1,5 +1,7 @@
 package eson.co2p.se;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +42,29 @@ public class ClientThread {
         AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
         System.out.println("Started server thread whit ID:" + ThreadId);
     }
-
+    public static void startThreadManualy(final int ThreadId, final String Server, final int serverlist) {
+        ArrayList<Object> Templist = new ArrayList<Object>();
+        connectCurentServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InetAddress adress = null;
+                try {
+                    adress = InetAddress.getByName(Server);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                newServer = new SenderServer(adress, serverlist, ThreadId);
+            }
+        });
+        //SenderServer MyServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
+        Templist.add(ThreadId);
+        Templist.add(connectCurentServer);
+        Templist.add(newServer);
+        ServerThreadList.add(Templist);
+        connectCurentServer.start();
+        AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
+        System.out.println("Started server thread whit ID:" + ThreadId);
+    }
     /**
      * Stops a thread with the given id number
      * @param ThreadId a thread identifier

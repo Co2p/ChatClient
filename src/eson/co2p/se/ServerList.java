@@ -23,6 +23,23 @@ public  class ServerList {
      * Creates a serverList with all of the servers that the name server returned
      * @param message the returned header from the name server
      */
+    public ServerList(String ip, int Por){
+        Server Server = new eson.co2p.se.Server();
+        InetAddress adre = null;
+        try {
+            adre = InetAddress.getByName(ip);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        Server.setIp(adre);
+        Server.setPort(Por);
+        Server.setConnected(6);
+        Server.setName("Direct connect");
+        ipHash.put(Server.getName(), Server);
+        serverNames.add(Server.getName());
+
+
+    }
     public ServerList(byte[] message){
         PDU reMessage = new PDU(message, message.length);
         operation = (int)reMessage.getByte(0);

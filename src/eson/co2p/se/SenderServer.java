@@ -227,11 +227,6 @@ public class SenderServer{
                 System.out.println("Found message!");
                 RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
                 GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType());
-                /*if(temp.getNick().length() > 0) {
-                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ":" + temp.getNick() + ": " + temp.getMessage());
-                }else{
-                    GUI.UpdateTabByID(Tabid, getTime(temp.getTime()) + ": " + temp.getMessage());
-                }*/
                 returnMes = temp;
                 break;
             case OpCodes.NICKS:

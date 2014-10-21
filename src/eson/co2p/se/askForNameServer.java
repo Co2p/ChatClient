@@ -27,6 +27,7 @@ public class askForNameServer implements ActionListener {
     JTextField nick = new JTextField();
     JButton changeNick = new JButton("Change");
     JButton acceptadress = new JButton("Connect");
+    JCheckBox Manualconnect = new JCheckBox("connect to server using this");
     startGui Gui;
 
 
@@ -36,10 +37,10 @@ public class askForNameServer implements ActionListener {
     public void CreatNameserverQuestion(){
         acceptadress.addActionListener(this);
         changeNick.addActionListener(this);
-        frame1.setLayout(new GridLayout(4, 0));
+        frame1.setLayout(new GridLayout(5, 0));
         textFrame.setLayout(new FlowLayout());
         nickPanel.setLayout(new FlowLayout());
-        frame1.setPreferredSize(new Dimension(360, 145));
+        frame1.setPreferredSize(new Dimension(360, 165));
         label.setPreferredSize(new Dimension(312, 20));
         Adress.setPreferredSize(new Dimension(250, 26));
         port.setPreferredSize(new Dimension(60, 26));
@@ -59,6 +60,7 @@ public class askForNameServer implements ActionListener {
         nickPanel.add(nick);
         nickPanel.add(changeNick);
         frame1.add(acceptadress, 3);
+        frame1.add(Manualconnect, 4);
         frame1.pack();
         frame1.setVisible(true);
         frame1.validate();
@@ -95,7 +97,6 @@ public class askForNameServer implements ActionListener {
     private void accept(){
         if (verifyAddress(Adress.getText())){
             if (port.getText().matches("[0-9]+") && port.getText().length() > 0){
-
                     if(!Adress.getText().trim().equals("")){
                         try {
                             catalogue.setNameServer(InetAddress.getByName(Adress.getText()), Integer.parseInt(port.getText()));
@@ -103,7 +104,13 @@ public class askForNameServer implements ActionListener {
                         } catch (UnknownHostException e1) {
                             e1.printStackTrace();
                         }
-                        Gui = new startGui();
+                        if(Manualconnect.isSelected()){
+                            Gui = new startGui(true,Adress.getText(),Integer.parseInt(port.getText()));
+                            System.out.println("adawdawdhere");
+                        }
+                        else{
+                            Gui = new startGui(false,Adress.getText(),Integer.parseInt(port.getText()));
+                        }
                         catalogue.setGui(Gui);
                         frame1.dispose();
                     }
