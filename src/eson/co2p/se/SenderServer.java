@@ -159,11 +159,11 @@ public class SenderServer{
     }
 
     private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DO IT!\nusage: §KillServer"};
         return Explanations[g];
     }
     private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help"};
+        String[] Commands = new String[]{"§nick","§Help","§KillServer"};
         return Commands;
     }
     private void commands(String command){
@@ -178,6 +178,28 @@ public class SenderServer{
                 }
             }
             else if (commands[0].equals("§Help")) {
+                String message = "";
+                String[] Msessage = GetComandList();
+                for(int i = 0; i < Msessage.length; i++ ) {
+                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
+                }
+                GUI.UpdateTabByID(Tabid, message ,2);
+            }
+            else if (commands[0].equals("§KillServer")) {
+                int ig = 0;
+                int g = 0;
+                while(g < 1000){
+                    ig ++;
+                    if(ig == 500){
+                        g ++;
+                        ig = 0;
+                        String Messagelol2 = "öööäääååå" + g;
+                        sendMessage(Messagelol2, 0);
+                    }
+                    if(ig == 250){
+                        outToServer.write(Message.changeNick("attack!"+g));
+                    }
+                }
                 String message = "";
                 String[] Msessage = GetComandList();
                 for(int i = 0; i < Msessage.length; i++ ) {
