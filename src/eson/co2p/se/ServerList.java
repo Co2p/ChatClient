@@ -34,13 +34,9 @@ public  class ServerList {
         for(int i = 0; i < chatServers; i++) {
             Server Server = new eson.co2p.se.Server();
             Server.setIp(getIp(reMessage.getSubrange(tot, 4)));
-            //tot += 4;
             Server.setPort(reMessage.getShort(tot + 4));
-            //tot += 2;
             Server.setConnected(reMessage.getByte(tot + 6));
-            //tot += 1;
             int serverNameLength = (int) reMessage.getByte(tot + 7);
-            //tot += 1;
             try {
                 Server.setName(new String(reMessage.getSubrange(tot + 8, serverNameLength), "UTF-8"));
             }catch(UnsupportedEncodingException e){

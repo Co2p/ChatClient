@@ -171,11 +171,12 @@ public class SenderServer{
         try {
             String commands[] = command.split(" ", 2);
             if (commands[0].equalsIgnoreCase("§nick")) {
-                if(commands[1].length() > 0){
+                if(commands.length > 1){
                     outToServer.write(Message.changeNick(commands[1]));
                     System.out.println("newNick = '" + commands[1] + "'");
                 }else{
                     System.out.println("Too short username");
+                    GUI.UpdateTabByID(Tabid, "ERROR: Too short username" ,0);
                 }
             }
 
