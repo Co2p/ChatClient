@@ -1,8 +1,9 @@
 package eson.co2p.se;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by isidor on 2014-10-15.
@@ -89,13 +90,13 @@ public class Message {
             //add encryption or compression based on the typ-input
             switch(type){
                 case 1:
-
+                    msgByte = compress(msgByte);
                     break;
                 case 2:
                     msgByte = enCrypt(msgByte);
                     break;
                 case 3:
-                    msgByte = enCrypt(msgByte);
+                    msgByte = enCrypt(compress(msgByte));
                     break;
             }
             rawdata = new PDU(12 + div4(msgByte.length));
@@ -122,6 +123,26 @@ public class Message {
         cryptPDU.setSubrange(12, newData);
         cryptPDU.setByte(1, Checksum.calc(cryptPDU.getBytes(), cryptPDU.length()));
         return cryptPDU.getBytes();
+    }
+
+    private static byte[] compress(byte[] data){
+        byte[] returnData = null;
+        try {
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream(data.length);
+            GZIPOutputStream gZip = new GZIPOutputStream(byteStream);
+            gZip.write(data);
+            gZip.close();
+            byteStream.close();
+            returnData = byteStream.toByteArray();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        PDU compPDU = new PDU(8 + div4(returnData.length));
+        compPDU.setShort(2, (short) returnData.length);
+        compPDU.setShort(4, (short) data.length);
+        compPDU.setSubrange(8, returnData);
+        compPDU.setByte(1, Checksum.calc(returnData, returnData.length));
+        return compPDU.getBytes();
     }
 
     /**
