@@ -174,7 +174,7 @@ public class SenderServer{
         try {
             String commands[] = command.split(" ", 2);
             if (commands[0].equals("§nick")) {
-                if(commands[1].length() > 0)
+                if(commands[1].length() > 0){
                     outToServer.write(Message.changeNick(commands[1]));
                     System.out.println("newNick = '" + commands[1] + "'");
                 }else{
