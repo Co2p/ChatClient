@@ -67,12 +67,17 @@ public class RecMessage_Message extends RecMessage{
 
     private static byte[] deCrypt(byte[] cryptMsg, int Tabid){
         PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
-        int algorithm = encryptedPDU.getByte(0);
-        int checksum = encryptedPDU.getByte(1);
-        int cryptLength = encryptedPDU.getShort(2);
-        int unCryptLength = encryptedPDU.getShort(4);
-        byte[] encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
-        Crypt.decrypt(encryptedMsg, encryptedMsg.length,catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+        byte[] encryptedMsg = null;
+        try {
+            int algorithm = encryptedPDU.getByte(0);
+            int checksum = encryptedPDU.getByte(1);
+            int cryptLength = encryptedPDU.getShort(2);
+            int unCryptLength = encryptedPDU.getShort(4);
+            encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
+            Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+        }catch(Exception e){
+            System.out.println("Someone decrypted a message wrong");
+        }
         return encryptedMsg;
     }
     private static byte[] deCompress(byte[] comprMsg){
