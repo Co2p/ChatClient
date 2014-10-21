@@ -102,7 +102,7 @@ public class startGui extends JFrame implements ActionListener{
             switch(type){
                 case 1:
                     //compress
-                    StyleConstants.setBackground(keyWord, Color.GREEN);
+                    StyleConstants.setBackground(keyWord, Color.ORANGE);
                     break;
                 case 2:
                     //crypt
@@ -110,7 +110,7 @@ public class startGui extends JFrame implements ActionListener{
                     break;
                 case 3:
                     //compress + crypt
-                    StyleConstants.setBackground(keyWord, Color.ORANGE);
+                    StyleConstants.setBackground(keyWord, Color.GREEN);
                     break;
             }
             StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
