@@ -170,7 +170,7 @@ public class SenderServer{
     private void commands(String command){
         try {
             String commands[] = command.split(" ", 2);
-            if (commands[0].equals("§nick")) {
+            if (commands[0].equalsIgnoreCase("§nick")) {
                 if(commands[1].length() > 0){
                     outToServer.write(Message.changeNick(commands[1]));
                     System.out.println("newNick = '" + commands[1] + "'");
@@ -178,7 +178,8 @@ public class SenderServer{
                     System.out.println("Too short username");
                 }
             }
-            else if (commands[0].equals("§Help")) {
+
+            else if (commands[0].equalsIgnoreCase("§help")) {
                 String message = "";
                 String[] Msessage = GetComandList();
                 for(int i = 0; i < Msessage.length; i++ ) {
