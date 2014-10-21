@@ -39,7 +39,7 @@ public class RecMessage_Message extends RecMessage{
                     break;
                 case 3:
                     System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
-                    message = new String(deCrypt(deCompress(PDUData.getSubrange(12, msgLength))), "UTF-8");
+                    message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength))), "UTF-8");
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
