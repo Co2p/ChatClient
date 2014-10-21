@@ -160,7 +160,7 @@ public class SenderServer{
     }
 
     private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DO IT!\nusage: §KillServer"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
         return Explanations[g];
     }
     private String[] GetComandList(){
