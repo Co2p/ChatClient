@@ -172,10 +172,11 @@ public class SenderServer{
 
     private void commands(String command){
         try {
-            String commands[] = command.split(" ");
+            String commands[] = command.split(" ", 2);
             if (commands[0].equals("§nick")) {
-                if(commands[1].length() > 0) {
+                if(commands[1].length() > 0)
                     outToServer.write(Message.changeNick(commands[1]));
+                    System.out.println("newNick = '" + commands[1] + "'");
                 }else{
                     System.out.println("Too short username");
                 }
@@ -246,7 +247,7 @@ public class SenderServer{
                 String newNick = "";
                 try {
                     nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                    newNick = new String(message.getSubrange(Message.div4(8 + nickLength), nickLength2), "UTF-8");
+                    newNick = new String(message.getSubrange(8 + Message.div4(nickLength), nickLength2), "UTF-8");
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
