@@ -31,11 +31,8 @@ public class SenderServer{
         Ip = IP;
         Port = port;
         Tabid = TabId;
-        System.out.println("Setting connection whit ip:" + Ip +"and port:" + Port + "on table:" + Tabid);
         ConnectSocket();
-        System.out.println("getting working GUI");
         GUI = catalogue.getGui();
-        System.out.println("Starting message check!");
         checkReceivedMessage();
     }
 
@@ -50,8 +47,6 @@ public class SenderServer{
                 localServerSocket = new Socket(Ip, Port);
                 localServerSocket.setSoTimeout(100);
                 in = new DataInputStream(localServerSocket.getInputStream());
-//inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
-                System.out.println("connected socket!");
                 tries = maxTries;
             } catch (IOException e) {
                 tries += 1;
@@ -60,10 +55,11 @@ public class SenderServer{
         }
         try {
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
-//skicka anslutningsmedelande
+            //  Skicka anslutningsmedelande
             outToServer.write(Message.connectToServerMessage());
         }catch (IOException e){
             System.out.println("Failed to send registration message");
+            e.printStackTrace();
         }
     }
     /**
@@ -74,7 +70,7 @@ public class SenderServer{
      */
     public void sendMessage(String messageToSend,int Type){
         try{
-            System.out.println("Sending message....");
+            System.out.println("Sending message: '" + messageToSend + "'");
             outToServer.write(Message.sendMessage(messageToSend, Type, Tabid));
         }catch (IOException e){
             System.out.println("Failed to send message");
@@ -88,7 +84,12 @@ public class SenderServer{
         int myLife = ClientThread.AliveThreadsID[Tabid];
         return myLife == 1;
     }
-    //TODO comment?
+
+    /**
+     * gets the message to send from the catalogue
+     *
+     * @return  the string to send
+     */
     private String GetMessageToSend(){
         String Message;
         while(true){
@@ -99,8 +100,11 @@ public class SenderServer{
         }
         return Message;
     }
+
     /**
-     * Checks for received messages on this socketasd
+     * Checks the checkboxes if the user wants to crypt or compress the message
+     *
+     * @return
      */
     private int GetKey(){
         boolean crypt = catalogue.GetCrypt(Tabid);
@@ -121,6 +125,9 @@ public class SenderServer{
             return 0;
         }
     }
+    /**
+     * Checks for received messages on this socket
+     */
     private void checkReceivedMessage(){
         byte[] messageByte = new byte[1000];
         PDU message = new PDU(0);
@@ -132,7 +139,14 @@ public class SenderServer{
                     sendMessage(Messagelol, GetKey());
                 }else{
                     System.out.println("Command found!");
-                    commands(Messagelol);
+                    byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
+                    if(command != null && command.length > 4){
+                        try {
+                            outToServer.write(command);
+                        }catch(IOException e){
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
             try {
@@ -160,63 +174,6 @@ public class SenderServer{
         }
     }
 
-    private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
-        return Explanations[g];
-    }
-    private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help","§KillServer", "§getlist"};
-        return Commands;
-    }
-    private void commands(String command){
-        try {
-            String commands[] = command.split(" ", 2);
-            if (commands[0].equalsIgnoreCase("§nick")) {
-                if(commands.length > 1){
-                    outToServer.write(Message.changeNick(commands[1]));
-                    System.out.println("newNick = '" + commands[1] + "'");
-                }else{
-                    System.out.println("Too short username");
-                    GUI.UpdateTabByID(Tabid, "ERROR: Too short username" ,0);
-                }
-            }
-
-            else if (commands[0].equalsIgnoreCase("§help")) {
-                String message = "";
-                String[] Msessage = GetComandList();
-                for(int i = 0; i < Msessage.length; i++ ) {
-                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
-                }
-                GUI.UpdateTabByID(Tabid, message ,2);
-            }
-            else if (commands[0].equals("§KillServer")) {
-                int ig = 0;
-                int g = 0;
-                while(g < 1000){
-                    ig ++;
-                    if(ig == 500){
-                        g ++;
-                        ig = 0;
-                        String Messagelol2 = "öööäääååå" + g;
-                        sendMessage(Messagelol2, 0);
-                    }
-                    if(ig == 250){
-                        outToServer.write(Message.changeNick("attack!"+g));
-                    }
-                }
-                String message = "";
-                String[] Msessage = GetComandList();
-                for(int i = 0; i < Msessage.length; i++ ) {
-                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
-                }
-                GUI.UpdateTabByID(Tabid, message ,2);
-            }
-        }catch(IOException e){
-            System.out.println("IOException occured: " + e);
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Breaks down a received message, checks the op-code and prints it accordingly
      *
@@ -229,62 +186,9 @@ public class SenderServer{
         int nickLength, time;
         String nick = "";
 
-        switch(opCode){
-            case OpCodes.MESSAGE:
-                System.out.println("Found message!");
-                RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
-                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType(), 0);
-                returnMes = temp;
-                break;
-            case OpCodes.NICKS:
-                System.out.println("Found nicks!");
-                try {
-                    String nicknames = new String(message.getSubrange
-                            (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
-                    GUI.UpdateTabByID2(Tabid, null, null, "Connected users: " + nicknames, 0, 1);
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                break;
-            case OpCodes.QUIT:
-                GUI.UpdateTabByID2(Tabid, null, null, "Server closed connection", 0, 1);
-                break;
-            case OpCodes.UJOIN:
-                nickLength = (int)message.getByte(1);
-                time = (int)message.getInt(4);
-                nick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " joined the room.", 0, 2);
-                break;
-            case OpCodes.ULEAVE:
-                nickLength = (int)message.getByte(1);
-                time = (int)message.getInt(4);
-                nick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " left the room.", 0, 1);
-                break;
-            case OpCodes.UCNICK:
-                nickLength = (int)message.getByte(1);
-                int nickLength2 = (int)message.getByte(2);
-                time = (int)message.getInt(4);
-                String newNick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                    newNick = new String(message.getSubrange(8 + Message.div4(nickLength), nickLength2), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " changed nick to: " + newNick, 0, 3);
-                break;
-        }
+        returnMes = new RecMessage(message.getBytes(), Tabid);
+        GUI.UpdateTabByID2(Tabid, getTime(returnMes.getTime()), returnMes.getNick(), returnMes.getMessage(), returnMes.getType(), returnMes.getOriginType());
+
         return returnMes;
     }
 
