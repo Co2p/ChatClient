@@ -16,7 +16,10 @@ public class Commands {
                 System.out.println("Too short username");
                 GUI.UpdateTabByID(Tabid, "ERROR: Too short username", 0);
             }
-        } else if (commands[0].equalsIgnoreCase("§help")) {
+        } else if (commands[0].equalsIgnoreCase("§nickgen")) {
+            returnArr = Message.changeNick(nickGenerator.getNew());
+            System.out.println("newNick = '" + nickGenerator.getNew() + "'");
+        }else if (commands[0].equalsIgnoreCase("§help")) {
             String message = "";
             String[] Msessage = GetComandList();
             for (int i = 0; i < Msessage.length; i++) {
@@ -33,7 +36,7 @@ public class Commands {
     }
 
     private static String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>", "Generate a new username\nusage: §nickgen","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
         return Explanations[g];
     }
     private static String[] GetComandList(){
