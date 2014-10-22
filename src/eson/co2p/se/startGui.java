@@ -49,7 +49,7 @@ public class startGui extends JFrame implements ActionListener {
     ArrayList<ArrayList> serverPlanes = new ArrayList<ArrayList>();
     ArrayList<ArrayList> serverJTextField = new ArrayList<ArrayList>();
     ArrayList<JButton> Buttons = new ArrayList<JButton>();
-    ArrayList<JTextField> ActionPlanes = new ArrayList<JTextField>();
+    ArrayList<JTextArea> ActionPlanes = new ArrayList<JTextArea>();
 
     ArrayList<ArrayList> Client_Content = new ArrayList<ArrayList>();
     ArrayList<ArrayList> chekboxes = new ArrayList<ArrayList>();
@@ -65,6 +65,9 @@ public class startGui extends JFrame implements ActionListener {
     /**
      * Retrives the active servers and adds them to serverlist
      */
+    public ArrayList<JButton> GetButtons(){
+        return Buttons;
+    }
     private void getServerNames(){
         try{
             Server = UDPServerConnection.getUdpServerlist();
@@ -102,6 +105,7 @@ public class startGui extends JFrame implements ActionListener {
 
     public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
+        OutputArea.setFont(new Font("Courier New", Font.BOLD, 12));
 
         StyledDocument doc = OutputArea.getStyledDocument();
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
@@ -228,7 +232,7 @@ public class startGui extends JFrame implements ActionListener {
             CurrentTab += 1;
 
 
-            ArrayList<JTextField> serverTextObject = new ArrayList<JTextField>();
+            ArrayList<JTextArea> serverTextObject = new ArrayList<JTextArea>();
             ArrayList<JTextPane> serverObjects = new ArrayList<JTextPane>();
 
             JPanel tempPanel2 = new JPanel();
@@ -251,11 +255,14 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel2.add(tempPanel3);
 
 
-            JTextField  inputArea = defineInputarea();
+            final JTextArea inputArea = defineInputarea();
             JScrollPane jScrollPane2 = new JScrollPane();
             serverTextObject.add(inputArea);
             jScrollPane2.getViewport().add(inputArea);
             inputArea.setPreferredSize(new Dimension(330, 120));
+            inputArea.setLineWrap(true);
+            inputArea.setFont(new Font("Courier New", Font.BOLD, 12));
+            inputArea.setWrapStyleWord(true);
 
 
             JButton sendMessage = new JButton("Send");
@@ -297,7 +304,7 @@ public class startGui extends JFrame implements ActionListener {
             connectButton.addActionListener(this);
             disConnectButton.addActionListener(this);
             setkey.addActionListener(this);
-            inputArea.addActionListener(this);
+            //inputArea.addActionListener(this);
 
             Buttons.add(sendMessage);
             ActionPlanes.add(inputArea);
@@ -323,7 +330,6 @@ public class startGui extends JFrame implements ActionListener {
             serverObjects.add(outputArea);
             outputAreaList.add(outputArea);
             outputArea.setPreferredSize(new Dimension(18, 10));
-
 
             JScrollPane jScrollPane1 = new JScrollPane();
             jScrollPane1.getViewport().add(outputArea);
@@ -361,7 +367,7 @@ public class startGui extends JFrame implements ActionListener {
             JButton[] buttonList = new JButton[]{connectButton, disConnectButton, sendMessage, setkey};
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
             JTextPane[] textAreas = new JTextPane[]{Key};
-            JTextField[] textAreasfields = new JTextField[]{inputArea};
+            JTextArea[] textAreasfields = new JTextArea[]{inputArea};
             //JCheckBox[] Chekboxes = new JCheckBox[]{Compress,Encrypted};
 
             ArrayList<Object> ClientContent = new ArrayList<Object>();
@@ -372,6 +378,13 @@ public class startGui extends JFrame implements ActionListener {
             ClientContent.add(textAreasfields);
             //ClientContent.add(Chekboxes);
 
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    new keycheker().enterKeyAction(inputArea);
+                }
+            };
+            EventQueue.invokeLater(r);
 
             Client_Content.add(ClientContent);
             if(Manual_Server){
@@ -422,8 +435,8 @@ public class startGui extends JFrame implements ActionListener {
         return outputArea;
     }
 
-    public JTextField  defineInputarea(){
-        JTextField  outputArea = new JTextField ();
+    public JTextArea defineInputarea(){
+        JTextArea outputArea = new JTextArea ();
         outputArea.setEditable(true);
 
         outputArea.setText("EnterText");
@@ -475,10 +488,11 @@ public class startGui extends JFrame implements ActionListener {
     }
 
 
-    public void UpdateWindows(JTextPane inputArea, JTextPane outputArea){
+    public void UpdateWindows(JTextArea inputArea, JTextPane outputArea){
         outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
         inputArea.setText("");
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -534,7 +548,7 @@ public class startGui extends JFrame implements ActionListener {
         //check the send button
         int Index_b = 0;
         for (JButton s : Buttons) {
-            JTextField ap = ActionPlanes.get(Index_b);
+            JTextArea ap = ActionPlanes.get(Index_b);
             Index_b ++;
             if (s.equals(e.getSource()) || ap.equals(e.getSource())) {
                 while (true){
@@ -586,10 +600,10 @@ public class startGui extends JFrame implements ActionListener {
                             }
                         }
                     }
-                    else if (Target.getClass() == JTextField[].class) {
-                        JTextField[] textArea = (JTextField[]) Target;
+                    else if (Target.getClass() == JTextArea[].class) {
+                        JTextArea[] textArea = (JTextArea[]) Target;
                         for (int i = 0; i < textArea.length; i++) {
-                            JTextField target = textArea[i];
+                            JTextArea target = textArea[i];
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -631,8 +645,8 @@ public class startGui extends JFrame implements ActionListener {
     }
     public String getInputText(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextField> TempTarget = serverJTextField.get(Index);
-        JTextField Input = TempTarget.get(0);
+        ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
+        JTextArea Input = TempTarget.get(0);
         String inp = Input.getText().trim();
         if (!inp.equals("")){
             return inp;
@@ -643,9 +657,9 @@ public class startGui extends JFrame implements ActionListener {
     }
     public void addToOutputFromInput(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextField> TempTarget = serverJTextField.get(Index);
+        ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
         ArrayList<JTextPane> TempTarget2 = serverPlanes.get(Index);
-        JTextField Input = TempTarget.get(0);
+        JTextArea Input = TempTarget.get(0);
         String inp = Input.getText().trim();
         if (!inp.equals("")){
             JTextPane Output = TempTarget2.get(0);
@@ -656,8 +670,8 @@ public class startGui extends JFrame implements ActionListener {
 
     public void removeInputText(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextField> TempTarget = serverJTextField.get(Index);
-        JTextField Input = TempTarget.get(0);
+        ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
+        JTextArea Input = TempTarget.get(0);
         Input.setText("");
     }
 
