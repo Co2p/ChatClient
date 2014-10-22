@@ -406,7 +406,8 @@ public class startGui extends JFrame implements ActionListener {
     private int Loop254(int valu, int index){
         String ip;
         if(!Manual_Server) {
-            ip = Server.getServer((String) serverlist.get(valu)).getIp().toString();
+            ip = Server.getServer((String)serverlist.get(valu)).getPort() + Server.getServer((String) serverlist.get
+                    (valu)).getIp().toString();
         }
         else{
             ip = "111.111.111.111";
