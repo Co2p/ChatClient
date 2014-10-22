@@ -170,10 +170,14 @@ public class RecMessage {
             int checksum = encryptedPDU.getByte(1);
             int cryptLength = encryptedPDU.getShort(2);
             int unCryptLength = encryptedPDU.getShort(4);
-            encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
-            Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
-            if(encryptedMsg.length != unCryptLength){
-                encryptedMsg = "INVALID KEY".getBytes();
+            if(unCryptLength > encryptedPDU.length() - 12) {
+                encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
+                Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+                if (encryptedMsg.length != unCryptLength) {
+                    encryptedMsg = "INVALID KEY".getBytes();
+                }
+            }else{
+                encryptedMsg = "INVALID ENCRYPTION".getBytes();
             }
         }catch(Exception e){
             System.out.println("Someone decrypted a message wrong");
@@ -187,28 +191,33 @@ public class RecMessage {
         int compLength = compressedPDU.getShort(2);
         int unCompLength = compressedPDU.getShort(4);
         System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
-        byte[] compMsg = compressedPDU.getSubrange(8, compLength);
         byte[] retArr = null;
-        if(algorithm == 0){
-            try {
-                Inflater inf = new java.util.zip.Inflater();
-                ByteArrayInputStream bytein = new java.io.ByteArrayInputStream(compMsg);
-                GZIPInputStream gzin = new java.util.zip.GZIPInputStream(bytein);
-                ByteArrayOutputStream byteout = new java.io.ByteArrayOutputStream();
-                int res = 0;
-                byte buf[] = new byte[65000];
-                while (res >= 0) {
-                    res = gzin.read(buf, 0, buf.length);
-                    if (res > 0) {
-                        byteout.write(buf, 0, res);
+
+        if(compLength > compressedPDU.length() + 8){
+            retArr = "Compression faulty".getBytes();
+        }else {
+            byte[] compMsg = compressedPDU.getSubrange(8, compLength);
+            if (algorithm == 0) {
+                try {
+                    Inflater inf = new java.util.zip.Inflater();
+                    ByteArrayInputStream bytein = new java.io.ByteArrayInputStream(compMsg);
+                    GZIPInputStream gzin = new java.util.zip.GZIPInputStream(bytein);
+                    ByteArrayOutputStream byteout = new java.io.ByteArrayOutputStream();
+                    int res = 0;
+                    byte buf[] = new byte[65000];
+                    while (res >= 0) {
+                        res = gzin.read(buf, 0, buf.length);
+                        if (res > 0) {
+                            byteout.write(buf, 0, res);
+                        }
                     }
+                    retArr = byteout.toByteArray();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                retArr = byteout.toByteArray();
-            }catch(Exception e){
-                e.printStackTrace();
+            } else {
+                System.out.println("unknown compression method");
             }
-        }else{
-            System.out.println("unknown compression method");
         }
         return retArr;
     }
