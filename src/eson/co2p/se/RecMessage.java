@@ -111,7 +111,12 @@ public class RecMessage {
                 case 2:
                     System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
                     System.out.println("CRYPT LENGTH: " + PDUData.length() + "msgLength: " + msgLength);
-                    message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
+                    if(PDUData.length() > 11 + msgLength) {
+                        message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
+                    }else{
+                        System.out.println("Krypteringen var felaktig");
+                        message = "CRYPT HEADER/MESSAGE WRONG";
+                    }
                     break;
                 case 3:
                     System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
