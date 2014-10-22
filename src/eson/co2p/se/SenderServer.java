@@ -165,7 +165,9 @@ public class SenderServer{
             }
             try {
                 int bytesRead = in.read(messageByte);
+                System.out.println("GOT MESSAGE");
                 if(bytesRead > 8) {
+                    System.out.println("GOT MESSAGE>8bytes");
                     PDU temp = new PDU(messageByte, messageByte.length);
                     RecMessageBreakDown(temp);
                 }else{
