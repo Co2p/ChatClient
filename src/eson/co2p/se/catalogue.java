@@ -5,8 +5,9 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 08/10/14.
  * Remembers states and identifiers
+ *
+ * @author gordon on 08/10/14.
  */
 public class catalogue {
 

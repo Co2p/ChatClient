@@ -1,10 +1,5 @@
 package eson.co2p.se;
 
-/**
- * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
- *
- * Created by Tony on 15/10/2014.
- */
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.Point;
@@ -15,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
+ * @author Tony on 15/10/2014.
+ */
 public class startGui extends JFrame implements ActionListener {
 
     JPanel panelOne;

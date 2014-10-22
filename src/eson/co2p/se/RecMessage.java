@@ -5,7 +5,8 @@ import java.util.zip.*;
 import java.io.*;
 
 /**
- * Created by Isidor on 2014-10-18.
+ * Defines the OP messages sent to the nameserver and the server
+ * @author Created by Isidor on 2014-10-18.
  */
 public class RecMessage {
     private int op;

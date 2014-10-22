@@ -1,9 +1,8 @@
 package eson.co2p.se;
 
-import java.io.IOException;
-
 /**
- * Created by Isidor fucking NYGREN on 2014-10-22.
+ * Defines the possible commands that the user can call in the chat
+ * @author Isidor fucking NYGREN on 2014-10-22.
  */
 public class Commands {
     public static byte[] getCommand(String command, startGui GUI, int Tabid) {

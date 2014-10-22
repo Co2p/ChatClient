@@ -9,7 +9,7 @@ import java.util.TimeZone;
  * TCP connection to the Chat Server
  * Now made to be threaded
  *
- * Created by gordon on 08/10/14 modded by tony 18/10/14.
+ * @author gordon on 08/10/14 modded by tony 18/10/14.
  */
 public class SenderServer{
     int Port;
@@ -104,7 +104,8 @@ public class SenderServer{
     /**
      * Checks the checkboxes if the user wants to crypt or compress the message
      *
-     * @return
+     * @return the type of message that should be sent
+     * @see eson.co2p.se.MsgTypes
      */
     private int GetKey(){
         boolean crypt = catalogue.GetCrypt(Tabid);

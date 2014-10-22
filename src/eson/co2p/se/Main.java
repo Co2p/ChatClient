@@ -2,6 +2,9 @@ package eson.co2p.se;
 
 import java.util.ArrayList;
 
+/**
+ * The Main class
+ */
 public class Main {
 
     Thread nameServer;
