@@ -35,7 +35,7 @@ public class Message {
         int usernameLength = div4(catalogue.getNick().getBytes().length);
         PDU rawdata = new PDU(4 + usernameLength);
         rawdata.setByte(0,(byte)OpCodes.JOIN);
-        rawdata.setByte(1, (byte) usernameLength);
+        rawdata.setByte(1, (byte)div4(usernameLength));
         //rawdata.setShort(2, (byte)0);
         try {
             rawdata.setSubrange(4, catalogue.getNick().getBytes("UTF-8"));
