@@ -102,7 +102,7 @@ public class SenderServer{
     }
 
     /**
-     * Gets the key from the catalogue, and checking the cryptationmethod
+     * Checks the checkboxes if the user wants to crypt or compress the message
      *
      * @return
      */
@@ -189,7 +189,7 @@ public class SenderServer{
         switch(opCode){
             case OpCodes.MESSAGE:
                 System.out.println("Found message!");
-                RecMessage_Message temp = new RecMessage_Message(message.getBytes(),Tabid);
+                RecMessage temp = new RecMessage(message.getBytes(),Tabid);
                 GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType(), 0);
                 returnMes = temp;
                 break;

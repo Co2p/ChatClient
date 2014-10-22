@@ -7,13 +7,13 @@ import java.io.*;
 /**
  * Created by Isidor on 2014-10-18.
  */
-public class RecMessage_Message{
+public class RecMessage {
     private int op;
     PDU PDUData;
     int type, time;
     String nickname, message;
 
-    public RecMessage_Message(byte[] rawData, int Tabid){
+    public RecMessage(byte[] rawData, int Tabid){
         int nickLength, msgLength;
         int checksum = PDUData.getByte(3);
         PDUData = new PDU(rawData, rawData.length);
