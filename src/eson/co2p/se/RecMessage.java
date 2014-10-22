@@ -10,15 +10,84 @@ import java.io.*;
 public class RecMessage {
     private int op;
     PDU PDUData;
-    int type, time;
+    int type, time,Tabid;
+    int OriginType = 0;
     String nickname, message;
 
     public RecMessage(byte[] rawData, int Tabid){
-        int nickLength, msgLength;
-        int checksum = PDUData.getByte(3);
+        int nickLength;
+        String nick = "";
+        this.Tabid = Tabid;
         PDUData = new PDU(rawData, rawData.length);
         setOp(PDUData.getByte(0));
 
+        switch(op){
+            case OpCodes.MESSAGE:
+                System.out.println("Found message!");
+                Message();
+                break;
+            case OpCodes.NICKS:
+                System.out.println("Found nicks!");
+                OriginType = 1;
+                try {
+                    String nicknames = new String(PDUData.getSubrange
+                            (4, Message.div4(PDUData.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
+                    message =  ("Connected users: " + nicknames);
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                break;
+            case OpCodes.QUIT:
+                System.out.println("Message wants to quit you");
+                OriginType = 1;
+                message = "Server closed connection";
+                break;
+            case OpCodes.UJOIN:
+                System.out.println("Found user-joined message");
+                OriginType = 2;
+                nickLength = (int)PDUData.getByte(1);
+                time = (int)PDUData.getInt(4);
+                try {
+                    nick = new String(PDUData.getSubrange(8, nickLength), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                message = nick + " joined the room.";
+                break;
+            case OpCodes.ULEAVE:
+                System.out.println("Found user-leaved message");
+                OriginType = 1;
+                nickLength = (int)PDUData.getByte(1);
+                time = (int)PDUData.getInt(4);
+                try {
+                    nick = new String(PDUData.getSubrange(8, nickLength), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                message = nick + " left the room.";
+                break;
+            case OpCodes.UCNICK:
+                System.out.println("Found user-changed-nick message");
+                OriginType = 3;
+                nickLength = (int)PDUData.getByte(1);
+                int nickLength2 = (int)PDUData.getByte(2);
+                time = (int)PDUData.getInt(4);
+                String newNick = "";
+                try {
+                    nick = new String(PDUData.getSubrange(8, nickLength), "UTF-8");
+                    newNick = new String(PDUData.getSubrange(8 + Message.div4(nickLength), nickLength2), "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+                message =  nick + " changed nick to: " + newNick;
+                break;
+        }
+    }
+
+    private void Message(){
+        int checksum = PDUData.getByte(3);
+
+        int nickLength, msgLength;
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
         msgLength = PDUData.getShort(4);
@@ -67,6 +136,10 @@ public class RecMessage {
 
     public int getType(){
         return type;
+    }
+
+    public int getOriginType(){
+        return OriginType;
     }
 
     public int getTime(){

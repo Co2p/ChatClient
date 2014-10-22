@@ -186,62 +186,9 @@ public class SenderServer{
         int nickLength, time;
         String nick = "";
 
-        switch(opCode){
-            case OpCodes.MESSAGE:
-                System.out.println("Found message!");
-                RecMessage temp = new RecMessage(message.getBytes(),Tabid);
-                GUI.UpdateTabByID2(Tabid, getTime(temp.getTime()), temp.getNick(), temp.getMessage(), temp.getType(), 0);
-                returnMes = temp;
-                break;
-            case OpCodes.NICKS:
-                System.out.println("Found nicks!");
-                try {
-                    String nicknames = new String(message.getSubrange
-                            (4, Message.div4(message.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
-                    GUI.UpdateTabByID2(Tabid, null, null, "Connected users: " + nicknames, 0, 1);
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                break;
-            case OpCodes.QUIT:
-                GUI.UpdateTabByID2(Tabid, null, null, "Server closed connection", 0, 1);
-                break;
-            case OpCodes.UJOIN:
-                nickLength = (int)message.getByte(1);
-                time = (int)message.getInt(4);
-                nick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " joined the room.", 0, 2);
-                break;
-            case OpCodes.ULEAVE:
-                nickLength = (int)message.getByte(1);
-                time = (int)message.getInt(4);
-                nick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " left the room.", 0, 1);
-                break;
-            case OpCodes.UCNICK:
-                nickLength = (int)message.getByte(1);
-                int nickLength2 = (int)message.getByte(2);
-                time = (int)message.getInt(4);
-                String newNick = "";
-                try {
-                    nick = new String(message.getSubrange(8, nickLength), "UTF-8");
-                    newNick = new String(message.getSubrange(8 + Message.div4(nickLength), nickLength2), "UTF-8");
-                }catch(UnsupportedEncodingException e){
-                    e.printStackTrace();
-                }
-                GUI.UpdateTabByID2(Tabid, getTime(time), null, nick + " changed nick to: " + newNick, 0, 3);
-                break;
-        }
+        returnMes = new RecMessage(message.getBytes(), Tabid);
+        GUI.UpdateTabByID2(Tabid, getTime(returnMes.getTime()), returnMes.getNick(), returnMes.getMessage(), returnMes.getType(), returnMes.getOriginType());
+
         return returnMes;
     }
 
