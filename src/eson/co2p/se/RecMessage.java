@@ -11,7 +11,8 @@ import java.io.*;
 public class RecMessage {
     private int op;
     PDU PDUData;
-    int type, time,Tabid;
+    int type,Tabid;
+    Integer time;
     int OriginType = 0;
     String nickname, message;
 
@@ -21,6 +22,7 @@ public class RecMessage {
         this.Tabid = Tabid;
         PDUData = new PDU(rawData, rawData.length);
         setOp(PDUData.getByte(0));
+        time = null;
 
         switch(op){
             case OpCodes.MESSAGE:
@@ -144,7 +146,7 @@ public class RecMessage {
         return OriginType;
     }
 
-    public int getTime(){
+    public Integer getTime(){
         return time;
     }
 
