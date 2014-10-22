@@ -108,7 +108,7 @@ public class RecMessage {
                     break;
                 case 2:
                     System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
-                    System.out.println("CRYPT LENGTH: " + PDUData.length());
+                    System.out.println("CRYPT LENGTH: " + PDUData.length() + "msgLength: " + msgLength);
                     message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
                     break;
                 case 3:

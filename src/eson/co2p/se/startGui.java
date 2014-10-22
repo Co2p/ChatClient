@@ -141,7 +141,7 @@ public class startGui extends JFrame implements ActionListener {
             switch(originType) {
                 case 0:
                     //Easteregg
-                    if (userName.contains("420")) {
+                    if (userName != null && userName.contains("420")) {
                         color420(doc, keyWord, message);
                     } else {
                         StyleConstants.setBold(keyWord, false);
