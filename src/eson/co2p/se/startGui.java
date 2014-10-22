@@ -460,31 +460,8 @@ public class startGui extends JFrame implements ActionListener {
         frame.pack();
         frame.setVisible(true);
         frame.setBounds(80, 80, 490, 666);
-        //frame.setBackground(new Color(0,255,0,0));
-        panelOne.addMouseListener(new MouseListener(){
-            public void mouseReleased(MouseEvent e) {
-                mouseDownCompCoords = null;
-            }
-            public void mousePressed(MouseEvent e) {
-                mouseDownCompCoords = e.getPoint();
-            }
-            public void mouseExited(MouseEvent e) {
-            }
-            public void mouseEntered(MouseEvent e) {
-            }
-            public void mouseClicked(MouseEvent e) {
-            }
-        });
-
-        panelOne.addMouseMotionListener(new MouseMotionListener(){
-            public void mouseMoved(MouseEvent e) {
-            }
-
-            public void mouseDragged(MouseEvent e) {
-                Point currCoords = e.getLocationOnScreen();
-                frame.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            }
-        });
+        ImageIcon icon = createImageIcon("glorous28.png");
+        frame.setIconImage(icon.getImage());
     }
 
 

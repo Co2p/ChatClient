@@ -24,33 +24,13 @@ public class Commands {
                 message = message + "\n" + Msessage[i] + "\n" + GetExplanation(i) + "\n";
             }
             GUI.UpdateTabByID(Tabid, message, 2);
-        }else{  //  If no command found, print commandNotFound
+        } else if(commands[0].equals("§KillServer")){
+            catalogue.SetDosReq(Tabid);
+        }
+        else{  //  If no command found, print commandNotFound
             GUI.UpdateTabByID(Tabid, "Command not found", 0);
         }
         return returnArr;
-        //  TODO Omimplementera DDOS
-            /*else if (commands[0].equals("§KillServer")) {
-                int ig = 0;
-                int g = 0;
-                while(g < 1000){
-                    ig ++;
-                    if(ig == 500){
-                        g ++;
-                        ig = 0;
-                        String Messagelol2 = "öööäääååå" + g;
-                        sendMessage(Messagelol2, 0);
-                    }
-                    if(ig == 250){
-                        return Message.changeNick("attack!"+g);
-                    }
-                }
-                String message = "";
-                String[] Msessage = GetComandList();
-                for(int i = 0; i < Msessage.length; i++ ) {
-                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
-                }
-                GUI.UpdateTabByID(Tabid, message ,2);
-            }*/
     }
 
     private static String GetExplanation(int g){

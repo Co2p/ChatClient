@@ -21,6 +21,7 @@ public class catalogue {
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
     public static boolean[] crypt = new boolean[256];
+    public static boolean[] dosreq = new boolean[256];
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
 
@@ -109,7 +110,17 @@ public class catalogue {
             return null;
         }
     }
+    public static void SetDosReq(int index){
+        dosreq[index] = true;
+    }
 
+    public static boolean Updatedosreq(int index){
+        boolean ret = dosreq[index];
+        if(dosreq[index]){
+            dosreq[index] = false;
+        }
+        return ret;
+    }
     /**
      * Returns the client ID number
      * @return ID number
@@ -283,6 +294,7 @@ public class catalogue {
                 message[i] = null;
                 comp[i] = false;
                 crypt[i] = false;
+                dosreq[i] = false;
                 Keys[i] = "foobar";
             }
             System.out.println("Filled Arraylist");

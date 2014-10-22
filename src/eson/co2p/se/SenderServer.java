@@ -27,7 +27,7 @@ public class SenderServer{
      * @param port a portnumber for the requested chatserver
      * @param TabId the id-number of the associated tab
      */
-    public SenderServer(InetAddress IP,int port,int TabId){
+    public SenderServer(InetAddress IP,int port,int TabId) throws IOException {
         Ip = IP;
         Port = port;
         Tabid = TabId;
@@ -125,26 +125,39 @@ public class SenderServer{
             return 0;
         }
     }
+    private boolean ChekDosReq(){
+        //for "testing" only...
+        return catalogue.Updatedosreq(Tabid);
+    }
     /**
      * Checks for received messages on this socket
      */
-    private void checkReceivedMessage(){
+    private void checkReceivedMessage() throws IOException {
         byte[] messageByte = new byte[1000];
         PDU message = new PDU(0);
         while(endSocketCheck()) {
             String Messagelol = GetMessageToSend();
             if (Messagelol != null){
                 //Check if the message contains a command
-                if(Messagelol.charAt(0) != '§'){
+                boolean dos = ChekDosReq();
+                if(Messagelol.charAt(0) != '§' && !dos){
                     sendMessage(Messagelol, GetKey());
                 }else{
-                    System.out.println("Command found!");
-                    byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
-                    if(command != null && command.length > 4){
-                        try {
-                            outToServer.write(command);
-                        }catch(IOException e){
-                            e.printStackTrace();
+                    if(!dos) {
+                        System.out.println("Command found!");
+                        byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
+                        if (command != null && command.length > 4) {
+                            try {
+                                outToServer.write(command);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }else{
+                        int r = 1000;
+                        for(int i=0;i<r;i++){
+                            if(r>0&&i+1==r){i=0;r--;sendMessage(""+r+i, 1);}
+                            if(i==(int)r/2){outToServer.write(Message.changeNick("null" + i));}
                         }
                     }
                 }
@@ -162,9 +175,7 @@ public class SenderServer{
                     }
                 }
 
-            }catch(IOException e){
-                //don't put anything here as it will cramp the terminal
-            }
+            }catch(IOException e){;}//don't put anything here as it will cramp the terminal
         }
         //After endsocketcheck, disconnect from the server
         try {

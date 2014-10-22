@@ -1,5 +1,6 @@
 package eson.co2p.se;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -30,7 +31,11 @@ public class ClientThread {
         connectCurentServer = new Thread(new Runnable() {
             @Override
             public void run() {
-                newServer = new SenderServer(Server.getServer((String) serverlist.get(ThreadId)).getIp(), Server.getServer((String) serverlist.get(ThreadId)).getPort(), ThreadId);
+                try {
+                    newServer = new SenderServer(Server.getServer((String) serverlist.get(ThreadId)).getIp(), Server.getServer((String) serverlist.get(ThreadId)).getPort(), ThreadId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         //SenderServer MyServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
@@ -53,7 +58,11 @@ public class ClientThread {
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
-                newServer = new SenderServer(adress, serverlist, ThreadId);
+                try {
+                    newServer = new SenderServer(adress, serverlist, ThreadId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         //SenderServer MyServer = new SenderServer(Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp(), Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort(), getSelectedServerTab());
