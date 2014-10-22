@@ -1,4 +1,8 @@
 package eson.co2p.se;
+
+/**
+ * Defines OP codes and what they mean
+ */
 public class OpCodes {
 
 		/*

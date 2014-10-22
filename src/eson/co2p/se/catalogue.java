@@ -1,12 +1,12 @@
 package eson.co2p.se;
 
-import javax.swing.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
- * Created by gordon on 08/10/14.
  * Remembers states and identifiers
+ *
+ * @author gordon on 08/10/14.
  */
 public class catalogue {
 
@@ -21,6 +21,7 @@ public class catalogue {
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
     public static boolean[] crypt = new boolean[256];
+    public static boolean[] dosreq = new boolean[256];
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
 
@@ -109,7 +110,17 @@ public class catalogue {
             return null;
         }
     }
+    public static void SetDosReq(int index){
+        dosreq[index] = true;
+    }
 
+    public static boolean Updatedosreq(int index){
+        boolean ret = dosreq[index];
+        if(dosreq[index]){
+            dosreq[index] = false;
+        }
+        return ret;
+    }
     /**
      * Returns the client ID number
      * @return ID number
@@ -181,7 +192,7 @@ public class catalogue {
     public static byte[] getKey(int Index){
 
         firstFillArrayList();
-        if(firstAcess == false) {
+        if(!firstAcess) {
             String ret = Keys[Index];
             return ret.getBytes();
         }
@@ -205,7 +216,7 @@ public class catalogue {
      */
     public static String GetClientMessage (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
+        if(!firstAcess) {
             MessageInUse = true;
             String ret = message[Index];
             message[Index] = null;
@@ -226,13 +237,7 @@ public class catalogue {
      */
     public static boolean GetCrypt (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
-            boolean ret = crypt[Index];
-            return ret;
-        }
-        else{
-            return false;
-        }
+        return !firstAcess && crypt[Index];
     }
     /**
      * returns if using compression or not or not
@@ -250,9 +255,8 @@ public class catalogue {
      */
     public static String GetCryptKey(int Index){
         firstFillArrayList();
-        if(firstAcess == false) {
-            String ret = Keys[Index];
-            return ret;
+        if(!firstAcess) {
+            return Keys[Index];
         }
         else{
             return "foobar";
@@ -265,17 +269,11 @@ public class catalogue {
      */
     public static boolean GetComp (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
-            boolean ret = comp[Index];
-            return ret;
-        }
-        else{
-            return false;
-        }
+        return !firstAcess && comp[Index];
     }
 
     private static void firstFillArrayList(){
-        if(firstAcess == true) {
+        if(firstAcess) {
             //for (int i = 0; i < 256; i++) {
             //    Chatsync.add(i,null);
             //}
@@ -283,6 +281,7 @@ public class catalogue {
                 message[i] = null;
                 comp[i] = false;
                 crypt[i] = false;
+                dosreq[i] = false;
                 Keys[i] = "foobar";
             }
             System.out.println("Filled Arraylist");

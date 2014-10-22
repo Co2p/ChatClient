@@ -6,10 +6,11 @@ import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Created by isidor on 2014-10-15.
+ * Includes methods for creating all the messages that's going to the server
+ * from the server, also includes minor static math methods used in separate places
  *
- *  Includes methods for creating all the messages that's going to the server
- *  from the server, also includes minor static math methods used in separate places
+ * @author isidor on 2014-10-15.
+ *
  */
 public class Message {
 

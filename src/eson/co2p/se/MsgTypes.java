@@ -1,5 +1,8 @@
 package eson.co2p.se;
 
+/**
+ * Defines message types and their respective number code
+ */
 public class MsgTypes {
 		
 		public static final int TEXT      = 0;

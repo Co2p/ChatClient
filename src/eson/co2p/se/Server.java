@@ -5,7 +5,7 @@ import java.net.InetAddress;
 /**
  * An object to store information about servers
  *
- * Created by isidor on 2014-10-13.
+ * @author isidor on 2014-10-13.
  */
 public class Server {
     private InetAddress ip;
@@ -42,7 +42,7 @@ public class Server {
 
     /**
      * Set how many clients are connected to the server
-     * @param connected Connected clients
+     * @param connected active clients
      */
     public void setConnected(int connected){
         this.connected = connected;

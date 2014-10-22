@@ -6,19 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 /**
  * A GUI that asks for a name server.
  *
- * Created by Tony on 16/10/2014.
+ * @author  Tony on 16/10/2014.
  */
 public class askForNameServer implements ActionListener {
     //  NickArray added for randomization of name
-    private String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange", "Cyan", "Pink", "Brown", "Black", "White", "Hot", "Cold", "Sour", "Sweet", "Slippery", "Big", "Small",
-        "Enormous", "Drippery", "Fucking", "Fine", "Pulsating", "Slobbering", "Hacking", "Horny", "Freaky", "Ganja", "420", "Epic", "Awesome", "Super", "Flash", "Growing", "Changing", "Sonic"};
-    private String[] nicks = new String[] {"Panther", "Carrot", "Cactus", "Sea", "Tiger", "Cat", "Dog", "Warthog", "Leopard", "Flower", "Circuit", "Sun", "Star", "Galaxy", "Kangaroo", "Pig", "Cow", "Frog", "Toad",
-        "Dick", "Anal", "Possum", "Corpse", "Sanic", "Penis", "Ass", "Kånkelbär", "Dildo", "Cock", "Weed", "Ganja", "Aina", "Knatch", "Hat", "Punch", "Calculus", "Signal", "Pond", "Brother", "Sister", "Bandit"};
     JFrame frame1 = new JFrame("Connect to server");
     JPanel textFrame = new JPanel();
     JPanel nickPanel = new JPanel();
@@ -47,7 +42,8 @@ public class askForNameServer implements ActionListener {
         Adress.setPreferredSize(new Dimension(250, 26));
         port.setPreferredSize(new Dimension(60, 26));
         nick.setPreferredSize(new Dimension(250, 26));
-        nick();
+        nickGenerator.makeClean(true); //<-- Removes explicit names
+        nick.setText(nickGenerator.getNew());
 
         frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ImageIcon icon = createImageIcon("glorous28.png");
@@ -80,16 +76,8 @@ public class askForNameServer implements ActionListener {
         }
 
         if (e.getSource() == changeNick){
-            nick();
+            nick.setText(nickGenerator.getNew());
         }
-    }
-
-    /**
-     *  Generates a random nick
-     */
-    private void nick(){
-        int seed = ((int) System.currentTimeMillis());
-        nick.setText(colorNicks[new Random(seed).nextInt(colorNicks.length)] + nicks[new Random(seed).nextInt(nicks.length)]);
     }
 
     /**

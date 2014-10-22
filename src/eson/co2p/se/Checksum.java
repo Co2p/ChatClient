@@ -1,8 +1,7 @@
 package eson.co2p.se;
-/* Checksum.java
- * Given fil till laboration 2 - Distribuerad Chat p� kursen Datakommunikation
- * och Datorn�t C, 5p vid Ume� Universitet ht 2001 och vt 2002
- * Av Per Nordlinder (per@cs.umu.se) och Jon Hollstr�m (jon@cs.umu.se)
+/** Checksum.java
+ * Generates a basic checksum
+ * @author Per Nordlinder (per@cs.umu.se), Jon Hollstr�m (jon@cs.umu.se)
  */
 
 public class Checksum {

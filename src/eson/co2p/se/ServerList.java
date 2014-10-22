@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- * Created by Isidor on 2014-10-13.
- *
  * Keeps track of the servers that were returned from the name server
+ * @author Isidor on 2014-10-13.
  */
 public  class ServerList {
 
@@ -21,7 +20,8 @@ public  class ServerList {
 
     /**
      * Creates a serverList with all of the servers that the name server returned
-     * @param message the returned header from the name server
+     * @param ip IP adress
+     * @param Por port number
      */
     public ServerList(String ip, int Por){
         Server Server = new eson.co2p.se.Server();
