@@ -175,7 +175,7 @@ public class RecMessage {
             int checksum = encryptedPDU.getByte(1);
             int cryptLength = encryptedPDU.getShort(2);
             int unCryptLength = encryptedPDU.getShort(4);
-            if(unCryptLength > encryptedPDU.length() - 12) {
+            if(unCryptLength <= encryptedPDU.length() - 12) {
                 encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
                 Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
                 if (encryptedMsg.length != unCryptLength) {
