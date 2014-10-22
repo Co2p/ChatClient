@@ -36,7 +36,7 @@ public class RecMessage {
                     System.out.println("The String: " + new String(PDUData.getBytes(), "UTF-8"));
 
                     String nicknames = new String(PDUData.getSubrange
-                            (4, Message.div4(PDUData.getShort(2)) - 5), "UTF-8").replaceAll("\0", ", ");
+                            (4, (PDUData.getShort(2))), "UTF-8").replaceAll("\0", ", ");
                     message =  ("Connected users: " + nicknames);
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
