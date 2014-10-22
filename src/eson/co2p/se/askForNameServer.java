@@ -42,7 +42,7 @@ public class askForNameServer implements ActionListener {
         Adress.setPreferredSize(new Dimension(250, 26));
         port.setPreferredSize(new Dimension(60, 26));
         nick.setPreferredSize(new Dimension(250, 26));
-        nickGenerator.makeClean(false); //<-- Removes explicit names
+        nickGenerator.makeClean(true); //<-- Removes explicit names
         nick.setText(nickGenerator.getNew());
 
         frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

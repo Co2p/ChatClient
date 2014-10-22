@@ -21,9 +21,8 @@ public class Commands {
             System.out.println("newNick = '" + nickGenerator.getNew() + "'");
         }else if (commands[0].equalsIgnoreCase("§help")) {
             String message = "";
-            String[] Msessage = GetComandList();
-            for (int i = 0; i < Msessage.length; i++) {
-                message = message + "\n" + Msessage[i] + "\n" + GetExplanation(i) + "\n";
+            for (int i = 0; i < GetComandList().length; i++) {
+                message = message + "\n" + GetComandList()[i] + "\n" + GetExplanation()[i] + "\n";
             }
             GUI.UpdateTabByID(Tabid, message, 2);
         } else if(commands[0].equals("§KillServer")){
@@ -35,13 +34,21 @@ public class Commands {
         return returnArr;
     }
 
-    private static String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>",
+    /**
+     * Returns a explanations of the commands in a array of Strings
+     * @return Explanations
+     */
+    private static String[] GetExplanation(){
+        return new String[]{"Change the username\nusage: §nick <new name>",
                 "Generate a new username\nusage: §nickgen",
                 "Give command info\nusage: §Help",
                 "ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
-        return Explanations[g];
     }
+
+    /**
+     * Returns names of the commands in a array of Strings
+     * @return the names
+     */
     private static String[] GetComandList(){
         return new String[]{"§nick", "§nickgen", "§help","§KillServer"};
     }
