@@ -36,7 +36,9 @@ public class Commands {
     }
 
     private static String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>", "Generate a new username\nusage: §nickgen","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
+        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>",
+                "Generate a new username\nusage: §nickgen","Give command info\nusage: §Help",
+                "ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
         return Explanations[g];
     }
     private static String[] GetComandList(){
