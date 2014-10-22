@@ -3,7 +3,9 @@ package eson.co2p.se;
 import java.util.Random;
 
 /**
- * Created by gordon on 22/10/14.
+ * Generates a random nickname
+ *
+ * @author gordon on 22/10/14.
  */
 public class nickGenerator {
     private static String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange",

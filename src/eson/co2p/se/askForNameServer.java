@@ -6,12 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 /**
  * A GUI that asks for a name server.
  *
- * Created by Tony on 16/10/2014.
+ * @author  Tony on 16/10/2014.
  */
 public class askForNameServer implements ActionListener {
     //  NickArray added for randomization of name

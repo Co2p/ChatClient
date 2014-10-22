@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 public class keycheker {
 
     private static final String key = "ENTER";
-    private KeyStroke keyStroke;
+    private KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
 
     private Action wrapper = new AbstractAction() {
         private static final long serialVersionUID = 1L;
@@ -22,7 +22,6 @@ public class keycheker {
         }
     };
     public void enterKeyAction(JTextArea area){
-        keyStroke = KeyStroke.getKeyStroke(key);
         Object actionKey = area.getInputMap(JComponent.WHEN_FOCUSED).get(keyStroke);
         area.getActionMap().put(actionKey, wrapper);
     }

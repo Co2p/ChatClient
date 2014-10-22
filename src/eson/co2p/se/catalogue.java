@@ -1,6 +1,5 @@
 package eson.co2p.se;
 
-import javax.swing.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -193,7 +192,7 @@ public class catalogue {
     public static byte[] getKey(int Index){
 
         firstFillArrayList();
-        if(firstAcess == false) {
+        if(!firstAcess) {
             String ret = Keys[Index];
             return ret.getBytes();
         }
@@ -217,7 +216,7 @@ public class catalogue {
      */
     public static String GetClientMessage (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
+        if(!firstAcess) {
             MessageInUse = true;
             String ret = message[Index];
             message[Index] = null;
@@ -238,13 +237,7 @@ public class catalogue {
      */
     public static boolean GetCrypt (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
-            boolean ret = crypt[Index];
-            return ret;
-        }
-        else{
-            return false;
-        }
+        return !firstAcess && crypt[Index];
     }
     /**
      * returns if using compression or not or not
@@ -262,9 +255,8 @@ public class catalogue {
      */
     public static String GetCryptKey(int Index){
         firstFillArrayList();
-        if(firstAcess == false) {
-            String ret = Keys[Index];
-            return ret;
+        if(!firstAcess) {
+            return Keys[Index];
         }
         else{
             return "foobar";
@@ -277,17 +269,11 @@ public class catalogue {
      */
     public static boolean GetComp (int Index) {
         firstFillArrayList();
-        if(firstAcess == false) {
-            boolean ret = comp[Index];
-            return ret;
-        }
-        else{
-            return false;
-        }
+        return !firstAcess && comp[Index];
     }
 
     private static void firstFillArrayList(){
-        if(firstAcess == true) {
+        if(firstAcess) {
             //for (int i = 0; i < 256; i++) {
             //    Chatsync.add(i,null);
             //}

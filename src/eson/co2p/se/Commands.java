@@ -42,7 +42,6 @@ public class Commands {
         return Explanations[g];
     }
     private static String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help","§KillServer"};
-        return Commands;
+        return new String[]{"§nick","§Help","§KillServer"};
     }
 }

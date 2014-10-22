@@ -79,11 +79,10 @@ public class ClientThread {
      * @param ThreadId a thread identifier
      */
     public static void endThread(final int ThreadId){
-        int ID = ThreadId;
         for(ArrayList Me : ServerThreadList){
             Object Targ = Me.get(0);
             int ObjId = (Integer)Targ;
-            if (ObjId == ID){
+            if (ObjId == ThreadId){
                 System.out.println("ME:" + Me );
                 AliveThreadsID[ObjId] = 0;
                 Thread Threaded = (Thread)Me.get(1);//the thread

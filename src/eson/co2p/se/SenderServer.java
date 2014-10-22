@@ -113,10 +113,10 @@ public class SenderServer{
         if(!crypt && !comp){
             return 0;
         }
-        else if(!crypt && comp){
+        else if(!crypt && comp){//TODO comp är alltid sann här
             return 1;
         }
-        else if(crypt && !comp){
+        else if(crypt && !comp){//TODO crypt är alltid sann här
             return 2;
         }
         else if(crypt && comp){
