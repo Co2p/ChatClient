@@ -14,6 +14,7 @@ import java.util.Random;
  * Created by Tony on 16/10/2014.
  */
 public class askForNameServer implements ActionListener {
+    //  NickArray added for randomization of name
     private String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange", "Cyan", "Pink", "Brown", "Black", "White", "Hot", "Cold", "Sour", "Sweet", "Slippery", "Big", "Small",
         "Enormous", "Drippery", "Fucking", "Fine", "Pulsating", "Slobbering", "Hacking", "Horny", "Freaky", "Ganja", "420", "Epic", "Awesome", "Super", "Flash", "Growing", "Changing", "Sonic"};
     private String[] nicks = new String[] {"Panther", "Carrot", "Cactus", "Sea", "Tiger", "Cat", "Dog", "Warthog", "Leopard", "Flower", "Circuit", "Sun", "Star", "Galaxy", "Kangaroo", "Pig", "Cow", "Frog", "Toad",
@@ -21,6 +22,7 @@ public class askForNameServer implements ActionListener {
     JFrame frame1 = new JFrame("Connect to server");
     JPanel textFrame = new JPanel();
     JPanel nickPanel = new JPanel();
+    //  Standard names for gui/input
     JLabel label = new JLabel("  Please provide a name server and nick, then Connect");
     JTextField Adress = new JTextField("itchy.cs.umu.se");
     JTextField port = new JTextField("1337");
@@ -83,10 +85,9 @@ public class askForNameServer implements ActionListener {
     }
 
     /**
-     *
+     *  Generates a random nick
      */
     private void nick(){
-
         int seed = ((int) System.currentTimeMillis());
         nick.setText(colorNicks[new Random(seed).nextInt(colorNicks.length)] + nicks[new Random(seed).nextInt(nicks.length)]);
     }

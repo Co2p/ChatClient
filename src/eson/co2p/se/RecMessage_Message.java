@@ -7,14 +7,17 @@ import java.io.*;
 /**
  * Created by Isidor on 2014-10-18.
  */
-public class RecMessage_Message extends RecMessage{
+public class RecMessage_Message{
+    private int op;
+    PDU PDUData;
     int type, time;
     String nickname, message;
 
     public RecMessage_Message(byte[] rawData, int Tabid){
-        super(rawData);
         int nickLength, msgLength;
         int checksum = PDUData.getByte(3);
+        PDUData = new PDU(rawData, rawData.length);
+        setOp(PDUData.getByte(0));
 
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
@@ -70,6 +73,18 @@ public class RecMessage_Message extends RecMessage{
         return time;
     }
 
+    public void setOp(int op){
+        this.op = op;
+    }
+
+    public int getOp(){
+        return op;
+    }
+
+    public byte[] getBytes(){
+        return PDUData.getBytes();
+    }
+
     private static byte[] deCrypt(byte[] cryptMsg, int Tabid){
         PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
         byte[] encryptedMsg = null;
@@ -120,4 +135,6 @@ public class RecMessage_Message extends RecMessage{
         }
         return retArr;
     }
+
+
 }

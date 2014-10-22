@@ -31,11 +31,8 @@ public class SenderServer{
         Ip = IP;
         Port = port;
         Tabid = TabId;
-        System.out.println("Setting connection whit ip:" + Ip +"and port:" + Port + "on table:" + Tabid);
         ConnectSocket();
-        System.out.println("getting working GUI");
         GUI = catalogue.getGui();
-        System.out.println("Starting message check!");
         checkReceivedMessage();
     }
 
@@ -50,8 +47,6 @@ public class SenderServer{
                 localServerSocket = new Socket(Ip, Port);
                 localServerSocket.setSoTimeout(100);
                 in = new DataInputStream(localServerSocket.getInputStream());
-//inFromServer = new BufferedReader(new InputStreamReader(localServerSocket.getInputStream()));
-                System.out.println("connected socket!");
                 tries = maxTries;
             } catch (IOException e) {
                 tries += 1;
@@ -60,10 +55,11 @@ public class SenderServer{
         }
         try {
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
-//skicka anslutningsmedelande
+            //  Skicka anslutningsmedelande
             outToServer.write(Message.connectToServerMessage());
         }catch (IOException e){
             System.out.println("Failed to send registration message");
+            e.printStackTrace();
         }
     }
     /**
@@ -74,7 +70,7 @@ public class SenderServer{
      */
     public void sendMessage(String messageToSend,int Type){
         try{
-            System.out.println("Sending message....");
+            System.out.println("Sending message: '" + messageToSend + "'");
             outToServer.write(Message.sendMessage(messageToSend, Type, Tabid));
         }catch (IOException e){
             System.out.println("Failed to send message");
@@ -88,7 +84,12 @@ public class SenderServer{
         int myLife = ClientThread.AliveThreadsID[Tabid];
         return myLife == 1;
     }
-    //TODO comment?
+
+    /**
+     * gets the message to send from the catalogue
+     *
+     * @return  the string to send
+     */
     private String GetMessageToSend(){
         String Message;
         while(true){
@@ -99,8 +100,11 @@ public class SenderServer{
         }
         return Message;
     }
+
     /**
-     * Checks for received messages on this socketasd
+     * Gets the key from the catalogue, and checking the cryptationmethod
+     *
+     * @return
      */
     private int GetKey(){
         boolean crypt = catalogue.GetCrypt(Tabid);
@@ -121,6 +125,9 @@ public class SenderServer{
             return 0;
         }
     }
+    /**
+     * Checks for received messages on this socket
+     */
     private void checkReceivedMessage(){
         byte[] messageByte = new byte[1000];
         PDU message = new PDU(0);
@@ -132,7 +139,14 @@ public class SenderServer{
                     sendMessage(Messagelol, GetKey());
                 }else{
                     System.out.println("Command found!");
-                    commands(Messagelol);
+                    byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
+                    if(command != null && command.length > 4){
+                        try {
+                            outToServer.write(command);
+                        }catch(IOException e){
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
             try {
@@ -156,63 +170,6 @@ public class SenderServer{
         try {
             outToServer.write(Message.quitServer());
         }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private String GetExplanation(int g){
-        String[] Explanations = new String[]{"Change the username\nusage: §nick <new name>","Give command info\nusage: §Help","ddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
-        return Explanations[g];
-    }
-    private String[] GetComandList(){
-        String[] Commands = new String[]{"§nick","§Help","§KillServer", "§getlist"};
-        return Commands;
-    }
-    private void commands(String command){
-        try {
-            String commands[] = command.split(" ", 2);
-            if (commands[0].equalsIgnoreCase("§nick")) {
-                if(commands.length > 1){
-                    outToServer.write(Message.changeNick(commands[1]));
-                    System.out.println("newNick = '" + commands[1] + "'");
-                }else{
-                    System.out.println("Too short username");
-                    GUI.UpdateTabByID(Tabid, "ERROR: Too short username" ,0);
-                }
-            }
-
-            else if (commands[0].equalsIgnoreCase("§help")) {
-                String message = "";
-                String[] Msessage = GetComandList();
-                for(int i = 0; i < Msessage.length; i++ ) {
-                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
-                }
-                GUI.UpdateTabByID(Tabid, message ,2);
-            }
-            else if (commands[0].equals("§KillServer")) {
-                int ig = 0;
-                int g = 0;
-                while(g < 1000){
-                    ig ++;
-                    if(ig == 500){
-                        g ++;
-                        ig = 0;
-                        String Messagelol2 = "öööäääååå" + g;
-                        sendMessage(Messagelol2, 0);
-                    }
-                    if(ig == 250){
-                        outToServer.write(Message.changeNick("attack!"+g));
-                    }
-                }
-                String message = "";
-                String[] Msessage = GetComandList();
-                for(int i = 0; i < Msessage.length; i++ ) {
-                    message = message + "\n" + Msessage[i] +"\n" + GetExplanation(i)+"\n";
-                }
-                GUI.UpdateTabByID(Tabid, message ,2);
-            }
-        }catch(IOException e){
-            System.out.println("IOException occured: " + e);
             e.printStackTrace();
         }
     }
