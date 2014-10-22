@@ -210,11 +210,15 @@ public class SenderServer{
      * @param time  time in UNIX format
      * @return      time in simpleDataFormat
      */
-    private String getTime(int time){
-        System.out.println("TIME ITSELF: " + time);
-        Date retTime = new Date(time*1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
-        return sdf.format(retTime);
+    private String getTime(Integer time){
+        if (time != null){
+            System.out.println("TIME ITSELF: " + time);
+            Date retTime = new Date(time * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+            return sdf.format(retTime);
+        }else{
+            return null;
+        }
     }
 }
