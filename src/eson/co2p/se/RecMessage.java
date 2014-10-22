@@ -119,7 +119,7 @@ public class RecMessage {
                     }
                     break;
             }
-            nickname = new String(PDUData.getSubrange((12 + msgLength), nickLength), "UTF-8");
+            nickname = new String(PDUData.getSubrange((12 + Message.div4(msgLength)), nickLength), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Error encoding incoming message: " + e);
             e.printStackTrace();
