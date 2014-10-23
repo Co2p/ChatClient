@@ -220,7 +220,9 @@ public class RecMessage {
                     }
                     retArr = byteout.toByteArray();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    System.out.println("Someone compressed a message wrong");
+                    retArr = "Compressed message not in GZIP format".getBytes();
                 }
             } else {
                 System.out.println("unknown compression method");
