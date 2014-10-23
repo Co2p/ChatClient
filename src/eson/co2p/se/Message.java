@@ -125,11 +125,12 @@ public class Message {
         Crypt.encrypt(data, data.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
         PDU cryptPDU = new PDU(12 + div4(data.length));
         //  Adds the crypt-header
+        cryptPDU.setByte(0, (byte)0);
         cryptPDU.setByte(1, Checksum.calc(data, data.length));
         cryptPDU.setShort(2, (short)data.length);
         cryptPDU.setShort(4, (short)unCryptLength);
         // Adds the newly encrypted data
-        cryptPDU.setSubrange(12, data);
+        cryptPDU.setSubrange(8, data);
         cryptPDU.setByte(1, Checksum.calc(cryptPDU.getBytes(), cryptPDU.length()));
         return cryptPDU.getBytes();
     }

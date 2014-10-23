@@ -232,8 +232,8 @@ public class RecMessage {
             int checksum = encryptedPDU.getByte(1);
             int cryptLength = encryptedPDU.getShort(2);
             int unCryptLength = encryptedPDU.getShort(4);
-            if(cryptLength <= encryptedPDU.length() - 12) {
-                encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
+            if(cryptLength <= encryptedPDU.length() - 8) {
+                encryptedMsg = encryptedPDU.getSubrange(8, cryptLength);
                 Crypt.decrypt(encryptedMsg, /*encryptedMsg.length*/ cryptMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
                 if (Message.div4(encryptedMsg.length) != Message.div4(unCryptLength)) {
                     //encryptedMsg = "INVALID KEY".getBytes();
