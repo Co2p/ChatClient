@@ -1,5 +1,4 @@
 package eson.co2p.se;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -7,8 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Creates a TCP server and forwards messages to it.
- *
- * Created by Tony on 07/10/2014.
+ * @author Gordon, Isidor, Tony 23 October 2014
  *
  */
 public class ClientThread {

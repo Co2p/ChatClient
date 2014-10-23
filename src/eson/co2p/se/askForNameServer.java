@@ -1,5 +1,4 @@
 package eson.co2p.se;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +8,7 @@ import java.net.UnknownHostException;
 
 /**
  * A GUI that asks for a name server.
- *
- * @author  Tony on 16/10/2014.
+ * @author  Gordon, Isidor, Tony 23 October 2014
  */
 public class askForNameServer implements ActionListener {
     //  NickArray added for randomization of name

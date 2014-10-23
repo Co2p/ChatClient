@@ -142,6 +142,7 @@ public class Message {
      */
     private static byte[] compress(byte[] data){
         byte[] returnData = null;
+        int uncomplength = data.length;
         try {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream(data.length);
             GZIPOutputStream gZip = new GZIPOutputStream(byteStream);
@@ -155,7 +156,7 @@ public class Message {
         //  Adds the header
         PDU compPDU = new PDU(8 + div4(returnData.length));
         compPDU.setShort(2, (short) returnData.length);
-        compPDU.setShort(4, (short) data.length);
+        compPDU.setShort(4, (short) uncomplength);
         //  Adds the compressed data
         compPDU.setSubrange(8, returnData);
         compPDU.setByte(1, Checksum.calc(returnData, returnData.length));

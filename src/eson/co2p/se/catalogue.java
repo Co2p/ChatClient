@@ -1,12 +1,10 @@
 package eson.co2p.se;
-
 import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
  * Remembers states and identifiers
- *
- * @author gordon on 08/10/14.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class catalogue {
 
