@@ -113,17 +113,14 @@ public class SenderServer{
         if(!crypt && !comp){
             return 0;
         }
-        else if(!crypt && comp){//TODO comp är alltid sann här
+        else if(!crypt){
             return 1;
         }
-        else if(crypt && !comp){//TODO crypt är alltid sann här
+        else if(!comp){
             return 2;
         }
-        else if(crypt && comp){
-            return 3;
-        }
         else{
-            return 0;
+            return 3;
         }
     }
     private boolean ChekDosReq(){

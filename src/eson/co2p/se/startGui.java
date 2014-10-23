@@ -531,6 +531,7 @@ public class startGui extends JFrame implements ActionListener {
                 while (true){
                     if(catalogue.MessageInUse == false){
                         catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected());
+
                         removeInputText();
                         System.out.println("adding message");
                         break;
@@ -546,8 +547,7 @@ public class startGui extends JFrame implements ActionListener {
                 if (Connect != null && Disconect != null) {
                     if (Target.getClass() == JButton[].class) {
                         JButton[] Buttonss = (JButton[]) Target;
-                        for (int i = 0; i < Buttonss.length; i++) {
-                            JButton target = Buttonss[i];
+                        for (JButton target : Buttonss) {
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -557,8 +557,7 @@ public class startGui extends JFrame implements ActionListener {
                     }
                     else if (Target.getClass() == JCheckBox[].class) {
                         JCheckBox[] checkBox = (JCheckBox[]) Target;
-                        for (int i = 0; i < checkBox.length; i++) {
-                            JCheckBox target = checkBox[i];
+                        for (JCheckBox target : checkBox) {
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -568,8 +567,7 @@ public class startGui extends JFrame implements ActionListener {
                     }
                     else if (Target.getClass() == JTextPane[].class) {
                         JTextPane[] textArea = (JTextPane[]) Target;
-                        for (int i = 0; i < textArea.length; i++) {
-                            JTextPane target = textArea[i];
+                        for (JTextPane target : textArea) {
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -579,8 +577,7 @@ public class startGui extends JFrame implements ActionListener {
                     }
                     else if (Target.getClass() == JTextArea[].class) {
                         JTextArea[] textArea = (JTextArea[]) Target;
-                        for (int i = 0; i < textArea.length; i++) {
-                            JTextArea target = textArea[i];
+                        for (JTextArea target : textArea) {
                             if (target.isEnabled()) {
                                 target.setEnabled(false);
                             } else {
@@ -607,6 +604,10 @@ public class startGui extends JFrame implements ActionListener {
         ClientThread.startThreadManualy(ID,ip,Port);
         Manual_Server = true;
     }
+
+    /**
+     *
+     */
     public void clearOutputWindow(){
         int Index = getSelectedServerTab();
         ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
@@ -614,12 +615,21 @@ public class startGui extends JFrame implements ActionListener {
         Output.setText("");
     }
 
+    /**
+     * Takes a string and adds it to the chat log
+     * @param Text The string that will be added
+     */
     public void addOutputText(String Text){
         int Index = getSelectedServerTab();
         ArrayList<JTextPane> TempTarget = serverPlanes.get(Index);
         JTextPane Output = TempTarget.get(0);
         Output.setText(Output.getText() + "\n" + Text);
     }
+
+    /**
+     * Takes the text from the active input pane and returns it
+     * @return the text from the active input pane, null if there is none
+     */
     public String getInputText(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
@@ -632,19 +642,26 @@ public class startGui extends JFrame implements ActionListener {
             return null;
         }
     }
+
+    /**
+     *Takes the message from the active Input pane and adds it to the output pane
+     */
     public void addToOutputFromInput(){
         int Index = getSelectedServerTab();
-        ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
-        ArrayList<JTextPane> TempTarget2 = serverPlanes.get(Index);
-        JTextArea Input = TempTarget.get(0);
-        String inp = Input.getText().trim();
-        if (!inp.equals("")){
-            JTextPane Output = TempTarget2.get(0);
+        ArrayList<JTextArea> InputArray = serverJTextField.get(Index);
+        ArrayList<JTextPane> OutputArray = serverPlanes.get(Index);
+        JTextArea Input = InputArray.get(0);
+        String inputString = Input.getText().trim();
+        if (!inputString.equals("")){
+            JTextPane Output = OutputArray.get(0);
             Output.setText(Output.getText() + "\n" + Input.getText());
             removeInputText();
         }
     }
 
+    /**
+     * Romoves the text in the input field
+     */
     public void removeInputText(){
         int Index = getSelectedServerTab();
         ArrayList<JTextArea> TempTarget = serverJTextField.get(Index);
@@ -652,14 +669,24 @@ public class startGui extends JFrame implements ActionListener {
         Input.setText("");
     }
 
+    /**
+     * This is a function that CAN stop unwanted words or characters
+     * @param text Meddelandet som ska filtreras
+     * @return Det filtrerade meddelandet
+     */
     public String FilterString(String text){
         String OriginalText = text;
         String Modified = "";
         int Lengt = text.getBytes().length;
-        //TODO FilterString is suppose to filter the output string
+
         return Modified;
     }
 
+    /**
+     * Creates a panel with a chatlog and a label that contains a string that describes the server
+     * @param text Text that describes the server
+     * @return The panel
+     */
     protected JComponent makeTextPanel(String text) {
         JPanel panel = new JPanel(false);
         JLabel filler = new JLabel(text);
@@ -669,6 +696,11 @@ public class startGui extends JFrame implements ActionListener {
         return panel;
     }
 
+    /**
+     * Takes a path to a image and creates a ImageIcon object
+     * @param path The image
+     * @return ImageIcon object
+     */
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = startGui.class.getResource(path);
         if (imgURL != null) {

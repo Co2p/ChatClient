@@ -36,7 +36,6 @@ public class UDPServerConnection {
         //Waits and checks incoming data
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
-        //TODO check the OP-code of the recievePacket first
         ServerList servers = new ServerList(receivePacket.getData());
         ArrayList serverlist = servers.getServerList();
 
