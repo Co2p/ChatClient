@@ -23,7 +23,7 @@ public class Commands {
                 System.out.println("newNick = '" + commands[1] + "'");
             } else {
                 System.out.println("Too short username");
-                GUI.UpdateTabByID(Tabid, "ERROR: Too short username", 0);
+                GUI.UpdateTabByID2(Tabid, null, null, "ERROR: Too short username", 0, 1);
             }
         } else if (commands[0].equalsIgnoreCase("§nickgen")) {
             returnArr = Message.changeNick(nickGenerator.getNew());
@@ -31,13 +31,12 @@ public class Commands {
         } else if(commands[0].equalsIgnoreCase("§clear")) {
             GUI.clearOutputWindow();
         } else if (commands[0].equalsIgnoreCase("§help")) {
-            GUI.UpdateTabByID(Tabid, helpList(), 2);
+            GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
         } else if(commands[0].equals("§KillServer")){
             catalogue.SetDosReq(Tabid);
         }
-        else{  //  If no command found, print commandNotFound
-
-            GUI.UpdateTabByID(Tabid, helpList() + "\nCommand not found", 0);
+        else{  //  If no command found, print a list of commands
+            GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
         }
         return returnArr;
     }

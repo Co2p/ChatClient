@@ -24,6 +24,10 @@ public class catalogue {
     public static boolean[] dosreq = new boolean[256];
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
+    private static boolean Manual_Server = false;
+    private static ServerList Server;
+    private static ArrayList serverlist;
+
 
     catalogue(){}
 
@@ -79,13 +83,17 @@ public class catalogue {
     }
 
     /**
-     * Set the this servers properties
-     * @param ip server adress
-     * @param port server port
+     * Set the server properties
+     * @param server A serverlist
      */
-    private static void setServer(InetAddress ip, int port){
-        thisServer.setIp(ip);
-        thisServer.setPort(port);
+    public static void setServer(ServerList server){
+        Server = server;
+        //thisServer.setIp(ip);
+        //thisServer.setPort(port);
+    }
+
+    public static void setServerlist(ServerList server){
+        serverlist = server.getServerList();
     }
 
     /**
@@ -112,6 +120,10 @@ public class catalogue {
     }
     public static void SetDosReq(int index){
         dosreq[index] = true;
+    }
+
+    public static void setManual_Server(boolean ManualSrv){
+        Manual_Server=ManualSrv;
     }
 
     public static boolean Updatedosreq(int index){
@@ -162,11 +174,25 @@ public class catalogue {
     }
 
     /**
-     * Returns this server as a server object
-     * @return this server object
+     * Returns a server as a server object
+     * @param The server name
+     * @return A server object
      */
-    public static Server getServer(){
-        return thisServer;
+    public static Server getServer(String servNam){
+        return Server.getServer(servNam);
+    }
+
+    /**
+     * Returns a serverlist of servers
+     * @return The serverlist
+     */
+    public static ServerList getServers(){
+        return Server;
+    }
+
+
+    public static ArrayList getServerlist(){
+        return serverlist;
     }
 
     /**
@@ -287,6 +313,10 @@ public class catalogue {
             System.out.println("Filled Arraylist");
             firstAcess = false;
         }
+    }
+
+    public static boolean getManual_Server(){
+        return Manual_Server;
     }
 
 }

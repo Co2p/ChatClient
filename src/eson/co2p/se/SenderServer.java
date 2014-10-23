@@ -123,10 +123,12 @@ public class SenderServer{
             return 3;
         }
     }
+
+    //for "testing" only...
     private boolean ChekDosReq(){
-        //for "testing" only...
         return catalogue.Updatedosreq(Tabid);
     }
+
     /**
      * Checks for received messages on this socket
      */
