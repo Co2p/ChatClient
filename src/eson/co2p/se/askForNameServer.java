@@ -25,7 +25,7 @@ public class askForNameServer implements ActionListener {
     JTextField nick = new JTextField();
     JButton changeNick = new JButton("Change");
     JButton acceptadress = new JButton("Connect");
-    JCheckBox Manualconnect = new JCheckBox("connect to server using this");
+    JCheckBox Manualconnect = new JCheckBox("Connect directly to this server");
     startGui Gui;
 
 
