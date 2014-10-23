@@ -177,29 +177,53 @@ public class RecMessage {
     }
 
     /**
-     * Returns
-     * @return
+     * Returns the nature of the message (0=normal, 1=warning, 2=successful, 3=information)
+     * @return The type at a int
      */
     public int getOriginType(){
         return OriginType;
     }
 
+    /**
+     * Returns the timestamp that was sent with the message
+     * @return Timestamp
+     */
     public Integer getTime(){
         return time;
     }
 
+    /**
+     * Decides what message type has been recieved
+     * @param op Message type, as defined by OpCodes
+     * @see eson.co2p.se.OpCodes
+     */
     public void setOp(int op){
         this.op = op;
     }
 
+    /**
+     * Returnes the currently active OpCode
+     * @return Op code, as defined by OpCodes
+     * @see eson.co2p.se.OpCodes
+     */
     public int getOp(){
         return op;
     }
 
+    /**
+     * Returnes the raw message data
+     * @return Message
+     */
     public byte[] getBytes(){
         return PDUData.getBytes();
     }
 
+    /**
+     * Decrypts a message
+     * @param cryptMsg Encrypted message
+     * @param Tabid The correspondig tab id
+     * @return Decrypted message
+     */
     private static byte[] deCrypt(byte[] cryptMsg, int Tabid){
         PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
         byte[] encryptedMsg = null;
@@ -222,6 +246,12 @@ public class RecMessage {
         }
         return encryptedMsg;
     }
+
+    /**
+     * Decompresses a message
+     * @param comprMsg The message to decompress
+     * @return The decompressed message
+     */
     private static byte[] deCompress(byte[] comprMsg){
         PDU compressedPDU = new PDU(comprMsg, comprMsg.length);
         int algorithm = compressedPDU.getByte(0);

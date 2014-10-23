@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
@@ -122,23 +120,22 @@ public class startGui extends JFrame implements ActionListener {
                     }
                     break;
                 case 1:
-                    StyleConstants.setForeground(keyWord, Color.RED);
+                    StyleConstants.setForeground(keyWord, new Color(165, 40, 46));
                     doc.insertString(doc.getLength(), message, keyWord);
                     break;
                 case 2:
-                    StyleConstants.setForeground(keyWord, Color.GREEN);
+                    StyleConstants.setForeground(keyWord, new Color(95, 163, 33));
                     doc.insertString(doc.getLength(), message, keyWord);
                     break;
                 case 3:
-                    StyleConstants.setForeground(keyWord, Color.BLUE);
+                    StyleConstants.setForeground(keyWord, new Color(10, 116, 192));
                     doc.insertString(doc.getLength(), message, keyWord);
                     break;
             }
         }catch(Exception e) {
             e.printStackTrace();
-            System.out.println(e);
         }
-        ChangeColor( panelOne, TabID);
+        ChangeColor(panelOne, TabID);
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
@@ -148,7 +145,7 @@ public class startGui extends JFrame implements ActionListener {
      */
     public int getSelectedServerTab(){
         int Index = tabbedPane.getSelectedIndex();
-        ChangeColor( panelOne, Index);
+        ChangeColor(panelOne, Index);
         return Index;
     }
 
