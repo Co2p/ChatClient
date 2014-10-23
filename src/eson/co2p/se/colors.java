@@ -63,7 +63,7 @@ public class colors {
     /**
      * Easter Egg
      */
-    private static void color420(StyledDocument doc, SimpleAttributeSet set, String message){
+    public static void color420(StyledDocument doc, SimpleAttributeSet set, String message){
         Random random = new Random();
         for (int i = 0; i < message.length(); i++) {
             char character = message.charAt(i);
