@@ -445,18 +445,6 @@ public class startGui extends JFrame implements ActionListener {
         frame.setIconImage(icon.getImage());
     }
 
-
-    /**
-     *
-     * @param inputArea
-     * @param outputArea
-     */
-    public void UpdateWindows(JTextArea inputArea, JTextPane outputArea){
-        outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
-        inputArea.setText("");
-    }
-
-
     /**
      * Acts on events
      * @param e Event identifier

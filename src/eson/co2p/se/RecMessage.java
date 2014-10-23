@@ -16,6 +16,11 @@ public class RecMessage {
     int OriginType = 0;
     String nickname, message;
 
+    /**
+     * Takes the received data an processes it before taking appropriate action
+     * @param rawData A byte areray to process
+     * @param Tabid The tab that received the message
+     */
     public RecMessage(byte[] rawData, int Tabid){
         int nickLength;
         String nick = "";
@@ -89,9 +94,13 @@ public class RecMessage {
         }
     }
 
+    /**
+     * Handles the message that was sent to RecMessage and saves the message and username to their respective variables
+     */
     private void Message(){
         int checksum = PDUData.getByte(3);
 
+        //TODO remove prints
         int nickLength, msgLength;
         type = PDUData.getByte(1);
         System.out.println("type: '" + type + "'");
@@ -142,18 +151,35 @@ public class RecMessage {
         }
     }
 
+    /**
+     * Returns the latest message that was read by Message()
+     * @return Message
+     */
     public String getMessage(){
         return message;
     }
 
+    /**
+     * Returns the nick that sent the latest message read by Message()
+     * @return Nickname
+     */
     public String getNick(){
         return nickname;
     }
 
+    /**
+     * Returns the latest type of message that was read by Message()
+     * @return Message types, as defined by MsgTypes
+     * @see eson.co2p.se.MsgTypes
+     */
     public int getType(){
         return type;
     }
 
+    /**
+     * Returns
+     * @return
+     */
     public int getOriginType(){
         return OriginType;
     }
