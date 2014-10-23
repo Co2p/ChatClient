@@ -146,7 +146,7 @@ public class SenderServer{
                     if(!dos) {
                         System.out.println("Command found!");
                         byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
-                        if (command != null && command.length > 4) {
+                        if (command != null && command.length >= 4) {
                             try {
                                 outToServer.write(command);
                             } catch (IOException e) {
