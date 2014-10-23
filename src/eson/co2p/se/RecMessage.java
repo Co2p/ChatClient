@@ -108,43 +108,48 @@ public class RecMessage {
         System.out.println("nickLength: '" + nickLength + "'");
         msgLength = PDUData.getShort(4);
         System.out.println("MessageLength: '" + msgLength + "'");
-
+        System.out.println("PDULength: " + PDUData.length());
         time = (int) PDUData.getInt(8);
         try {
-            switch(type){
-                case 0:
-                    message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
-                    //Got a problem with UTF-8 and linux printing out the zerobytes
-                    //This is added as a fix for that problem
-                    message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
-                    System.out.println("MESSAGE: '" + message + "'");
-                    break;
-                case 1:
-                    System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
-                    message = new String(deCompress(PDUData.getSubrange(12, msgLength)), "UTF-8");
-                    break;
-                case 2:
-                    System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
-                    System.out.println("CRYPT LENGTH: " + PDUData.length() + "msgLength: " + msgLength);
-                    if(PDUData.length() > 11 + msgLength) {
-                        message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
-                    }else{
-                        System.out.println("Krypteringen var felaktig");
-                        message = "CRYPT HEADER/MESSAGE WRONG";
-                    }
-                    break;
-                case 3:
-                    System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
-                    try {
-                        message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
-                    }catch(Exception e){
-                        System.out.println("Decompression/decryption didn't work. Same key?");
-                        message = "INVALID KEY";
-                    }
-                    break;
+            if(msgLength < PDUData.length()){
+                switch (type) {
+                    case 0:
+                        message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
+                        //Got a problem with UTF-8 and linux printing out the zerobytes
+                        //This is added as a fix for that problem
+                        message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
+                        System.out.println("MESSAGE: '" + message + "'");
+                        break;
+                    case 1:
+                        System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
+                        message = new String(deCompress(PDUData.getSubrange(12, msgLength)), "UTF-8");
+                        break;
+                    case 2:
+                        System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
+                        System.out.println("CRYPT LENGTH: " + PDUData.length() + "msgLength: " + msgLength);
+                        if (PDUData.length() > 11 + msgLength) {
+                            message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
+                        } else {
+                            System.out.println("Krypteringen var felaktig");
+                            message = "CRYPT HEADER/MESSAGE WRONG";
+                        }
+                        break;
+                    case 3:
+                        System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
+                        try {
+                            message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
+                        } catch (Exception e) {
+                            System.out.println("Decompression/decryption didn't work. Same key?");
+                            message = "INVALID KEY";
+                        }
+                        break;
+                }
+                nickname = new String(PDUData.getSubrange((12 + Message.div4(msgLength)), nickLength), "UTF-8");
+                System.out.println("nickname: '" + nickname + "'");
+            }else{
+                System.out.println("Someone fucked up");
+                message = "Someone got the headers wrong";
             }
-            nickname = new String(PDUData.getSubrange((12 + Message.div4(msgLength)), nickLength), "UTF-8");
-            System.out.println("nickname: '" + nickname + "'");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Error encoding incoming message: " + e);
             e.printStackTrace();
