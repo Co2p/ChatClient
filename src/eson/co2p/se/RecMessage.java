@@ -94,8 +94,12 @@ public class RecMessage {
 
         int nickLength, msgLength;
         type = PDUData.getByte(1);
+        System.out.println("type: '" + type + "'");
         nickLength = PDUData.getByte(2);
+        System.out.println("nickLength: '" + nickLength + "'");
         msgLength = PDUData.getShort(4);
+        System.out.println("MessageLength: '" + msgLength + "'");
+
         time = (int) PDUData.getInt(8);
         try {
             switch(type){
@@ -104,7 +108,7 @@ public class RecMessage {
                     //Got a problem with UTF-8 and linux printing out the zerobytes
                     //This is added as a fix for that problem
                     message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
-                    System.out.println("MESSAGE: " + message);
+                    System.out.println("MESSAGE: '" + message + "'");
                     break;
                 case 1:
                     System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
@@ -131,6 +135,7 @@ public class RecMessage {
                     break;
             }
             nickname = new String(PDUData.getSubrange((12 + Message.div4(msgLength)), nickLength), "UTF-8");
+            System.out.println("nickname: '" + nickname + "'");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Error encoding incoming message: " + e);
             e.printStackTrace();
