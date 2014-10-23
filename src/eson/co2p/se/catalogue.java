@@ -24,13 +24,7 @@ public class catalogue {
     public static boolean[] dosreq = new boolean[256];
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
-    private static boolean Manual_Server = false;
-    private static ServerList Server;
-    private static ArrayList serverlist;
-
-
-    catalogue(){}
-
+    private static boolean manualServer = false;
 
 
     /**
@@ -83,20 +77,6 @@ public class catalogue {
     }
 
     /**
-     * Set the server properties
-     * @param server A serverlist
-     */
-    public static void setServer(ServerList server){
-        Server = server;
-        //thisServer.setIp(ip);
-        //thisServer.setPort(port);
-    }
-
-    public static void setServerlist(ServerList server){
-        serverlist = server.getServerList();
-    }
-
-    /**
      * Sets the key value
      * @param key the value of the key
      */
@@ -104,8 +84,10 @@ public class catalogue {
         catalogue.key = key;
     }
 
-    //The divide line between setters and getters
-
+    //##############################################
+    //The divide line between setters and getters  #
+    //##############################################
+    
     /**
      * rerurns the existing GUI, if none exsists return null
      * @return Gui or null
@@ -118,12 +100,10 @@ public class catalogue {
             return null;
         }
     }
+
+    //
     public static void SetDosReq(int index){
         dosreq[index] = true;
-    }
-
-    public static void setManual_Server(boolean ManualSrv){
-        Manual_Server=ManualSrv;
     }
 
     public static boolean Updatedosreq(int index){
@@ -133,6 +113,15 @@ public class catalogue {
         }
         return ret;
     }
+
+    /**
+     * Decides whether the client should connect to a server directly or via a nameserver
+     * @param ManualSrv True if the client connects directly to a server
+     */
+    public static void setmanualServer(boolean ManualSrv){
+        manualServer=ManualSrv;
+    }
+
     /**
      * Returns the client ID number
      * @return ID number
@@ -171,28 +160,6 @@ public class catalogue {
      */
     public static int getNameServerPort(){
         return nameServer.getPort();
-    }
-
-    /**
-     * Returns a server as a server object
-     * @param The server name
-     * @return A server object
-     */
-    public static Server getServer(String servNam){
-        return Server.getServer(servNam);
-    }
-
-    /**
-     * Returns a serverlist of servers
-     * @return The serverlist
-     */
-    public static ServerList getServers(){
-        return Server;
-    }
-
-
-    public static ArrayList getServerlist(){
-        return serverlist;
     }
 
     /**
@@ -300,9 +267,6 @@ public class catalogue {
 
     private static void firstFillArrayList(){
         if(firstAcess) {
-            //for (int i = 0; i < 256; i++) {
-            //    Chatsync.add(i,null);
-            //}
             for(int i = 0; i < message.length; i++){
                 message[i] = null;
                 comp[i] = false;
@@ -315,8 +279,12 @@ public class catalogue {
         }
     }
 
-    public static boolean getManual_Server(){
-        return Manual_Server;
+    /**
+     * Decides whether the client should connect to a server directly or via a nameserver
+     * @return True if the client connects directly to a server
+     */
+    public static boolean getmanualServer(){
+        return manualServer;
     }
 
 }

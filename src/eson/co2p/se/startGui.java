@@ -17,7 +17,7 @@ import java.util.Random;
 public class startGui extends JFrame implements ActionListener {
 
     JPanel panelOne;
-    boolean Manual_Server = false;
+    //boolean Manual_Server = false;
     ServerList Server;
     ArrayList serverlist;
     final JFrame frame = new JFrame("Glorious Chat");
@@ -47,7 +47,8 @@ public class startGui extends JFrame implements ActionListener {
      * Initiates the servers and starts the gui
      */
     public startGui(boolean bol, String ip, int Port){
-        Manual_Server = bol;
+        //Manual_Server = bol;
+        catalogue.setmanualServer(bol);
         if(!bol){
             getServerNames();
         }
@@ -137,6 +138,7 @@ public class startGui extends JFrame implements ActionListener {
             e.printStackTrace();
             System.out.println(e);
         }
+        ChangeColor( panelOne, TabID);
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
@@ -217,7 +219,7 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel2.setVisible(true);
             tempPanel2.setPreferredSize(new Dimension(480, 300));
             JComponent panel;
-            if(!Manual_Server) {
+            if(!catalogue.getmanualServer()) {
                 panel = makeTextPanel("Server: " + Server.getServer((String) serverlist.get(i)).getName() + " IP:" +
                         Server.getServer((String) serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)
                         serverlist.get(i)).getPort());
@@ -357,7 +359,7 @@ public class startGui extends JFrame implements ActionListener {
             EventQueue.invokeLater(r);
 
             Client_Content.add(ClientContent);
-            if(Manual_Server){
+            if(catalogue.getmanualServer()){
                 i = NumberOfServer;
             }
 
@@ -376,7 +378,7 @@ public class startGui extends JFrame implements ActionListener {
      */
     private int Loop254(int valu, int index){
         String ip;
-        if(!Manual_Server) {
+        if(!catalogue.getmanualServer()) {
             ip = Server.getServer((String)serverlist.get(valu)).getPort() + Server.getServer((String) serverlist.get
                     (valu)).getIp().toString();
         }
@@ -582,10 +584,10 @@ public class startGui extends JFrame implements ActionListener {
 
         //add an new server thread
         int ID = getSelectedServerTab();
-        if (Connect.equals(e.getSource()) && !Manual_Server) {
+        if (Connect.equals(e.getSource()) && !catalogue.getmanualServer()) {
             ClientThread.startThread(ID,Server,serverlist);
         }
-        if (Disconect.equals(e.getSource()) && !Manual_Server){
+        if (Disconect.equals(e.getSource()) && !catalogue.getmanualServer()){
             ClientThread.endThread(ID);
         }
     }
@@ -598,7 +600,8 @@ public class startGui extends JFrame implements ActionListener {
     public void ManualyServer(String ip, int Port){
         int ID = getSelectedServerTab();
         ClientThread.startThreadManualy(ID,ip,Port);
-        Manual_Server = true;
+        //Manual_Server = true;
+        catalogue.setmanualServer(true);
     }
 
     /**
