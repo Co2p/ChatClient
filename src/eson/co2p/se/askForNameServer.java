@@ -17,6 +17,7 @@ public class askForNameServer implements ActionListener {
     JFrame frame1 = new JFrame("Connect to server");
     JPanel textFrame = new JPanel();
     JPanel nickPanel = new JPanel();
+    JPanel checkPanel = new JPanel();
     //  Standard names for gui/input
     JLabel label = new JLabel("  Please provide a name server and nick, then Connect");
     JTextField Adress = new JTextField("itchy.cs.umu.se");
@@ -24,7 +25,7 @@ public class askForNameServer implements ActionListener {
     JTextField nick = new JTextField();
     JButton changeNick = new JButton("Change");
     JButton acceptadress = new JButton("Connect");
-    JCheckBox Manualconnect = new JCheckBox("connect to server using this");
+    JCheckBox Manualconnect = new JCheckBox("Connect directly to this server");
     startGui Gui;
 
 
@@ -37,11 +38,13 @@ public class askForNameServer implements ActionListener {
         frame1.setLayout(new GridLayout(5, 0));
         textFrame.setLayout(new FlowLayout());
         nickPanel.setLayout(new FlowLayout());
-        frame1.setPreferredSize(new Dimension(360, 165));
+        checkPanel.setLayout(new FlowLayout());
+        frame1.setPreferredSize(new Dimension(360, 180));
         label.setPreferredSize(new Dimension(312, 20));
         Adress.setPreferredSize(new Dimension(250, 26));
-        port.setPreferredSize(new Dimension(60, 26));
+        port.setPreferredSize(new Dimension(100, 26));
         nick.setPreferredSize(new Dimension(250, 26));
+        changeNick.setPreferredSize(new Dimension(100, 26));
         nickGenerator.makeClean(true); //<-- Removes explicit names
         nick.setText(nickGenerator.getNew());
 
@@ -58,7 +61,8 @@ public class askForNameServer implements ActionListener {
         nickPanel.add(nick);
         nickPanel.add(changeNick);
         frame1.add(acceptadress, 3);
-        frame1.add(Manualconnect, 4);
+        frame1.add(checkPanel, 4);
+        checkPanel.add(Manualconnect);
         frame1.pack();
         frame1.setVisible(true);
         frame1.validate();
