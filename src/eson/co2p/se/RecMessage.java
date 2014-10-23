@@ -262,10 +262,10 @@ public class RecMessage {
         System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
         byte[] retArr = null;
 
-        if(compLength > Message.div4(compressedPDU.length()) - 8){
+        if(comprMsg.length > 9){
             retArr = ("Compression faulty length: " + Message.div4(compLength)).getBytes();
         }else {
-            byte[] compMsg = compressedPDU.getSubrange(8, comprMsg.length);
+            byte[] compMsg = compressedPDU.getSubrange(8, comprMsg.length - 8);
             if (algorithm == 0) {
                 try {
                     Inflater inf = new java.util.zip.Inflater();
