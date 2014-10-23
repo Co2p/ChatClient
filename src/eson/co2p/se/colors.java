@@ -95,7 +95,7 @@ public class colors {
     }
 
     public static void ChangeColor(JPanel panelOne, int tabindex){
-        panelOne.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
+        //panelOne.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
         panelOne.updateUI();
         panelOne.validate();
     }
@@ -106,10 +106,11 @@ public class colors {
      * @param index offset in the colour from the last value
      * @return the amount of colour for RGB
      */
-    public static int Loop254(int valu, int index){
+    /*public static int Loop254(int valu, int index){
         String ip;
         if(!catalogue.getManual_Server()) {
-            ip = startGui.Server.getServer((String)startGui.serverlist.get(valu)).getPort() + startGui.Server.getServer(
+            ip = startGui.Server.getServer((String)startGui.serverlist.get(valu)).getPort() + startGui.Server
+                    .getServer(
                     (String) startGui.serverlist.get(valu)).getIp().toString();
         }
         else{
@@ -128,6 +129,6 @@ public class colors {
             }
         }
         return valu;
-    }
+    }*/
 
 }

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -15,17 +16,35 @@ import java.util.Random;
  */
 public class startGui extends JFrame implements ActionListener {
 
-    private JPanel panelOne;
-    //These need to be public! colors.class uses them!!
-    public static ServerList Server;
-    public static ArrayList serverlist;
-    private final JFrame frame = new JFrame("Glorious Chat");
+    JPanel panelOne;
+    boolean Manual_Server = false;
+    ServerList Server;
+    ArrayList serverlist;
+    final JFrame frame = new JFrame("Glorious Chat");
 
-    private static Point mouseDownCompCoords;
-    private JTabbedPane tabbedPane;
+
+    /**
+     * Initiates the servers and starts the gui
+     */
+    public startGui(boolean bol, String ip, int Port){
+        Manual_Server = bol;
+        if(!bol){
+            getServerNames();
+        }
+        else{
+            Server = new ServerList(ip, Port);
+            serverlist = Server.getServerList();
+        }
+        StartGui();
+        if(bol){
+            ManualyServer(ip, Port);
+        }
+    }
+
+    static Point mouseDownCompCoords;
+    JTabbedPane tabbedPane;
     JComponent Servers;
-
-    //a list of all the added servers
+    //a list of all the added server
     ArrayList<ArrayList> serverPlanes = new ArrayList<ArrayList>();
     ArrayList<ArrayList> serverJTextField = new ArrayList<ArrayList>();
     ArrayList<JButton> Buttons = new ArrayList<JButton>();
@@ -42,35 +61,12 @@ public class startGui extends JFrame implements ActionListener {
     //Arraylist of all tabs
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
-
-    /**
-     * Initiates the servers and starts the gui
-     */
-    public startGui(boolean bol, String ip, int Port){
-        catalogue.setManual_Server(bol);
-        if(!bol){
-            getServerNames();
-        }
-        else{
-            Server = new ServerList(ip, Port);
-            serverlist = Server.getServerList();
-        }
-        StartGui();
-        if(bol){
-            ManualyServer(ip, Port);
-        }
-    }
-
     /**
      * Retrives the active servers and adds them to serverlist
      */
     public ArrayList<JButton> GetButtons(){
         return Buttons;
     }
-
-    /**
-     * Retrives the names for the servers
-     */
     private void getServerNames(){
         try{
             Server = UDPServerConnection.getUdpServerlist();
@@ -81,9 +77,7 @@ public class startGui extends JFrame implements ActionListener {
         }
     }
 
-    //TODO ta bort den här??
-    {
-    /*public void UpdateTabByID(int TabID,String message, int type){
+    public void UpdateTabByID(int TabID,String message, int type){
         JTextPane OutputArea = outputAreaList.get(TabID);
 
         StyledDocument doc = OutputArea.getStyledDocument();
@@ -106,17 +100,8 @@ public class startGui extends JFrame implements ActionListener {
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
-    }*/}
+    }
 
-    /**
-     * Prints a message to the chat log with the provided information
-     * @param TabID Tab index, required
-     * @param time Time recieved, null to ignore
-     * @param userName Name of the user that sent the message, null for none
-     * @param message The message to print
-     * @param type Message type relieved, 1=encrypted, 2=compressed, 3=both, defines the highlighted colour
-     * @param originType Decides what colour the text is, 0=default (black), 1=red, 2=green, 3=blue
-     */
     public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
         OutputArea.setFont(new Font("Courier New", Font.BOLD, 12));
@@ -126,11 +111,23 @@ public class startGui extends JFrame implements ActionListener {
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
             //if the message is encrypted, compressed or both, add different backgrounds
-            StyleConstants.setBackground(keyWord, colors.textHighlight(type));
-
+            switch(type){
+                case 1:
+                    //compress
+                    StyleConstants.setBackground(keyWord, new Color(206, 255, 185));
+                    break;
+                case 2:
+                    //crypt
+                    StyleConstants.setBackground(keyWord, new Color(255, 252, 130));
+                    break;
+                case 3:
+                    //compress + crypt
+                    StyleConstants.setBackground(keyWord, new Color(255, 169, 170));
+                    break;
+            }
             //Prints the clock
             if(time != null) {
-                StyleConstants.setForeground(keyWord, new Color(149, 149, 149));
+                StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
                 doc.insertString(doc.getLength(), "\n[kl. " + time + "] ", keyWord);
             }else{
                 doc.insertString(doc.getLength(), "\n", keyWord);
@@ -138,45 +135,89 @@ public class startGui extends JFrame implements ActionListener {
             //If there exists a username, print it with a color based on the name
             StyleConstants.setBold(keyWord, true);
             if (userName != null && userName.length() > 0) {
-                StyleConstants.setForeground(keyWord, colors.colorFromString(userName));
+                StyleConstants.setForeground(keyWord, colorFromString(userName));
                 doc.insertString(doc.getLength(), userName + ": ", keyWord);
             }
-
-            colors.textColor(doc, keyWord, message, userName, originType);
-
+            switch(originType) {
+                case 0:
+                    //Easteregg
+                    if (userName != null && userName.contains("420")) {
+                        color420(doc, keyWord, message);
+                    } else {
+                        StyleConstants.setBold(keyWord, false);
+                        StyleConstants.setForeground(keyWord, Color.BLACK);
+                        doc.insertString(doc.getLength(), message, keyWord);
+                    }
+                    break;
+                case 1:
+                    StyleConstants.setForeground(keyWord, Color.RED);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 2:
+                    StyleConstants.setForeground(keyWord, Color.GREEN);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+                case 3:
+                    StyleConstants.setForeground(keyWord, Color.BLUE);
+                    doc.insertString(doc.getLength(), message, keyWord);
+                    break;
+            }
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
-        //Updates the panel to match the tab that was updated
-        colors.ChangeColor(panelOne, TabID);
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
-    /**
-     * Updates the colour to match the one that was requested and returns a tab ID
-     * @return Tab ID
-     */
+    private void color420(StyledDocument doc, SimpleAttributeSet set, String message){
+        Random random = new Random();
+        for (int i = 0; i < message.length(); i++) {
+            char character = message.charAt(i);
+            //SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setForeground(set,
+                    new Color(random.nextInt(256), random.nextInt(256),
+                            random.nextInt(256)));
+            StyleConstants.setFontSize(set, random.nextInt(12) + 12);
+            StyleConstants.setBold(set, random.nextBoolean());
+            try {
+                doc.insertString(doc.getLength(), character + "", set);
+            }catch(BadLocationException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Color colorFromString(String nick){
+        String color;
+        if(nick.length() <4){
+            color = String.format("#%X", (nick + "homo").hashCode());
+        }else {
+            color = String.format("#%X", nick.hashCode());
+        }
+        return new Color(
+                Integer.valueOf( color.substring( 1, 3 ), 16 ),
+                Integer.valueOf( color.substring( 3, 5 ), 16 ),
+                Integer.valueOf( color.substring( 5, 7 ), 16 ) );
+    }
+
     public int getSelectedServerTab(){
         int Index = tabbedPane.getSelectedIndex();
-        colors.ChangeColor(panelOne, Index);
+        ChangeColor( panelOne, Index);
         return Index;
     }
 
-    /**
-     * Returns the InetAddress of the server that corresponds with the selected tab
-     * @return The InetAddress of the server
-     */
     public InetAddress getSelectedServerAdress(){
-        return Server.getServer((String) serverlist.get(getSelectedServerTab())).getIp();
+        return Server.getServer((String)serverlist.get(getSelectedServerTab())).getIp();
     }
 
-    /**
-     * Returns the port of the server that corresponds with the selected tab
-     * @return The port of the server
-     */
     public int getSelectedServerPort(){
-        return Server.getServer((String) serverlist.get(getSelectedServerTab())).getPort();
+        return Server.getServer((String)serverlist.get(getSelectedServerTab())).getPort();
+    }
+
+    public void ChangeColor(JPanel panelOne, int tabindex){
+        panelOne.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
+        panelOne.updateUI();
+        panelOne.validate();
     }
 
     public JPanel CreatGui(){
@@ -198,16 +239,14 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel2.setVisible(true);
             tempPanel2.setPreferredSize(new Dimension(480, 300));
             JComponent panel;
-            if(!catalogue.getManual_Server()) {
-                panel = makeTextPanel("Server: " + Server.getServer((String) serverlist.get(i)).getName() + " Ip:" +
-                        Server.getServer((String) serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)
-                        serverlist.get(i)).getPort());
+            if(!Manual_Server) {
+                panel = makeTextPanel("Server: " + Server.getServer((String) serverlist.get(i)).getName() + " Ip:" + Server.getServer((String) serverlist.get(i)).getIp() + " Port: " + Server.getServer((String) serverlist.get(i)).getPort());
             }
             else{
                 panel = makeTextPanel("Server: ");
             }
             panel.setPreferredSize(new Dimension(300, 50));
-            panel.setBackground(new Color(colors.Loop254(i, 0), colors.Loop254(i, 1), colors.Loop254(i, 2)));
+            panel.setBackground(new Color(Loop254(i, 0), Loop254(i, 1), Loop254(i, 2)));
 
             JPanel tempPanel3 = new JPanel();
             tempPanel3.setLayout(new GridLayout(3, 0));
@@ -347,7 +386,7 @@ public class startGui extends JFrame implements ActionListener {
             EventQueue.invokeLater(r);
 
             Client_Content.add(ClientContent);
-            if(catalogue.getManual_Server()){
+            if(Manual_Server){
                 i = NumberOfServer;
             }
 
@@ -356,6 +395,36 @@ public class startGui extends JFrame implements ActionListener {
         panelOne.add(tabbedPane);
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         return panelOne;
+    }
+
+    /**
+     * Generates a colour from the ip of the active tab
+     * @param valu the active tab index
+     * @param index offset in the colour from the last value
+     * @return the amount of colour for RGB
+     */
+    private int Loop254(int valu, int index){
+        String ip;
+        if(!Manual_Server) {
+            ip = Server.getServer((String)serverlist.get(valu)).getPort() + Server.getServer((String) serverlist.get
+                    (valu)).getIp().toString();
+        }
+        else{
+            ip = "111.111.111.111";
+        }
+        ip = ip.replaceAll("[^0-9]", "");
+        if (index>3 || ip.length()<9){
+            return 254;
+        }
+        valu = Integer.parseInt(ip.substring(ip.length()-(index+3), ip.length()-(index)));
+
+        while (valu>254){
+            valu-=254;
+            if (valu<80){
+                valu+=80;
+            }
+        }
+        return valu;
     }
 
     public JTextPane defineOutputarea(){
@@ -447,10 +516,10 @@ public class startGui extends JFrame implements ActionListener {
         if (SetKey.equals(e.getSource())){
             if(!catalogue.GetCryptKey(getSelectedServerTab()).equals(Key)){
                 catalogue.SetcryptKey(getSelectedServerTab(), Key);
-                UpdateTabByID2(getSelectedServerTab(), null, null, "Key is now: '" + Key + "'", 0, 2);
+                UpdateTabByID(getSelectedServerTab(),"\nKey is now: " + Key, 1);
             }
             else{
-                UpdateTabByID2(getSelectedServerTab(), null, null, "Key is already set to: '" + Key + "'", 0, 1);
+                UpdateTabByID(getSelectedServerTab(),"\nKey where alredy: " + Key, 0);
             }
         }
         //check the send button
@@ -522,10 +591,10 @@ public class startGui extends JFrame implements ActionListener {
 
         //add an new server thread
         int ID = getSelectedServerTab();
-        if (Connect.equals(e.getSource()) && !catalogue.getManual_Server()) {
-             ClientThread.startThread(ID,Server,serverlist);
+        if (Connect.equals(e.getSource()) && !Manual_Server) {
+            ClientThread.startThread(ID,Server,serverlist);
         }
-        if (Disconect.equals(e.getSource()) && !catalogue.getManual_Server()){
+        if (Disconect.equals(e.getSource()) && !Manual_Server){
             ClientThread.endThread(ID);
         }
     }
@@ -533,7 +602,7 @@ public class startGui extends JFrame implements ActionListener {
     public void ManualyServer(String ip, int Port){
         int ID = getSelectedServerTab();
         ClientThread.startThreadManualy(ID,ip,Port);
-        catalogue.setManual_Server(true);
+        Manual_Server = true;
     }
 
     /**
