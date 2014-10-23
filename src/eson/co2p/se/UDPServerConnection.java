@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Retrieves the active servers from the name server
  *
- * Created by gordon on 07/10/14.
+ * @author Gordon, Isidor, Tony 24 October 2014
  */
 
 public class UDPServerConnection {

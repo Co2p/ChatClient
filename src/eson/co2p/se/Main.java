@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * The Main class
+ * @author Gordon, Isidor, Tony 24 October 2014
  */
 public class Main {
 

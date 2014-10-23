@@ -9,7 +9,7 @@ import java.util.zip.GZIPOutputStream;
  * Includes methods for creating all the messages that's going to the server
  * from the server, also includes minor static math methods used in separate places
  *
- * @author isidor on 2014-10-15.
+ * @author Gordon, Isidor, Tony 23 October 2014
  *
  */
 public class Message {

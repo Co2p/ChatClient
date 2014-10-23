@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * The main gui for the chat, handles selection of servers, setting the cryptography of the messages etc
- * @author Tony on 15/10/2014.
+ * @author Gordon, Isidor, Tony 24 October 2014
  */
 public class startGui extends JFrame implements ActionListener {
 

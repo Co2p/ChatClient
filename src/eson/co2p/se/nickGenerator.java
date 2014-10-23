@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Generates a random nickname
  *
- * @author gordon on 22/10/14.
+ * @author Gordon, Isidor, Tony 24 October 2014
  */
 public class nickGenerator {
     private static String[] colorNicks = new String[] {"Red", "Blue", "Green", "Purple", "Orange", "Turquoise", "Orange",

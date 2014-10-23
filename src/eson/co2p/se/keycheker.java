@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Listens to specific key presses in the chatwindow and acts on them
- * @author Tony on 22/10/2014.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class keycheker {
 

@@ -7,7 +7,7 @@ import java.util.Hashtable;
 
 /**
  * Keeps track of the servers that were returned from the name server
- * @author Isidor on 2014-10-13.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public  class ServerList {
 
