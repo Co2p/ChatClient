@@ -9,7 +9,7 @@ import java.util.TimeZone;
  * TCP connection to the Chat Server
  * Now made to be threaded
  *
- * @author gordon on 08/10/14 modded by tony 18/10/14.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class SenderServer{
     int Port;

@@ -6,7 +6,7 @@ import java.io.*;
 
 /**
  * Defines the OP messages sent to the nameserver and the server
- * @author Created by Isidor on 2014-10-18.
+ * @author Gordon, Isidor, Tony 23 October 2014
  */
 public class RecMessage {
     private int op;
