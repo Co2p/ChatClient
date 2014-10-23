@@ -16,6 +16,11 @@ public class RecMessage {
     int OriginType = 0;
     String nickname, message;
 
+    /**
+     * Takes the received data an processes it before taking appropriate action
+     * @param rawData A byte areray to process
+     * @param Tabid The tab that received the message
+     */
     public RecMessage(byte[] rawData, int Tabid){
         int nickLength;
         String nick = "";
@@ -89,9 +94,13 @@ public class RecMessage {
         }
     }
 
+    /**
+     * Handles the message that was sent to RecMessage and saves the message and username to their respective variables
+     */
     private void Message(){
         int checksum = PDUData.getByte(3);
 
+        //TODO remove prints
         int nickLength, msgLength;
         type = PDUData.getByte(1);
         System.out.println("type: '" + type + "'");
@@ -142,38 +151,79 @@ public class RecMessage {
         }
     }
 
+    /**
+     * Returns the latest message that was read by Message()
+     * @return Message
+     */
     public String getMessage(){
         return message;
     }
 
+    /**
+     * Returns the nick that sent the latest message read by Message()
+     * @return Nickname
+     */
     public String getNick(){
         return nickname;
     }
 
+    /**
+     * Returns the latest type of message that was read by Message()
+     * @return Message types, as defined by MsgTypes
+     * @see eson.co2p.se.MsgTypes
+     */
     public int getType(){
         return type;
     }
 
+    /**
+     * Returns the nature of the message (0=normal, 1=warning, 2=successful, 3=information)
+     * @return The type at a int
+     */
     public int getOriginType(){
         return OriginType;
     }
 
+    /**
+     * Returns the timestamp that was sent with the message
+     * @return Timestamp
+     */
     public Integer getTime(){
         return time;
     }
 
+    /**
+     * Decides what message type has been recieved
+     * @param op Message type, as defined by OpCodes
+     * @see eson.co2p.se.OpCodes
+     */
     public void setOp(int op){
         this.op = op;
     }
 
+    /**
+     * Returnes the currently active OpCode
+     * @return Op code, as defined by OpCodes
+     * @see eson.co2p.se.OpCodes
+     */
     public int getOp(){
         return op;
     }
 
+    /**
+     * Returnes the raw message data
+     * @return Message
+     */
     public byte[] getBytes(){
         return PDUData.getBytes();
     }
 
+    /**
+     * Decrypts a message
+     * @param cryptMsg Encrypted message
+     * @param Tabid The correspondig tab id
+     * @return Decrypted message
+     */
     private static byte[] deCrypt(byte[] cryptMsg, int Tabid){
         PDU encryptedPDU = new PDU(cryptMsg, cryptMsg.length);
         byte[] encryptedMsg = null;
@@ -197,6 +247,12 @@ public class RecMessage {
         }
         return encryptedMsg;
     }
+
+    /**
+     * Decompresses a message
+     * @param comprMsg The message to decompress
+     * @return The decompressed message
+     */
     private static byte[] deCompress(byte[] comprMsg){
         PDU compressedPDU = new PDU(comprMsg, comprMsg.length);
         int algorithm = compressedPDU.getByte(0);
