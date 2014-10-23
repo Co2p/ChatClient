@@ -61,7 +61,7 @@ public class Commands {
         return new String[]{"§nick\nChange the username\nusage: §nick <new name>",
                 "§nickgen\nGenerate a new username\nusage: §nickgen",
                 "§clear\nClears the chat log\nusage: §clear",
-                "§help\nGive command info\nusage: §help",
+                "§help\nReturns this text\nusage: §help",
                 "§KillServer\nddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
     }
 }
