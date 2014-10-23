@@ -107,7 +107,7 @@ public class startGui extends JFrame implements ActionListener {
             //If there exists a username, print it with a color based on the name
             StyleConstants.setBold(keyWord, true);
             if (userName != null && userName.length() > 0) {
-                StyleConstants.setForeground(keyWord, colorFromString(userName));
+                StyleConstants.setForeground(keyWord, colors.colorFromString(userName));
                 doc.insertString(doc.getLength(), userName + ": ", keyWord);
             }
             switch(originType) {
@@ -140,24 +140,6 @@ public class startGui extends JFrame implements ActionListener {
         }
         ChangeColor( panelOne, TabID);
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
-    }
-
-    /**
-     * Generate a colour from a string
-     * @param nick The string that will generate a Color
-     * @return The colour that was generated from the string
-     */
-    private Color colorFromString(String nick){
-        String color;
-        if(nick.length() <4){
-            color = String.format("#%X", (nick + "homo").hashCode());
-        }else {
-            color = String.format("#%X", nick.hashCode());
-        }
-        return new Color(
-                Integer.valueOf( color.substring( 1, 3 ), 16 ),
-                Integer.valueOf( color.substring( 3, 5 ), 16 ),
-                Integer.valueOf( color.substring( 5, 7 ), 16 ) );
     }
 
     /**
