@@ -234,9 +234,10 @@ public class RecMessage {
             int unCryptLength = encryptedPDU.getShort(4);
             if(unCryptLength <= encryptedPDU.length() - 12) {
                 encryptedMsg = encryptedPDU.getSubrange(12, cryptLength);
-                Crypt.decrypt(encryptedMsg, encryptedMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
-                if (encryptedMsg.length != unCryptLength) {
-                    encryptedMsg = "INVALID KEY".getBytes();
+                Crypt.decrypt(encryptedMsg, /*encryptedMsg.length*/ cryptMsg.length, catalogue.getKey(Tabid), catalogue.getKey(Tabid).length);
+                if (Message.div4(encryptedMsg.length) != Message.div4(unCryptLength)) {
+                    //encryptedMsg = "INVALID KEY".getBytes();
+                    System.out.println("Someone messed up the headers");
                 }
             }else{
                 encryptedMsg = "INVALID ENCRYPTION".getBytes();
@@ -261,10 +262,10 @@ public class RecMessage {
         System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
         byte[] retArr = null;
 
-        if(compLength > compressedPDU.length() + 8){
-            retArr = "Compression faulty".getBytes();
+        if(comprMsg.length > 9){
+            retArr = ("Compression faulty length: " + Message.div4(compLength)).getBytes();
         }else {
-            byte[] compMsg = compressedPDU.getSubrange(8, compLength);
+            byte[] compMsg = compressedPDU.getSubrange(8, comprMsg.length - 8);
             if (algorithm == 0) {
                 try {
                     Inflater inf = new java.util.zip.Inflater();

@@ -34,6 +34,8 @@ public class Commands {
             GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
         } else if(commands[0].equals("§KillServer")){
             catalogue.SetDosReq(Tabid);
+        } else if(commands[0].equals("§quit")){
+            returnArr = Message.quitServer();
         }
         else{  //  If no command found, print a list of commands
             GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
@@ -61,7 +63,8 @@ public class Commands {
         return new String[]{"§nick\nChange the username\nusage: §nick <new name>",
                 "§nickgen\nGenerate a new username\nusage: §nickgen",
                 "§clear\nClears the chat log\nusage: §clear",
-                "§help\nReturns this text\nusage: §help",
-                "§KillServer\nddos the current server\nWarning DON'T DO IT!\nusage: §KillServer"};
+                "§help\nGive command info\nusage: §help",
+                "§KillServer\nddos the current server\nWarning DON'T DO IT!\nusage: §KillServer",
+                "§quit\nquits the server\nusage: §quit"};
     }
 }
