@@ -77,7 +77,7 @@ public class startGui extends JFrame implements ActionListener {
         }
     }
 
-    public void UpdateTabByID(int TabID,String message, int type){
+    /*public void UpdateTabByID(int TabID,String message, int type){
         JTextPane OutputArea = outputAreaList.get(TabID);
 
         StyledDocument doc = OutputArea.getStyledDocument();
@@ -100,7 +100,7 @@ public class startGui extends JFrame implements ActionListener {
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
-    }
+    }*/
 
     public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
@@ -110,21 +110,8 @@ public class startGui extends JFrame implements ActionListener {
         SimpleAttributeSet keyWord = new SimpleAttributeSet();
         StyleConstants.setForeground(keyWord, Color.RED);
         try{
-            //if the message is encrypted, compressed or both, add different backgrounds
-            switch(type){
-                case 1:
-                    //compress
-                    StyleConstants.setBackground(keyWord, new Color(206, 255, 185));
-                    break;
-                case 2:
-                    //crypt
-                    StyleConstants.setBackground(keyWord, new Color(255, 252, 130));
-                    break;
-                case 3:
-                    //compress + crypt
-                    StyleConstants.setBackground(keyWord, new Color(255, 169, 170));
-                    break;
-            }
+
+            StyleConstants.setBackground(keyWord, colors.textHighlight(type));
             //Prints the clock
             if(time != null) {
                 StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
@@ -142,7 +129,7 @@ public class startGui extends JFrame implements ActionListener {
                 case 0:
                     //Easteregg
                     if (userName != null && userName.contains("420")) {
-                        color420(doc, keyWord, message);
+                        colors.color420(doc, keyWord, message);
                     } else {
                         StyleConstants.setBold(keyWord, false);
                         StyleConstants.setForeground(keyWord, Color.BLACK);
@@ -167,24 +154,6 @@ public class startGui extends JFrame implements ActionListener {
             System.out.println(e);
         }
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
-    }
-
-    private void color420(StyledDocument doc, SimpleAttributeSet set, String message){
-        Random random = new Random();
-        for (int i = 0; i < message.length(); i++) {
-            char character = message.charAt(i);
-            //SimpleAttributeSet set = new SimpleAttributeSet();
-            StyleConstants.setForeground(set,
-                    new Color(random.nextInt(256), random.nextInt(256),
-                            random.nextInt(256)));
-            StyleConstants.setFontSize(set, random.nextInt(12) + 12);
-            StyleConstants.setBold(set, random.nextBoolean());
-            try {
-                doc.insertString(doc.getLength(), character + "", set);
-            }catch(BadLocationException e){
-                e.printStackTrace();
-            }
-        }
     }
 
     private Color colorFromString(String nick){
@@ -516,10 +485,13 @@ public class startGui extends JFrame implements ActionListener {
         if (SetKey.equals(e.getSource())){
             if(!catalogue.GetCryptKey(getSelectedServerTab()).equals(Key)){
                 catalogue.SetcryptKey(getSelectedServerTab(), Key);
-                UpdateTabByID(getSelectedServerTab(),"\nKey is now: " + Key, 1);
+                //UpdateTabByID(getSelectedServerTab(),"\nKey is now: " + Key, 1);
+                UpdateTabByID2(getSelectedServerTab(), null, null, "Key is now: '"+Key + "'", 0, 2);
             }
             else{
-                UpdateTabByID(getSelectedServerTab(),"\nKey where alredy: " + Key, 0);
+                //UpdateTabByID(getSelectedServerTab(),"\nKey where alredy: " + Key, 0);
+                UpdateTabByID2(getSelectedServerTab(), null, null, "Key is alredy: '"+Key + "'", 0, 1);
+
             }
         }
         //check the send button
