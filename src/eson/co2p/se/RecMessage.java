@@ -262,7 +262,7 @@ public class RecMessage {
         System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
         byte[] retArr = null;
 
-        if(comprMsg.length > 9){
+        if(comprMsg.length < 9){
             retArr = ("Compression faulty length: " + Message.div4(compLength)).getBytes();
         }else {
             byte[] compMsg = compressedPDU.getSubrange(8, comprMsg.length - 8);
