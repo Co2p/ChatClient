@@ -22,25 +22,6 @@ public class startGui extends JFrame implements ActionListener {
     ArrayList serverlist;
     final JFrame frame = new JFrame("Glorious Chat");
 
-
-    /**
-     * Initiates the servers and starts the gui
-     */
-    public startGui(boolean bol, String ip, int Port){
-        Manual_Server = bol;
-        if(!bol){
-            getServerNames();
-        }
-        else{
-            Server = new ServerList(ip, Port);
-            serverlist = Server.getServerList();
-        }
-        StartGui();
-        if(bol){
-            ManualyServer(ip, Port);
-        }
-    }
-
     static Point mouseDownCompCoords;
     JTabbedPane tabbedPane;
     JComponent Servers;
@@ -61,6 +42,25 @@ public class startGui extends JFrame implements ActionListener {
     //Arraylist of all tabs
     ArrayList<JPanel> tabs = new ArrayList<JPanel>();
 
+
+    /**
+     * Initiates the servers and starts the gui
+     */
+    public startGui(boolean bol, String ip, int Port){
+        Manual_Server = bol;
+        if(!bol){
+            getServerNames();
+        }
+        else{
+            Server = new ServerList(ip, Port);
+            serverlist = Server.getServerList();
+        }
+        StartGui();
+        if(bol){
+            ManualyServer(ip, Port);
+        }
+    }
+
     /**
      * Retrives the active servers and adds them to serverlist
      */
@@ -77,31 +77,15 @@ public class startGui extends JFrame implements ActionListener {
         }
     }
 
-    /*public void UpdateTabByID(int TabID,String message, int type){
-        JTextPane OutputArea = outputAreaList.get(TabID);
-
-        StyledDocument doc = OutputArea.getStyledDocument();
-        SimpleAttributeSet keyWord = new SimpleAttributeSet();
-        switch(type) {
-            case 0:
-                StyleConstants.setForeground(keyWord, Color.RED);
-                break;
-            case 1:
-                StyleConstants.setForeground(keyWord, Color.GREEN);
-                break;
-            case 2:
-                StyleConstants.setForeground(keyWord, Color.BLUE);
-                break;
-        }
-        StyleConstants.setBold(keyWord, true);
-        try{
-            doc.insertString(doc.getLength(), "\n"+message, keyWord );
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-        OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
-    }*/
-
+    /**
+     * Adds a message to the chat log/Output
+     * @param TabID The tab index that will be updated
+     * @param time The time that the message was received, if this is null the message will not include a time element
+     * @param userName The user that sent the message, set this to null is it is a system message
+     * @param message The message to display, required
+     * @param type Sets whether the message was 1=encrypted, 2=compressed, 3=both, 0=none, changes the highlight colour
+     * @param originType Sets the type of message 0=normal, 1=warning, 2=succesful, 3=information, changes text colour
+     */
     public void UpdateTabByID2(int TabID, String time, String userName, String message, int type, int originType){
         JTextPane OutputArea = outputAreaList.get(TabID);
         OutputArea.setFont(new Font("Courier New", Font.BOLD, 12));
@@ -156,6 +140,11 @@ public class startGui extends JFrame implements ActionListener {
         OutputArea.setCaretPosition(OutputArea.getDocument().getLength());
     }
 
+    /**
+     * Generate a colour from a string
+     * @param nick The string that will generate a Color
+     * @return The colour that was generated from the string
+     */
     private Color colorFromString(String nick){
         String color;
         if(nick.length() <4){
@@ -169,26 +158,47 @@ public class startGui extends JFrame implements ActionListener {
                 Integer.valueOf( color.substring( 5, 7 ), 16 ) );
     }
 
+    /**
+     * Returns the currently active tab
+     * @return The index of the active tab
+     */
     public int getSelectedServerTab(){
         int Index = tabbedPane.getSelectedIndex();
         ChangeColor( panelOne, Index);
         return Index;
     }
 
+    /**
+     * Get the InetAddress from the selected tab
+     * @return The InetAdress from the selected tab
+     */
     public InetAddress getSelectedServerAdress(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getIp();
     }
 
+    /**
+     * Get the port from the selected tab
+     * @return The port from the selected tab
+     */
     public int getSelectedServerPort(){
         return Server.getServer((String)serverlist.get(getSelectedServerTab())).getPort();
     }
 
-    public void ChangeColor(JPanel panelOne, int tabindex){
-        panelOne.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
-        panelOne.updateUI();
-        panelOne.validate();
+    /**
+     * Sets the background of a JPanel to the matching one for the tabindex
+     * @param panel A JPanel to change
+     * @param tabindex The index to fetch colour from
+     */
+    public void ChangeColor(JPanel panel, int tabindex){
+        panel.setBackground(new Color(Loop254(tabindex, 0), Loop254(tabindex, 1), Loop254(tabindex, 2)));
+        panel.updateUI();
+        panel.validate();
     }
 
+    /**
+     * Creates the elements in the gui and specifies their properties
+     * @return The GUI
+     */
     public JPanel CreatGui(){
 
         int NumberOfServer = serverlist.size();
@@ -199,7 +209,6 @@ public class startGui extends JFrame implements ActionListener {
             TABID[CurrentTab] = i;
             CurrentTab += 1;
 
-
             ArrayList<JTextArea> serverTextObject = new ArrayList<JTextArea>();
             ArrayList<JTextPane> serverObjects = new ArrayList<JTextPane>();
 
@@ -209,7 +218,9 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel2.setPreferredSize(new Dimension(480, 300));
             JComponent panel;
             if(!Manual_Server) {
-                panel = makeTextPanel("Server: " + Server.getServer((String) serverlist.get(i)).getName() + " Ip:" + Server.getServer((String) serverlist.get(i)).getIp() + " Port: " + Server.getServer((String) serverlist.get(i)).getPort());
+                panel = makeTextPanel("Server: " + Server.getServer((String) serverlist.get(i)).getName() + " IP:" +
+                        Server.getServer((String) serverlist.get(i)).getIp() + " Port: " + Server.getServer((String)
+                        serverlist.get(i)).getPort());
             }
             else{
                 panel = makeTextPanel("Server: ");
@@ -221,7 +232,6 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel3.setLayout(new GridLayout(3, 0));
             tempPanel3.add(panel);
             tempPanel2.add(tempPanel3);
-
 
             final JTextArea inputArea = defineInputarea();
             JScrollPane jScrollPane2 = new JScrollPane();
@@ -272,11 +282,9 @@ public class startGui extends JFrame implements ActionListener {
             connectButton.addActionListener(this);
             disConnectButton.addActionListener(this);
             setkey.addActionListener(this);
-            //inputArea.addActionListener(this);
 
             Buttons.add(sendMessage);
             ActionPlanes.add(inputArea);
-
 
             JPanel tempPanel5 = new JPanel();
             tempPanel5.setLayout(new FlowLayout());
@@ -286,11 +294,7 @@ public class startGui extends JFrame implements ActionListener {
             tempPanel5.add(jScrollPane2);
             tempPanel5.add(sendMessage);
             tempPanel5.add(tempPanel4);
-            //tempPanel5.setBackground(new Color(Loop254(50 * i), Loop254(20 * i), Loop254(40 * i)));
-
-
             tempPanel2.add(tempPanel5);
-
 
             JPanel tempPanel = new JPanel();
             tempPanel.setLayout(new GridLayout(2, 0));
@@ -336,7 +340,6 @@ public class startGui extends JFrame implements ActionListener {
             JCheckBox[] boxesList = new JCheckBox[]{Compress,Encrypted};
             JTextPane[] textAreas = new JTextPane[]{Key};
             JTextArea[] textAreasfields = new JTextArea[]{inputArea};
-            //JCheckBox[] Chekboxes = new JCheckBox[]{Compress,Encrypted};
 
             ArrayList<Object> ClientContent = new ArrayList<Object>();
 
@@ -344,7 +347,6 @@ public class startGui extends JFrame implements ActionListener {
             ClientContent.add(boxesList);
             ClientContent.add(textAreas);
             ClientContent.add(textAreasfields);
-            //ClientContent.add(Chekboxes);
 
             Runnable r = new Runnable() {
                 @Override
@@ -396,6 +398,10 @@ public class startGui extends JFrame implements ActionListener {
         return valu;
     }
 
+    /**
+     * Creates a chat log
+     * @return The chat log
+     */
     public JTextPane defineOutputarea(){
         JTextPane outputArea = new JTextPane();
         outputArea.setEditable(false);
@@ -404,6 +410,10 @@ public class startGui extends JFrame implements ActionListener {
         return outputArea;
     }
 
+    /**
+     * Creates a input area
+     * @return  The input JTextArea Object
+     */
     public JTextArea defineInputarea(){
         JTextArea outputArea = new JTextArea ();
         outputArea.setEditable(true);
@@ -413,10 +423,10 @@ public class startGui extends JFrame implements ActionListener {
         return outputArea;
     }
 
+    /**
+     * Initiates the elements of the gui
+     */
     public void StartGui(){
-
-
-
         panelOne = new JPanel();
         panelOne.setVisible(true);
         panelOne.setBackground(new Color(50, 20, 4));
@@ -434,12 +444,21 @@ public class startGui extends JFrame implements ActionListener {
     }
 
 
+    /**
+     *
+     * @param inputArea
+     * @param outputArea
+     */
     public void UpdateWindows(JTextArea inputArea, JTextPane outputArea){
         outputArea.setText(outputArea.getText()+"\n"+ inputArea.getText());
         inputArea.setText("");
     }
 
 
+    /**
+     * Acts on events
+     * @param e Event identifier
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         ArrayList<Object> activeClientObjects = Client_Content.get(getSelectedServerTab());
@@ -571,6 +590,11 @@ public class startGui extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Sets the server when the name server has been bypassed
+     * @param ip IP to the server
+     * @param Port Port to the server
+     */
     public void ManualyServer(String ip, int Port){
         int ID = getSelectedServerTab();
         ClientThread.startThreadManualy(ID,ip,Port);
@@ -578,7 +602,7 @@ public class startGui extends JFrame implements ActionListener {
     }
 
     /**
-     *
+     * Clears the content in the output pane
      */
     public void clearOutputWindow(){
         int Index = getSelectedServerTab();
