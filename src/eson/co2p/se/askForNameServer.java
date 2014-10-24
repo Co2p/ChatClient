@@ -97,7 +97,6 @@ public class askForNameServer implements ActionListener {
                         }
                         if(Manualconnect.isSelected()){
                             Gui = new startGui(true,Adress.getText(),Integer.parseInt(port.getText()));
-                            System.out.println("adawdawdhere");
                         }
                         else{
                             Gui = new startGui(false,Adress.getText(),Integer.parseInt(port.getText()));

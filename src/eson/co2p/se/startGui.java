@@ -72,7 +72,7 @@ public class startGui extends JFrame implements ActionListener {
             serverlist = Server.getServerList();
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("Excepted when trying to recive data: " + e);
+            System.out.println("Exception when trying to receive data: " + e);
         }
     }
 
@@ -491,13 +491,10 @@ public class startGui extends JFrame implements ActionListener {
                 while (true){
                     if(catalogue.MessageInUse == false){
                         catalogue.SetClientMessage (getInputText(), getSelectedServerTab(), compr.isSelected(), crypt.isSelected());
-
                         removeInputText();
-                        System.out.println("adding message");
                         break;
                     }
                 }
-                System.out.println("loop broken");
                 //addToOutputFromInput();
             }
         }

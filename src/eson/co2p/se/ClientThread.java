@@ -43,7 +43,7 @@ public class ClientThread {
         ServerThreadList.add(Templist);
         connectCurentServer.start();
         AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
-        System.out.println("Started server thread whit ID:" + ThreadId);
+        System.out.println("Started server thread with ID:" + ThreadId);
     }
     public static void startThreadManualy(final int ThreadId, final String Server, final int serverlist) {
         ArrayList<Object> Templist = new ArrayList<Object>();
@@ -70,7 +70,7 @@ public class ClientThread {
         ServerThreadList.add(Templist);
         connectCurentServer.start();
         AliveThreadsID[ThreadId] = 1; //1 = alive, 0 = dead
-        System.out.println("Started server thread whit ID:" + ThreadId);
+        System.out.println("Started server thread with ID:" + ThreadId);
     }
     /**
      * Stops a thread with the given id number
@@ -81,14 +81,11 @@ public class ClientThread {
             Object Targ = Me.get(0);
             int ObjId = (Integer)Targ;
             if (ObjId == ThreadId){
-                System.out.println("ME:" + Me );
                 AliveThreadsID[ObjId] = 0;
                 Thread Threaded = (Thread)Me.get(1);//the thread
-                System.out.println("TH:" + Threaded );
-                System.out.println("TH:" + Threaded.getName() );
                 SenderServer cServer = (SenderServer)Me.get(2);
                 //cServer.endSocket();
-                System.out.println("closing server whit id:" + ObjId );
+                System.out.println("Closing server with id:" + ObjId );
                 //remove old thread from list?
             }
         }

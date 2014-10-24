@@ -31,15 +31,13 @@ public class RecMessage {
 
         switch(op){
             case OpCodes.MESSAGE:
-                System.out.println("Found message!");
+                System.out.println("Received message.");
                 Message();
                 break;
             case OpCodes.NICKS:
-                System.out.println("Found nicks!");
+                System.out.println("Received list of nicknames.");
                 OriginType = 1;
                 try {
-                    System.out.println("The String: " + new String(PDUData.getBytes(), "UTF-8"));
-
                     String nicknames = new String(PDUData.getSubrange
                             (4, (PDUData.getShort(2))), "UTF-8").replaceAll("\0", ", ");
                     message =  ("Connected users: " + nicknames);
@@ -48,12 +46,10 @@ public class RecMessage {
                 }
                 break;
             case OpCodes.QUIT:
-                System.out.println("Message wants to quit you");
                 OriginType = 1;
                 message = "Server closed connection";
                 break;
             case OpCodes.UJOIN:
-                System.out.println("Found user-joined message");
                 OriginType = 2;
                 nickLength = (int)PDUData.getByte(1);
                 time = (int)PDUData.getInt(4);
@@ -65,7 +61,6 @@ public class RecMessage {
                 message = nick + " joined the room.";
                 break;
             case OpCodes.ULEAVE:
-                System.out.println("Found user-leaved message");
                 OriginType = 1;
                 nickLength = (int)PDUData.getByte(1);
                 time = (int)PDUData.getInt(4);
@@ -77,7 +72,6 @@ public class RecMessage {
                 message = nick + " left the room.";
                 break;
             case OpCodes.UCNICK:
-                System.out.println("Found user-changed-nick message");
                 OriginType = 3;
                 nickLength = (int)PDUData.getByte(1);
                 int nickLength2 = (int)PDUData.getByte(2);
@@ -99,16 +93,10 @@ public class RecMessage {
      */
     private void Message(){
         int checksum = PDUData.getByte(3);
-
-        //TODO remove prints
         int nickLength, msgLength;
         type = PDUData.getByte(1);
-        System.out.println("type: '" + type + "'");
         nickLength = PDUData.getByte(2);
-        System.out.println("nickLength: '" + nickLength + "'");
         msgLength = PDUData.getShort(4);
-        System.out.println("MessageLength: '" + msgLength + "'");
-        System.out.println("PDULength: " + PDUData.length());
         time = (int) PDUData.getInt(8);
         try {
             if(msgLength < PDUData.length()){
@@ -118,24 +106,22 @@ public class RecMessage {
                         //Got a problem with UTF-8 and linux printing out the zerobytes
                         //This is added as a fix for that problem
                         message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
-                        System.out.println("MESSAGE: '" + message + "'");
                         break;
                     case 1:
-                        System.out.println("HITTADE KOMPRIMERAT MEDDELANDE");
+                        System.out.println("Found compressed message.");
                         message = new String(deCompress(PDUData.getSubrange(12, msgLength)), "UTF-8");
                         break;
                     case 2:
-                        System.out.println("HITTADE KRYPTERAT FUCKING MEDDELANDE");
-                        System.out.println("CRYPT LENGTH: " + PDUData.length() + "msgLength: " + msgLength);
+                        System.out.println("Found encrypted message.");
                         if (PDUData.length() > 11 + msgLength) {
                             message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
                         } else {
-                            System.out.println("Krypteringen var felaktig");
+                            System.out.println("Encrypted message header faulty");
                             message = "CRYPT HEADER/MESSAGE WRONG";
                         }
                         break;
                     case 3:
-                        System.out.println("HITTADE KOMPRIMERAD OCH KRYPTERAT MEDDELANDE");
+                        System.out.println("Found compressed and encrypted");
                         try {
                             message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");
                         } catch (Exception e) {
@@ -145,9 +131,8 @@ public class RecMessage {
                         break;
                 }
                 nickname = new String(PDUData.getSubrange((12 + Message.div4(msgLength)), nickLength), "UTF-8");
-                System.out.println("nickname: '" + nickname + "'");
             }else{
-                System.out.println("Someone fucked up");
+                System.out.println("Someone messed up their headers");
                 message = "Someone got the headers wrong";
             }
         } catch (UnsupportedEncodingException e) {
@@ -264,7 +249,6 @@ public class RecMessage {
         int checksum = compressedPDU.getByte(1);
         int compLength = compressedPDU.getShort(2);
         int unCompLength = compressedPDU.getShort(4);
-        System.out.println("compressedPDU: '" + compressedPDU.length() + "'compLength: '" + compLength + "' unCompLength: '" + unCompLength + "'");
         byte[] retArr = null;
 
         if(comprMsg.length < 9){
