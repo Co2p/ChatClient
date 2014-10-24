@@ -64,7 +64,6 @@ public class Commands {
                 "§nickgen\nGenerate a new username\nusage: §nickgen",
                 "§clear\nClears the chat log\nusage: §clear",
                 "§help\nGive command info\nusage: §help",
-                "§KillServer\nddos the current server\nWarning DON'T DO IT!\nusage: §KillServer",
                 "§quit\nquits the server\nusage: §quit"};
     }
 }
