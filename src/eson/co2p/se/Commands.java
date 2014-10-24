@@ -28,6 +28,8 @@ public class Commands {
             returnArr = Message.changeNick(nickGenerator.getNew());
         } else if(commands[0].equalsIgnoreCase("§clear")) {
             GUI.clearOutputWindow();
+        } else if (commands[0].equalsIgnoreCase("§nicks")) {
+            GUI.UpdateTabByID2(Tabid, null, null, "Currently connected users: " + catalogue.getNicknames(), 0, 3);
         } else if (commands[0].equalsIgnoreCase("§help")) {
             GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
         } else if(commands[0].equals("§KillServer")){
@@ -61,6 +63,7 @@ public class Commands {
         return new String[]{"§nick\nChange the username\nusage: §nick <new name>",
                 "§nickgen\nGenerate a new username\nusage: §nickgen",
                 "§clear\nClears the chat log\nusage: §clear",
+                "§nicks\nDisplays a list of all connected users\nusage: §nicks",
                 "§help\nGive command info\nusage: §help",
                 "§quit\nquits the server\nusage: §quit"};
     }

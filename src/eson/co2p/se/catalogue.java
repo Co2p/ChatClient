@@ -1,6 +1,7 @@
 package eson.co2p.se;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Remembers states and identifiers
@@ -15,6 +16,7 @@ public class catalogue {
     private static Server thisServer = new Server();
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
+    private static ArrayList<String> nicknames = new ArrayList<String>();
     public static String[] message = new String[256];
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
@@ -72,6 +74,14 @@ public class catalogue {
     public static void setNameServer(InetAddress ip, int port){
         nameServer.setIp(ip);
         nameServer.setPort(port);
+    }
+
+    public static void setNicknames(String[] nicks){
+        Collections.addAll(nicknames, nicks);
+    }
+
+    public static void setNicknames(String nick){
+        nicknames.add(nick);
     }
 
     /**
@@ -276,12 +286,24 @@ public class catalogue {
         }
     }
 
+    public static String getNicknames() {
+        String tempNicks = "";
+        for (int i=0; i<nicknames.size(); i++) {
+            tempNicks=tempNicks + nicknames.get(i) + ", ";
+        }
+        return tempNicks;
+    }
+
     /**
      * Decides whether the client should connect to a server directly or via a nameserver
      * @return True if the client connects directly to a server
      */
     public static boolean getmanualServer(){
         return manualServer;
+    }
+
+    public static void removeNickname(String nick) {
+        nicknames.remove(nicknames.indexOf(nick));
     }
 
 }

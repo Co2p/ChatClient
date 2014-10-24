@@ -1,6 +1,7 @@
 package eson.co2p.se;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.zip.*;
 import java.io.*;
 
@@ -38,9 +39,11 @@ public class RecMessage {
                 System.out.println("Received list of nicknames.");
                 OriginType = 1;
                 try {
-                    String nicknames = new String(PDUData.getSubrange
-                            (4, (PDUData.getShort(2))), "UTF-8").replaceAll("\0", ", ");
-                    message =  ("Connected users: " + nicknames);
+                    String[] nicknames;
+                    String tempnicks = new String(PDUData.getSubrange(4, (PDUData.getShort(2))), "UTF-8");
+                    nicknames = tempnicks.split("\0");
+                    catalogue.setNicknames(nicknames);
+                    message =  ("Connected users: " + catalogue.getNicknames());
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
@@ -58,6 +61,7 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
+                catalogue.setNicknames(nick);
                 message = nick + " joined the room.";
                 break;
             case OpCodes.ULEAVE:
@@ -69,6 +73,7 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
+                catalogue.removeNickname(nick);
                 message = nick + " left the room.";
                 break;
             case OpCodes.UCNICK:
