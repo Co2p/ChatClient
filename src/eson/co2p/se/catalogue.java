@@ -16,7 +16,7 @@ public class catalogue {
     private static Server thisServer = new Server();
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
-    private static ArrayList<String> nicknames = new ArrayList<String>();
+    private static ArrayList<ArrayList<String>> nicknames = new ArrayList<ArrayList<String>>();
     public static String[] message = new String[256];
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
@@ -76,12 +76,17 @@ public class catalogue {
         nameServer.setPort(port);
     }
 
-    public static void setNicknames(String[] nicks){
-        Collections.addAll(nicknames, nicks);
+    public static void setNicknames(String[] nicks, int TabID){
+        ArrayList<String> tempnicks = new ArrayList<String>(TabID);
+        nicknames = new ArrayList<ArrayList<String>>();
+
+        for (int j=0; j<nicks.length; j++) {
+            nicknames.get(TabID).set(j, nicks[j]);
+        }
     }
 
-    public static void setNicknames(String nick){
-        nicknames.add(nick);
+    public static void setNicknames(String nick, int TabID){
+        nicknames.get(TabID).add(nick);
     }
 
     /**
@@ -286,10 +291,13 @@ public class catalogue {
         }
     }
 
-    public static String getNicknames() {
+    public static String getNicknames(int TabID) {
         String tempNicks = "";
-        for (int i=0; i<nicknames.size(); i++) {
-            tempNicks=tempNicks + nicknames.get(i) + ", ";
+        if (nicknames.get(TabID).size()==0){
+            return "There's no one here but you!";
+        }
+        for (int i=0; i<nicknames.get(TabID).size(); i++) {
+            tempNicks=tempNicks + nicknames.get(TabID).get(i) + ", ";
         }
         return tempNicks;
     }
@@ -302,8 +310,8 @@ public class catalogue {
         return manualServer;
     }
 
-    public static void removeNickname(String nick) {
-        nicknames.remove(nicknames.indexOf(nick));
+    public static void removeNickname(String nick, int TabID) {
+        nicknames.get(TabID).remove(nicknames.get(TabID).indexOf(nick));
     }
 
 }

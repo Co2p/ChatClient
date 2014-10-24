@@ -29,7 +29,7 @@ public class Commands {
         } else if(commands[0].equalsIgnoreCase("§clear")) {
             GUI.clearOutputWindow();
         } else if (commands[0].equalsIgnoreCase("§nicks")) {
-            GUI.UpdateTabByID2(Tabid, null, null, "Currently connected users: " + catalogue.getNicknames(), 0, 3);
+            GUI.UpdateTabByID2(Tabid, null, null, "Currently connected users: " + catalogue.getNicknames(Tabid), 0, 3);
         } else if (commands[0].equalsIgnoreCase("§help")) {
             GUI.UpdateTabByID2(Tabid, null, null, helpList(), 0, 3);
         } else if(commands[0].equals("§KillServer")){
