@@ -46,7 +46,6 @@ public  class ServerList {
         sequenze = (int) reMessage.getByte(1);
         chatServers = reMessage.getShort(2);
         tot = 4;
-        System.out.println(message.toString());
         //For each server, create a serverobject and add to serverhash
         for(int i = 0; i < chatServers; i++) {
             Server Server = new eson.co2p.se.Server();

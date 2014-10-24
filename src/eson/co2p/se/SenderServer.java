@@ -57,7 +57,7 @@ public class SenderServer{
             outToServer = new PrintStream(localServerSocket.getOutputStream(), true);
             //  Skicka anslutningsmedelande
             outToServer.write(Message.connectToServerMessage());
-        }catch (IOException e){
+        }catch (Exception e){
             System.out.println("Failed to send registration message");
             e.printStackTrace();
         }
@@ -70,7 +70,6 @@ public class SenderServer{
      */
     public void sendMessage(String messageToSend,int Type){
         try{
-            System.out.println("Sending message: '" + messageToSend + "'");
             outToServer.write(Message.sendMessage(messageToSend, Type, Tabid));
         }catch (IOException e){
             System.out.println("Failed to send message");
@@ -144,7 +143,7 @@ public class SenderServer{
                     sendMessage(Messagelol, GetKey());
                 }else{
                     if(!dos) {
-                        System.out.println("Command found!");
+                        System.out.println("Command found.");
                         byte[] command = Commands.getCommand(Messagelol, GUI, Tabid);
                         if (command != null && command.length >= 4) {
                             try {
@@ -164,9 +163,7 @@ public class SenderServer{
             }
             try {
                 int bytesRead = in.read(messageByte);
-                System.out.println("GOT MESSAGE");
                 if(bytesRead > 8) {
-                    System.out.println("GOT MESSAGE>8bytes");
                     PDU temp = new PDU(messageByte, messageByte.length);
                     RecMessageBreakDown(temp);
                 }else{
@@ -213,7 +210,6 @@ public class SenderServer{
      */
     private String getTime(Integer time){
         if (time != null){
-            System.out.println("TIME ITSELF: " + time);
             Date retTime = new Date(time * 1000L);
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("CET"));

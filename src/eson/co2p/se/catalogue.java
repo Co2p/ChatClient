@@ -272,7 +272,6 @@ public class catalogue {
                 dosreq[i] = false;
                 Keys[i] = "foobar";
             }
-            System.out.println("Filled Arraylist");
             firstAcess = false;
         }
     }

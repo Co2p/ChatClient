@@ -39,9 +39,6 @@ public class UDPServerConnection {
         ServerList servers = new ServerList(receivePacket.getData());
         ArrayList serverlist = servers.getServerList();
 
-        //Print all info on servers, this is just for testing purposes
-        servers.printServers();
-
         clientSocket.close();
         return servers;
     }
