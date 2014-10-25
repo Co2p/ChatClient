@@ -16,7 +16,8 @@ public class Main {
     public Main(){
         askForNameServer nameServerQ = new askForNameServer();
         nameServerQ.CreatNameserverQuestion();
-        startServer();
+        //TODO is this omportant?? WTF
+        //startServer();
     }
 
 
@@ -26,7 +27,7 @@ public class Main {
 
     }
 
-    private void startServer(){
+    /*private void startServer(){
         nameServer = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -35,5 +36,5 @@ public class Main {
         });
         threads.add(nameServer);
         nameServer.start();
-    }
+    }*/
 }
