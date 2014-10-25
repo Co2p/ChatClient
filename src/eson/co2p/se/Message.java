@@ -35,7 +35,7 @@ public class Message {
         int usernameLength = div4(catalogue.getNick().getBytes().length);
         PDU rawdata = new PDU(4 + usernameLength);
         rawdata.setByte(0,(byte)OpCodes.JOIN);
-        rawdata.setByte(1, (byte)div4(usernameLength));
+        rawdata.setByte(1, (byte)usernameLength);
         //rawdata.setShort(2, (byte)0);
         try {
             rawdata.setSubrange(4, catalogue.getNick().getBytes("UTF-8"));
@@ -67,7 +67,7 @@ public class Message {
         PDU rawdata = new PDU(4 + div4(nickname.getBytes().length));
         catalogue.setName(nickname);
         rawdata.setByte(0,(byte)OpCodes.CHNICK);
-        rawdata.setByte(1, (byte)div4(nickname.getBytes().length));
+        rawdata.setByte(1, (byte)nickname.getBytes().length);
         try {
             rawdata.setSubrange(4, nickname.getBytes("UTF-8"));
         }catch(UnsupportedEncodingException e){
@@ -104,8 +104,9 @@ public class Message {
             //  Adds the header
             rawdata.setByte(0, (byte) OpCodes.MESSAGE);
             rawdata.setByte(1,(byte)type);
-            rawdata.setShort(4, (short)div4(msgByte.length));
+            rawdata.setShort(4, (short)msgByte.length);
             rawdata.setSubrange(12, msgByte);
+            //  Calculate the checkSum
             rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);

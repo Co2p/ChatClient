@@ -32,7 +32,7 @@ public class RecMessage {
         switch(op){
             case OpCodes.MESSAGE:
                 System.out.println("Received message.");
-                Message();
+                Message(rawData);
                 break;
             case OpCodes.NICKS:
                 System.out.println("Received list of nicknames.");
@@ -91,8 +91,14 @@ public class RecMessage {
     /**
      * Handles the message that was sent to RecMessage and saves the message and username to their respective variables
      */
-    private void Message(){
+    private void Message(byte[] rawData){
         int checksum = PDUData.getByte(3);
+        //Check the checksum
+        System.out.println("Checking Checksum");
+        if(Checksum.calc(rawData, rawData.length) != (byte)0){
+            System.out.println("Checksum Calc returned faulty: " + Checksum.calc(rawData, rawData.length));
+        }
+
         int nickLength, msgLength;
         type = PDUData.getByte(1);
         nickLength = PDUData.getByte(2);
