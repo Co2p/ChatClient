@@ -1,5 +1,4 @@
 package eson.co2p.se;
-import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -311,7 +310,7 @@ public class catalogue {
 
         String tempNicks = "";
 
-        if (Temparray.get(TabID).length() == 0){
+        if (Temparray.get(TabID).length() == 1){
             return "There's no one here but you!";
         }
         for (int i=0; i<Temparray.get(TabID).length(); i++) {

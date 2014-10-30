@@ -42,8 +42,8 @@ public class RecMessage {
                     String[] nicknames;
                     String tempnicks = new String(PDUData.getSubrange(4, (PDUData.getShort(2))), "UTF-8");
                     nicknames = tempnicks.split("\0");
-                    //catalogue.setNicknames(nicknames, Tabid);
-                    message =  ("Connected users: " + Arrays.toString(nicknames));
+                    catalogue.setNicknames(nicknames, Tabid);
+                    message =  ("Connected users: " + catalogue.getNicknames(Tabid));
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
@@ -61,7 +61,7 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                //catalogue.setNicknames(nick, Tabid);
+                catalogue.setNicknames(nick, Tabid);
                 message = nick + " joined the room.";
                 break;
             case OpCodes.ULEAVE:
@@ -73,7 +73,7 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                //catalogue.removeNickname(nick, Tabid);
+                catalogue.removeNickname(nick, Tabid);
                 message = nick + " left the room.";
                 break;
             case OpCodes.UCNICK:
@@ -88,6 +88,8 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
+                //TODO remove old nick and add the new one to the catalogue
+
                 message =  nick + " changed nick to: " + newNick;
                 break;
         }
