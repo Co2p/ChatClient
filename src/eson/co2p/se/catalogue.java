@@ -138,6 +138,11 @@ public class catalogue {
         return ret;
     }
 
+    public static void changeNick(String oldNick, String newNick, int Tabid) {
+        catalogue.removeNickname(oldNick, Tabid);
+        catalogue.setNicknames(newNick, Tabid);
+    }
+
     /**
      * Decides whether the client should connect to a server directly or via a nameserver
      * @param ManualSrv True if the client connects directly to a server

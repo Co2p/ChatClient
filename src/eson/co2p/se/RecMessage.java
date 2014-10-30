@@ -89,8 +89,7 @@ public class RecMessage {
                     e.printStackTrace();
                 }
 
-                catalogue.removeNickname(nick, Tabid);
-                catalogue.setNicknames(newNick, Tabid);
+                catalogue.changeNick(nick, newNick, Tabid);
 
                 message =  nick + " changed nick to: " + newNick;
                 break;
