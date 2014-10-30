@@ -88,7 +88,9 @@ public class RecMessage {
                 }catch(UnsupportedEncodingException e){
                     e.printStackTrace();
                 }
-                //TODO remove old nick and add the new one to the catalogue
+
+                catalogue.removeNickname(nick, Tabid);
+                catalogue.setNicknames(newNick, Tabid);
 
                 message =  nick + " changed nick to: " + newNick;
                 break;
