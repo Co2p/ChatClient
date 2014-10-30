@@ -103,7 +103,7 @@ public class Message {
             rawdata = new PDU(12 + div4(msgByte.length));
             //  Adds the header
             rawdata.setByte(0, (byte) OpCodes.MESSAGE);
-            rawdata.setByte(1,(byte)type);
+            rawdata.setByte(1, (byte)type);
             rawdata.setShort(4, (short)msgByte.length);
             rawdata.setSubrange(12, msgByte);
             //  Calculate the checkSum
