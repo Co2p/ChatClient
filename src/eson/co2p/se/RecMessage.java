@@ -98,10 +98,12 @@ public class RecMessage {
      */
     private void Message(byte[] rawData){
         int checksum = PDUData.getByte(3);
+        int totLength = Message.div4(PDUData.getByte(2)) + Message.div4(PDUData.getShort(4)) + 12;
+        boolean check = true;
         //Check the checksum
-        System.out.println("Checking Checksum");
-        if(Checksum.calc(rawData, rawData.length) != (byte)0){
+        if(Checksum.calc(rawData,totLength) != (byte)0){
             System.out.println("Checksum Calc returned faulty: " + Checksum.calc(rawData, rawData.length));
+            check = false;
         }
 
         int nickLength, msgLength;
@@ -110,19 +112,19 @@ public class RecMessage {
         msgLength = PDUData.getShort(4);
         time = (int) PDUData.getInt(8);
         try {
-            if(msgLength < PDUData.length()){
+            if(msgLength < PDUData.length() && check){
                 switch (type) {
-                    case 0:
+                    case MsgTypes.TEXT:
                         message = new String(PDUData.getSubrange(12, msgLength), "UTF-8");
                         //Got a problem with UTF-8 and linux printing out the zerobytes
                         //This is added as a fix for that problem
                         message = message.replaceAll(new String(new byte[]{0}, "UTF-8"), "");
                         break;
-                    case 1:
+                    case MsgTypes.COMP:
                         System.out.println("Found compressed message.");
                         message = new String(deCompress(PDUData.getSubrange(12, msgLength)), "UTF-8");
                         break;
-                    case 2:
+                    case MsgTypes.CRYPT:
                         System.out.println("Found encrypted message.");
                         if (PDUData.length() > 11 + msgLength) {
                             message = new String(deCrypt(PDUData.getSubrange(12, msgLength), Tabid), "UTF-8");
@@ -131,7 +133,7 @@ public class RecMessage {
                             message = "CRYPT HEADER/MESSAGE WRONG";
                         }
                         break;
-                    case 3:
+                    case MsgTypes.COMPCRYPT:
                         System.out.println("Found compressed and encrypted");
                         try {
                             message = new String(deCompress(deCrypt(PDUData.getSubrange(12, msgLength), Tabid)), "UTF-8");

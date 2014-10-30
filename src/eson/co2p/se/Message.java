@@ -107,7 +107,8 @@ public class Message {
             rawdata.setShort(4, (short)msgByte.length);
             rawdata.setSubrange(12, msgByte);
             //  Calculate the checkSum
-            rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), rawdata.length()));
+            System.out.println("totLength: '" + rawdata.length() + "', Message length: '" + msgByte.length + "'");
+            rawdata.setByte(3, Checksum.calc(rawdata.getBytes(), 12 + Message.div4(msgByte.length)));
         }catch(UnsupportedEncodingException e){
             System.out.println("Unsupported Encoding Exception: " + e);
         }
