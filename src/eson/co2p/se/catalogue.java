@@ -313,8 +313,10 @@ public class catalogue {
         if (Temparray.get(TabID).equals(1)){
             return "There's no one here but you!";
         }
-        for (int i=0; i<Temparray.get(TabID).length(); i++) {
-            tempNicks= tempNicks + Temparray.get(i) + ", ";
+        for (int i=0; i< Temparray.size(); i++) {
+            System.out.println("Temp Array: " + Temparray );
+            System.out.println("Array lenght: " + Temparray.size() );
+            tempNicks = tempNicks + Temparray.get(i) + ", ";
         }
         return tempNicks;
     }
