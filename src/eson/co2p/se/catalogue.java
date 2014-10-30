@@ -310,7 +310,7 @@ public class catalogue {
 
         String tempNicks = "";
 
-        if (Temparray.get(TabID).length() == 1){
+        if (Temparray.get(TabID).equals(1)){
             return "There's no one here but you!";
         }
         for (int i=0; i<Temparray.get(TabID).length(); i++) {
