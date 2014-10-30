@@ -138,6 +138,12 @@ public class catalogue {
         return ret;
     }
 
+    /**
+     * Removes a deprecated nickname and adds a new one
+     * @param oldNick the deprecated nick
+     * @param newNick a new nick
+     * @param Tabid the dab identifier
+     */
     public static void changeNick(String oldNick, String newNick, int Tabid) {
         catalogue.removeNickname(oldNick, Tabid);
         catalogue.setNicknames(newNick, Tabid);
@@ -307,11 +313,14 @@ public class catalogue {
         }
     }
 
+    /**
+     * Returns a string of the nicknames currently
+     * @param TabID
+     * @return
+     */
     public static String getNicknames(int TabID) {
 
         ArrayList<String> Temparray = (ArrayList<String>) UsenameHashList.get(TabID);
-
-
 
         String tempNicks = "";
 

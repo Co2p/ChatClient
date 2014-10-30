@@ -420,7 +420,7 @@ public class startGui extends JFrame implements ActionListener {
         frame.pack();
         frame.setVisible(true);
         frame.setBounds(80, 80, 490, 666);
-        ImageIcon icon = createImageIcon("glorous28.png");
+        ImageIcon icon = createImageIcon("icon.png");
         frame.setIconImage(icon.getImage());
     }
 
