@@ -1,7 +1,10 @@
 package eson.co2p.se;
+import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Hashtable;
 
 /**
  * Remembers states and identifiers
@@ -16,7 +19,6 @@ public class catalogue {
     private static Server thisServer = new Server();
     private static String key = "foobar";
     public static ArrayList<String> Chatsync = new ArrayList<String>();
-    private static ArrayList<ArrayList<String>> nicknames = new ArrayList<ArrayList<String>>();
     public static String[] message = new String[256];
     public static String[] Keys = new String[256];
     public static boolean[] comp = new boolean[256];
@@ -25,6 +27,9 @@ public class catalogue {
     public static boolean MessageInUse = false;
     private static boolean firstAcess = true;
     private static boolean manualServer = false;
+
+    private static Hashtable UsenameHashList = new Hashtable();
+
 
 
     /**
@@ -77,16 +82,23 @@ public class catalogue {
     }
 
     public static void setNicknames(String[] nicks, int TabID){
-        ArrayList<String> tempnicks = new ArrayList<String>(TabID);
-        nicknames = new ArrayList<ArrayList<String>>();
 
-        for (int j=0; j<nicks.length; j++) {
-            nicknames.get(TabID).set(j, nicks[j]);
+        ArrayList<String> NicksAsArraylist = new ArrayList<String>(Arrays.asList(nicks));
+
+        if (!UsenameHashList.contains(TabID)){
+            UsenameHashList.put(TabID,NicksAsArraylist);
         }
+
     }
 
     public static void setNicknames(String nick, int TabID){
-        nicknames.get(TabID).add(nick);
+
+        ArrayList<String> Temparray = (ArrayList<String>) UsenameHashList.get(TabID);
+        if(!Temparray.contains(nick)){
+            Temparray.add(nick);
+            UsenameHashList.put(TabID,Temparray);
+        }
+
     }
 
     /**
@@ -292,12 +304,18 @@ public class catalogue {
     }
 
     public static String getNicknames(int TabID) {
+
+        ArrayList<String> Temparray = (ArrayList<String>) UsenameHashList.get(TabID);
+
+
+
         String tempNicks = "";
-        if (nicknames.get(TabID).size()==0){
+
+        if (Temparray.get(TabID).length() == 0){
             return "There's no one here but you!";
         }
-        for (int i=0; i<nicknames.get(TabID).size(); i++) {
-            tempNicks=tempNicks + nicknames.get(TabID).get(i) + ", ";
+        for (int i=0; i<Temparray.get(TabID).length(); i++) {
+            tempNicks= tempNicks + Temparray.get(i) + ", ";
         }
         return tempNicks;
     }
@@ -311,7 +329,13 @@ public class catalogue {
     }
 
     public static void removeNickname(String nick, int TabID) {
-        nicknames.get(TabID).remove(nicknames.get(TabID).indexOf(nick));
+
+        ArrayList<String> Temparray = (ArrayList<String>) UsenameHashList.get(TabID);
+
+        if(Temparray.contains(nick)){
+            Temparray.remove(Temparray.indexOf(nick));
+            UsenameHashList.put(TabID, Temparray);
+        }
     }
 
 }
