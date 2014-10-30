@@ -98,7 +98,7 @@ public class startGui extends JFrame implements ActionListener {
             //Prints the clock
             if(time != null) {
                 StyleConstants.setForeground(keyWord, Color.LIGHT_GRAY);
-                doc.insertString(doc.getLength(), "\n[kl. " + time + "] ", keyWord);
+                doc.insertString(doc.getLength(), "\n" + time + " ", keyWord);
             }else{
                 doc.insertString(doc.getLength(), "\n", keyWord);
             }
